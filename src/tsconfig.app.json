@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "es2015",
-    "types": []
+    "types": ["gapi", "gapi.auth2"],
+    "experimentalDecorators": true
   },
   "exclude": [
     "src/test.ts",
