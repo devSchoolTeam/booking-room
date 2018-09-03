@@ -122,14 +122,22 @@
               if (!when) {
                 when = event.start.date;
               }
-              appendPre(event.summary + ' (' + when + ')')
+             // appendPre(event.summary + ' (' + when + ')')
+             appendPre(JSON.stringify(event))
+             leftTime(event)
+
             }
           } else {
             appendPre('No upcoming events found.');
           }
         });
       }
-
+      function leftTime(event){
+      		var start = new Date(event.start.dateTime);
+      		var end = new Date(event.end.dateTime);
+      		var time = end.getHours() - start.getHours();
+      		console.log(time)
+      }
     </script>
 
     <script async defer src="https://apis.google.com/js/api.js"
