@@ -29,7 +29,4 @@ export class AppComponent implements OnInit {
   showEvents() {
     this.gapiService.listUpcomingEvents();
   }
-  setTimer() {
-    this.gapiService.setTimer();
-  }
 }
