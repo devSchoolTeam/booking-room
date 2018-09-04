@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from  '@angular/router';
-import { MainPageComponent } from '../main-page/main-page.component';
-import { BookingPageComponent } from '../booking-page/booking-page.component';
+import { MainPageComponent } from './components/main-page/main-page.component';
+import { BookingPageComponent } from './components/booking-page/booking-page.component';
 
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },

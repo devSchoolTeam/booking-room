@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GapiService } from './gapi.service';
+import { GapiService } from './services/gapi/gapi.service';
 
 @Component({
   selector: 'app-root',
@@ -16,17 +16,16 @@ export class AppComponent implements OnInit {
     this.gapiService.handleClientLoad();
   }
 
-  signIn($event) {
-    this.gapiService.handleAuthClick($event);
+  signIn() {
+    this.gapiService.handleAuthClick();
   }
 
-  signOut($event) {
-    this.gapiService.handleSignoutClick($event);
+  signOut() {
+    this.gapiService.handleSignoutClick();
   }
-  createEvent() {
-    this.gapiService.createEvent();
-  }
-  showEvents() {
-    this.gapiService.listUpcomingEvents();
+
+  listEvents(){
+    this.gapiService.listUpcomingEvents(new Date());
+
   }
 }
