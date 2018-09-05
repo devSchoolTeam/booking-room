@@ -16,7 +16,7 @@ export class GapiService {
     CLIENT_ID: '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
     API_KEY: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
     DISCOVERY_DOCS: [`https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest`],
-    SCOPES: `https://www.gвoogleapis.com/auth/calendar`,
+    SCOPES: `https://www.googleapis.com/auth/calendar`,
   }
   private gapi;
 
@@ -107,7 +107,7 @@ export class GapiService {
 
     let event = {
       'calendarId': 'primary',
-      'summary': 'Pizda',
+      'summary': 'test',
       'description': 'If it works, I am happy',
       'start': {
         'dateTime': start.toISOString(),
