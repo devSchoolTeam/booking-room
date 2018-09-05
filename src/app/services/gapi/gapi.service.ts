@@ -3,10 +3,6 @@ import { Config } from '../../models/config';
 import { GoogleApiService } from 'ng-gapi';
 
 
-
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,20 +12,13 @@ export class GapiService {
 
   }
 
-
-
   config: Config = {
     CLIENT_ID: '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
     API_KEY: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
     DISCOVERY_DOCS: [`https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest`],
-    SCOPES: `https://www.googleapis.com/auth/calendar`,
+    SCOPES: `https://www.gвoogleapis.com/auth/calendar`,
   }
-
   private gapi;
-
-
-
-
 
   handleClientLoad() {
     this.gapiService.onLoad().subscribe(() => {
@@ -44,12 +33,9 @@ export class GapiService {
 
         }
         );
-      })
+      });
     });
-  };
-
-
-
+  }
 
 
   updateSigninStatus(isSignedIn) {
@@ -57,7 +43,7 @@ export class GapiService {
 
 
     } else {
-      alert('Sign in first')
+      alert('Sign in first');
     }
   }
 
@@ -76,13 +62,9 @@ export class GapiService {
 
 
   listUpcomingEvents(requiredDate: Date) {
-
-    
-
     let endTime: Date = new Date(requiredDate.getFullYear(), requiredDate.getMonth(), requiredDate.getDate(), 23, 59, 59)
     console.log(requiredDate);
     console.log(endTime);
-
     this.gapi.client.calendar.events.list({
       'calendarId': 'primary',
       'timeMin': requiredDate.toISOString(),
@@ -92,13 +74,13 @@ export class GapiService {
       'maxResults': 10,
       'orderBy': 'startTime'
     }).then(function (response) {
-      var events = response.result.items;
+      let events = response.result.items;
       console.log('Upcoming events:');
 
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
-          var event = events[i];
-          var when = event.start.dateTime;
+          let event = events[i];
+          let when = event.start.dateTime;
           if (!when) {
             when = event.start.date;
           }
@@ -123,7 +105,7 @@ export class GapiService {
     let start = new Date('2018-09-03T08:00:00+03:00');
     let end = new Date('2018-09-03T09:00:00+03:00');
 
-    var event = {
+    let event = {
       'calendarId': 'primary',
       'summary': 'Pizda',
       'description': 'If it works, I am happy',
@@ -153,9 +135,9 @@ export class GapiService {
       'calendarId': 'primary',
       'eventId': eventId
     }).then(function (response) {
-      console.log("Response", response);
+      console.log('Response', response);
     },
-      function (err) { console.error("Execute error", err); });
+      function (err) { console.error('Execute error', err); });
   }
 
 }

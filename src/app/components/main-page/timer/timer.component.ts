@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Input} from '@angular/core';
 import { Output} from '@angular/core';
+import {EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-timer',
@@ -8,6 +9,7 @@ import { Output} from '@angular/core';
   styleUrls: ['./timer.component.sass']
 })
 export class TimerComponent implements OnInit {
+  @Output() distance = new EventEmitter<number>();
   hours;
   minutes;
   seconds;
@@ -21,6 +23,7 @@ export class TimerComponent implements OnInit {
     setInterval(() => {
       this.now = new Date();
       let distance = this.countDown - this.now;
+      this.distance.emit(distance);
       this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
