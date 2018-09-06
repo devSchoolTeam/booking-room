@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { meetingStatuses } from '../../../shared/constants';
 
 @Component({
   selector: 'app-body',
@@ -6,21 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./body.component.sass']
 })
 export class BodyComponent implements OnInit {
-public status = '#43b799';
+  public currentStatus =  meetingStatuses.available;
+
   constructor() { }
 
-  ngOnInit() {
-  }
-  // colors:string[]=['#43b799','#f3bf49','#c0392b'];
-  getTime(time) {
-    console.log(time < 0);
+  ngOnInit() {}
 
+  changeStylesByTime(time) {
     if ( time > 900000) {
-      this.status = '#43b799';
+      this.currentStatus = meetingStatuses.available;
     } else if (time < 900000  && time > 0) {
-      this.status = '#f3bf49';
+      this.currentStatus = meetingStatuses.soon;
     } else if (time < 0 ) {
-      this.status = '#c0392b';
+      this.currentStatus = meetingStatuses.inProcess;
     }
  }
 }

@@ -1,11 +1,20 @@
-<div class="Mask" [ngStyle]="{backgroundColor: status}">
-  <app-timer (distance)="getTime($event)"></app-timer>
-  <div class="Mesh">
-    <h1 class="name">Hall Room</h1>
-    <a routerLink="/booking-page">
-      <button class="button">
-        <p class="Book-now">Book now</p>
-      </button>
-    </a>
+<div class="Mask" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
+  <div class="time-status">
+    <app-timer (distance)="changeStylesByTime($event)"></app-timer>
+    <span class="Available">{{currentStatus.statusLabel}}</span>
+  </div>
+  <div class="title-container">
+    <img src="../../../../assets/images/mesh.png"
+       srcset="../../../../assets/images/mesh@2x.png 2x,
+             ../../../../assets/images/mesh@3x.png 3x"
+       class="Mesh">
+    <div class="center-block">
+      <h1 class="name">Hall Room</h1>
+      <a routerLink="/booking-page">
+        <button class="button">
+          <span class="Book-now">Book now</span>
+        </button>
+     </a>
+    </div>
   </div>
 </div>
