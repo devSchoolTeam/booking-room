@@ -15,3 +15,35 @@ export const meetingStatuses = {
     statusLabel: 'Meeting in process'
   }
 };
+export const buttonStatuses = {
+  clicked: {
+    textColor: '#ffffff',
+    buttonColor: '#526072'
+  },
+  unclicked: {
+    textColor:  '#526072',
+    buttonColor: '#e0e3e5'
+  }
+}
+export const availableMeetingDurations = [
+  {
+    label: '15m',
+    value: 15
+  },
+  {
+    label: '30m',
+    value: 30
+  },
+  {
+    label: '45m',
+    value: 45
+  },
+  {
+    label: '1h',
+    value: 60
+  },
+  {
+    label: '1h 30m',
+    value: 90
+  }
+];

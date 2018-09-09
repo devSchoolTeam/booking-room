@@ -128,8 +128,6 @@ export class GapiService {
 
   }
 
-
-
   deleteEvent(eventId: string) {
     this.gapi.client.calendar.events.delete({
       'calendarId': 'primary',

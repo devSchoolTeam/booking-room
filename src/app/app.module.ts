@@ -17,6 +17,8 @@ import {
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from 'ng-gapi';
+import { ButtonComponent } from './shared/components/button/button.component';
+import { SharedModule } from './shared/shared.module';
 
 
 const gapiClientConfig: NgGapiClientConfig = {
@@ -41,6 +43,7 @@ const gapiClientConfig: NgGapiClientConfig = {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SharedModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig

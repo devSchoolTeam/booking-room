@@ -18,7 +18,7 @@ export class TimerComponent implements OnInit {
   now;
   constructor() { }
   ngOnInit() {
-    this.countDown = new Date('Sep 7, 2018 16:53:00');
+    this.countDown = new Date('Sep 7, 2018 11:35:00');
     this.endTime = new Date('Sep 10, 2018 15:53:00');
     setInterval(() => {
       this.now = new Date();
