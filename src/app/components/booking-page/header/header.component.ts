@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { meetingStatuses } from '../../../shared/constants';
+import { TimeService } from '../../../services/time/time.service';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +9,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @Input() title: string;
+  public currentStatus;
 
-  constructor() { }
-
+  constructor(private timeService: TimeService) { }
   ngOnInit() {
+    this.currentStatus = meetingStatuses.available;
+    this.timeService.change.subscribe(currentStatus => {
+      this.currentStatus = currentStatus;
+    });
   }
-
+  changeStyle(time) {
+    this.timeService.changeStatusByTime(time);
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GapiService } from './services/gapi/gapi.service';
+import { TimeService } from './services/time/time.service';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,13 @@ import { GapiService } from './services/gapi/gapi.service';
 export class AppComponent implements OnInit {
   title = 'Hall Room';
 
-  constructor(private gapiService: GapiService) {
+  constructor(private gapiService: GapiService, private timeService: TimeService) {
 
   }
+
   ngOnInit() {
     this.gapiService.handleClientLoad();
+    this.timeService.eventHandler();
   }
 
   signIn() {
@@ -24,8 +27,18 @@ export class AppComponent implements OnInit {
     this.gapiService.handleSignoutClick();
   }
 
-  listEvents(){
-    this.gapiService.listUpcomingEvents(new Date());
+  listEvents() {
+    this.gapiService.listUpcomingEvents();
 
   }
+  eventCreating() {
+    this.gapiService.createEvent();
+  }
+  getEvent() {
+    this.gapiService.getNextEvent();
+  }
+  handleEvent() {
+    this.timeService.eventHandler();
+  }
+
 }

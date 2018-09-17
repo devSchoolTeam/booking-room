@@ -2,12 +2,10 @@ import {  Injectable } from '@angular/core';
 import { Config } from '../../models/config';
 import { GoogleApiService } from 'ng-gapi';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class GapiService {
-
   constructor(private gapiService: GoogleApiService) {
 
   }
@@ -59,16 +57,42 @@ export class GapiService {
 
   }
 
+  getNextEvent() {
+    return this.gapi.client.calendar.events.list({
+      'calendarId': 'primary',
+      'timeMin': (new Date()).toISOString(),
+      'showDeleted': false,
+      'singleEvents': true,
+      'maxResults': 1,
+      'orderBy': 'startTime'
+    }).then(function (response) {
+      return new Promise((resolve, reject) => {
+        const events = response.result.items;
+      if (events.length > 0) {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
+          let startEventTime = event.start.dateTime;
+          const endEventTime = event.end.dateTime;
+          if (!startEventTime) {
+            startEventTime = event.start.date;
+          }
+          const upcomingEvent = {
+            start: startEventTime,
+            end: endEventTime
+          };
+          resolve(upcomingEvent);
 
-
-  listUpcomingEvents(requiredDate: Date) {
-    let endTime: Date = new Date(requiredDate.getFullYear(), requiredDate.getMonth(), requiredDate.getDate(), 23, 59, 59)
-    console.log(requiredDate);
-    console.log(endTime);
+        }
+      } else {
+        console.log('No upcoming events found.');
+      }
+    });
+  });
+  }
+  listUpcomingEvents() {
     this.gapi.client.calendar.events.list({
       'calendarId': 'primary',
-      'timeMin': requiredDate.toISOString(),
-      'timeMax': endTime.toISOString(),
+      'timeMin': (new Date()).toISOString(),
       'showDeleted': false,
       'singleEvents': true,
       'maxResults': 10,
@@ -79,17 +103,12 @@ export class GapiService {
 
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
-          let event = events[i];
+          const event = events[i];
           let when = event.start.dateTime;
           if (!when) {
             when = event.start.date;
           }
-          console.log(event.summary + ' (' + when + ')');
-          console.log(JSON.stringify(event));
-
-
-
-        };
+        }
       } else {
         console.log('No upcoming events found.');
       }
@@ -97,8 +116,6 @@ export class GapiService {
 
     });
   }
-
-
 
   createEvent() {
 
@@ -118,7 +135,6 @@ export class GapiService {
         'timeZone': 'America/Los_Angeles'
       }
     };
-
     this.gapi.client.calendar.events.insert({
       'calendarId': 'primary',
       'resource': event

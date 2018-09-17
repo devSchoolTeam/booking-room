@@ -17,8 +17,8 @@ import {
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from 'ng-gapi';
-import { ButtonComponent } from './shared/components/button/button.component';
 import { SharedModule } from './shared/shared.module';
+import { TimeCountingComponent } from './components/main-page/timer/time-counting/time-counting.component';
 
 
 const gapiClientConfig: NgGapiClientConfig = {
@@ -38,7 +38,8 @@ const gapiClientConfig: NgGapiClientConfig = {
     HeaderComponent,
     BodyComponent,
     BookingPageComponent,
-    TimerComponent
+    TimerComponent,
+    TimeCountingComponent
   ],
   imports: [
     BrowserModule,

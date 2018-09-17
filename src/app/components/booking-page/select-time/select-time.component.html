@@ -1,8 +1,6 @@
+<app-time-counting (time)="changeStyle($event)"></app-time-counting>
 <div class="button-container">
   <div class="button-row-1">
-    <!--<button class="unclicked-button" (click)="selectButton()" [ngStyle]="{backgroundColor: buttonStatus.buttonColor}">-->
-      <!--<span  [ngStyle]="{color: buttonStatus.textColor}">15</span>-->
-    <!--</button>-->
     <app-button
       *ngFor="let availableMeetingDuration of availableMeetingDurations"
       [text]="availableMeetingDuration.label"
@@ -10,9 +8,17 @@
       (click)="selectMeetingDuration(availableMeetingDuration)"
     ></app-button>
   </div>
-
-  <!--<div class="button-row-2">-->
-    <!--<button></button>-->
-    <!--<button></button>-->
-  <!--</div>-->
+  <div class="button-row-2">
+    <app-button
+    [text]="'Cancel'"
+    [class]="'cancel-btn'"
+    routerLink="/main-page"
+    ></app-button>
+    <app-button
+    [text]="currentStatus.bookButtonSecond"
+    [class]="'booking-btn'"
+    [backgroundColor]="'#43b799'"
+    [fontColor]="'white'"
+    ></app-button>
+  </div>
 </div>

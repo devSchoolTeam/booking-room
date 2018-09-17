@@ -2,29 +2,25 @@ export const meetingStatuses = {
   available: {
     fontColor: '#31856e',
     backgroundColor: '#43b799',
-    statusLabel: 'Available'
+    statusLabel: 'Available',
+    bookButton: 'Book now',
+    bookButtonSecond: 'Book now'
   },
   soon: {
     fontColor: '#b38d36',
     backgroundColor: '#f3bf49',
-    statusLabel: 'Meeting starts soon'
+    statusLabel: 'Meeting starts soon',
+    bookButton: 'Book later',
+    bookButtonSecond: 'Book'
   },
   inProcess: {
     fontColor: '#8c2a1f',
     backgroundColor: '#c0392b',
-    statusLabel: 'Meeting in process'
+    statusLabel: 'Meeting in process',
+    bookButton: 'Book later',
+    bookButtonSecond: 'Book'
   }
 };
-export const buttonStatuses = {
-  clicked: {
-    textColor: '#ffffff',
-    buttonColor: '#526072'
-  },
-  unclicked: {
-    textColor:  '#526072',
-    buttonColor: '#e0e3e5'
-  }
-}
 export const availableMeetingDurations = [
   {
     label: '15m',

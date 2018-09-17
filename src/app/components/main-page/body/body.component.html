@@ -1,6 +1,7 @@
+<app-time-counting (time)="changeStyle($event)"></app-time-counting>
 <div class="Mask" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
   <div class="time-status">
-    <app-timer (distance)="changeStylesByTime($event)"></app-timer>
+    <app-timer></app-timer>
     <span class="Available">{{currentStatus.statusLabel}}</span>
   </div>
   <div class="title-container">
@@ -10,11 +11,12 @@
        class="Mesh">
     <div class="center-block">
       <h1 class="name">Hall Room</h1>
-      <a routerLink="/booking-page">
-        <button class="button">
-          <span class="Book-now">Book now</span>
-        </button>
-     </a>
+        <app-button
+        [text]="currentStatus.bookButton"
+        [fontColor]="currentStatus.fontColor"
+        routerLink="/booking-page"
+        [class]="'button'"
+        ></app-button>
     </div>
   </div>
 </div>
