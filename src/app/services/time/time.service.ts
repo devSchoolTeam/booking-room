@@ -1,29 +1,47 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import { meetingStatuses } from '../../shared/constants';
-import { GapiService } from '../gapi/gapi.service';
+import { Injectable } from "@angular/core";
+import { meetingStatuses } from "../../shared/constants";
+import { GapiService } from "../gapi/gapi.service";
+import { Subject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class TimeService {
-  currentStatus = meetingStatuses.available;
-  @Output() change: EventEmitter<any> = new EventEmitter();
-  @Output() nextEvent: EventEmitter<any> = new EventEmitter();
-  constructor(private gapiService: GapiService) {
+  currentStatus = new Subject<any>();
+  nextEvent;
+  timeToStart = new Subject<any>();
+  timeToEnd = new Subject<any>();
+
+  constructor(private gapiService: GapiService) {}
+
+  changeStatusByTime(startTime: Date, endTime: Date) {
+    let currentTime: Date = new Date();
+    let timeToStart = startTime.getTime() - currentTime.getTime();
+
+    let timeToEnd = endTime.getTime() - currentTime.getTime();
+
+    if (timeToStart >= 900000) {
+      this.currentStatus.next(meetingStatuses.available);
+    } else if (timeToStart < 900000 && timeToStart > 0) {
+      this.currentStatus.next(meetingStatuses.soon);
+    } else if (timeToStart < 0) {
+      this.currentStatus.next(meetingStatuses.inProcess);
+    }
   }
 
-  changeStatusByTime(time) {
-    if (time > 900000) {
-      this.currentStatus = meetingStatuses.available;
-    } else if (time < 900000 && time > 0) {
-      this.currentStatus = meetingStatuses.soon;
-    } else if (time < 0) {
-      this.currentStatus = meetingStatuses.inProcess;
-    }
-    this.change.emit(this.currentStatus);
+  updateData() {
+    this.gapiService.getEvents().subscribe({
+      next: x => {
+        let startTime = new Date(x[0].start.dateTime),
+          endTime = new Date(x[0].end.dateTime),
+          currentTime = new Date(),
+          timeToStart = startTime.getTime() - currentTime.getTime(),
+          timeToEnd = endTime.getTime() - currentTime.getTime();
+
+        this.timeToStart.next(timeToStart);
+        this.timeToEnd.next(timeToEnd);
+        this.changeStatusByTime(startTime, endTime);
+      }
+    });
   }
-  eventHandler() {
-    setInterval(() => {this.gapiService.getNextEvent().then((response) => {
-      this.nextEvent.emit(response); }); }, 1000);
-    }
-    }
+}

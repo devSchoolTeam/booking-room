@@ -8,17 +8,14 @@ import { TimeService } from '../../../services/time/time.service';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit {
-  @Input() title: string;
   public currentStatus;
 
   constructor(private timeService: TimeService) { }
   ngOnInit() {
     this.currentStatus = meetingStatuses.available;
-    this.timeService.change.subscribe(currentStatus => {
+    this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
   }
-  changeStyle(time) {
-    this.timeService.changeStatusByTime(time);
-  }
+ 
 }

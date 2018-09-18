@@ -1,44 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { GapiService } from './services/gapi/gapi.service';
-import { TimeService } from './services/time/time.service';
+import { Component, OnInit } from "@angular/core";
+import { GapiService } from "./services/gapi/gapi.service";
+import { TimeService } from "./services/time/time.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.sass"]
 })
 export class AppComponent implements OnInit {
-  title = 'Hall Room';
-
-  constructor(private gapiService: GapiService, private timeService: TimeService) {
-
-  }
-
+  loader = false;
+  constructor(private gapiService: GapiService, private timeService:TimeService) {}
   ngOnInit() {
-    this.gapiService.handleClientLoad();
-    this.timeService.eventHandler();
-  }
-
-  signIn() {
-    this.gapiService.handleAuthClick();
+    this.gapiService.loader.subscribe({
+      next: x => {
+        this.loader = x;
+      }
+    });
+    this.timeService.updateData()
   }
 
   signOut() {
-    this.gapiService.handleSignoutClick();
+    this.gapiService.signOut();
   }
-
-  listEvents() {
-    this.gapiService.listUpcomingEvents();
-
-  }
-  eventCreating() {
-    this.gapiService.createEvent();
-  }
-  getEvent() {
-    this.gapiService.getNextEvent();
-  }
-  handleEvent() {
-    this.timeService.eventHandler();
-  }
-
 }

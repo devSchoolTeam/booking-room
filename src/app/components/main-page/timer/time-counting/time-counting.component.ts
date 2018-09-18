@@ -15,15 +15,15 @@ export class TimeCountingComponent implements OnInit {
   constructor(private timeService: TimeService) { }
 
   ngOnInit() {
-    this.timeService.nextEvent.subscribe((event) => {
-    this.event = event;
-    setInterval(() => {
-      this.now = new Date();
-      this.countDown = new Date(this.event.start);
-      this.endTime = new Date(this.event.end);
-      const time = this.countDown - this.now;
-      this.time.emit(time);
-      }, 1000); });
+    // this.timeService.nextEvent.subscribe((event) => {
+    // this.event = event;
+    // setInterval(() => {
+    //   this.now = new Date();
+    //   this.countDown = new Date(this.event.start);
+    //   this.endTime = new Date(this.event.end);
+    //   const time = this.countDown - this.now;
+    //   this.time.emit(time);
+    //   }, 1000); });
   }
 
 }

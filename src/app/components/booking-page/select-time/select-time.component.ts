@@ -15,13 +15,11 @@ export class SelectTimeComponent implements OnInit {
 
   ngOnInit() {
     this.currentStatus = meetingStatuses.available;
-    this.timeService.change.subscribe(currentStatus => {
+    this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
   }
-  changeStyle(time) {
-    this.timeService.changeStatusByTime(time);
-  }
+
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration;
   }

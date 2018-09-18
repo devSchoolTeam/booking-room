@@ -1,22 +1,21 @@
-<app-time-counting (time)="changeStyle($event)"></app-time-counting>
 <div class="Mask" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
-  <div class="time-status">
-    <app-timer></app-timer>
-    <span class="Available">{{currentStatus.statusLabel}}</span>
-  </div>
-  <div class="title-container">
-    <img src="../../../../assets/images/mesh.png"
-       srcset="../../../../assets/images/mesh@2x.png 2x,
-             ../../../../assets/images/mesh@3x.png 3x"
-       class="Mesh">
-    <div class="center-block">
-      <h1 class="name">Hall Room</h1>
-        <app-button
-        [text]="currentStatus.bookButton"
-        [fontColor]="currentStatus.fontColor"
-        routerLink="/booking-page"
-        [class]="'button'"
-        ></app-button>
+    <div class="time-status">
+      <app-timer></app-timer>
+      <span class="Available">{{currentStatus.statusLabel}}</span>
+    </div>
+    <div class="title-container">
+      <img src="../../../../assets/images/mesh.png"
+         srcset="../../../../assets/images/mesh@2x.png 2x,
+               ../../../../assets/images/mesh@3x.png 3x"
+         class="Mesh">
+      <div class="center-block">
+        <h1 class="name">Hall Room</h1>
+          <app-button
+          [text]="currentStatus.bookButton"
+          [fontColor]="currentStatus.fontColor"
+          routerLink="/booking-page"
+          [class]="'button'"
+          ></app-button>
+      </div>
     </div>
   </div>
-</div>
