@@ -12,8 +12,7 @@ export class DataResolver implements Resolve<any> {
   constructor(private gapiService: GapiService) {}
 
   resolve(router: ActivatedRouteSnapshot, rstate: RouterStateSnapshot) {
-    console.log(true);
-    this.gapiService.loader.next(true);
+    // this.gapiService.showLoader();
     return this.gapiService.listUpcomingEvents();
   }
 }

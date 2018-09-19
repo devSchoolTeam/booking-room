@@ -14,22 +14,16 @@ export class MainPageComponent implements OnInit {
     private gapiService: GapiService,
     private timeService: TimeService
   ) {
-    this.active.data.subscribe({
-      next: x => {
-        this.gapiService.loader.next(false);
- 
-        setInterval(()=>{
-          this.timeService.updateData()
-        },1000)
-      }
-    });
+    // this.active.data.subscribe({
+    //   next: x => {
+    //     // this.gapiService.hideLoader();
+
+       
+    //   }
+    // });
   }
 
-  ngOnInit() {
-    this.timeService.timeToStart.subscribe({
-      next:x=>{
-        console.log(x)
-      }
-    })
-  }
+  ngOnInit() { setInterval(() => {
+          this.timeService.updateData();
+        }, 1000);}
 }

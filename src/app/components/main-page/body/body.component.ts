@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { meetingStatuses } from "../../../shared/constants";
 import { TimeService } from "../../../services/time/time.service";
 
@@ -8,17 +8,20 @@ import { TimeService } from "../../../services/time/time.service";
   styleUrls: ["./body.component.sass"]
 })
 export class BodyComponent implements OnInit {
-  public currentStatus = meetingStatuses.available;
+  public currentStatus = "available";
 
-  constructor(private timeService: TimeService) {}
+  constructor(
+    private timeService: TimeService
+  ) {}
 
   ngOnInit() {
+    let self = this;
     this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
-      console.log(this.currentStatus)
+      console.log(this.currentStatus);
     });
   }
-  changeStyle() {
-    console.log(this.currentStatus)
-  }
+
+  statuses = ["avalible", "inProcess", "soon"];
+  changeStyle() {}
 }

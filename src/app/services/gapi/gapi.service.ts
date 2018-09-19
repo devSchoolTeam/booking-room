@@ -103,10 +103,8 @@ export class GapiService {
 
   getEvents(): Observable<any> {
     if (this.events) {
-
       return Observable.of(this.events);
     } else {
-
       return this.listUpcomingEvents();
     }
   }

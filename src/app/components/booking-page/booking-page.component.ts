@@ -14,7 +14,7 @@ export class BookingPageComponent implements OnInit {
   ) {
     this.active.data.subscribe({
       next: x => {
-        this.gapiService.loader.next(false);
+        // this.gapiService.loader.next(false);
         console.log(x);
       }
     });

@@ -8,15 +8,17 @@ import { TimeService } from "./services/time/time.service";
   styleUrls: ["./app.component.sass"]
 })
 export class AppComponent implements OnInit {
-  loader = false;
-  constructor(private gapiService: GapiService, private timeService:TimeService) {}
+  // loader = false;
+  constructor(
+    private gapiService: GapiService,
+    private timeService: TimeService
+  ) {}
   ngOnInit() {
-    this.gapiService.loader.subscribe({
-      next: x => {
-        this.loader = x;
-      }
-    });
-    this.timeService.updateData()
+    // this.gapiService.loader.subscribe({
+    //   next: x => {
+    //     this.loader = x;
+    //   }
+    // });
   }
 
   signOut() {

@@ -1,7 +1,7 @@
-<div class="Mask" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
+<div class="Mask" [class]="currentStatus">
     <div class="time-status">
       <app-timer></app-timer>
-      <span class="Available">{{currentStatus.statusLabel}}</span>
+      <span class="Available">{{currentStatus}}</span>
     </div>
     <div class="title-container">
       <img src="../../../../assets/images/mesh.png"
@@ -10,12 +10,12 @@
          class="Mesh">
       <div class="center-block">
         <h1 class="name">Hall Room</h1>
-          <app-button
+          <!-- <app-button
           [text]="currentStatus.bookButton"
           [fontColor]="currentStatus.fontColor"
           routerLink="/booking-page"
           [class]="'button'"
-          ></app-button>
+          ></app-button> -->
       </div>
     </div>
   </div>
