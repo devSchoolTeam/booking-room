@@ -1,7 +1,7 @@
-<div class="Mask" [class]="currentStatus">
+<div class="Mask" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
     <div class="time-status">
       <app-timer></app-timer>
-      <span class="Available">{{currentStatus}}</span>
+      <span class="Available">{{currentStatus.statusLabel}}</span>
     </div>
     <div class="title-container">
       <img src="../../../../assets/images/mesh.png"

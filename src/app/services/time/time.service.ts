@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GapiService } from "../gapi/gapi.service";
 import { Subject } from "rxjs";
+import { meetingStatuses } from "../../shared/constants";
 
 @Injectable({
   providedIn: "root"
@@ -20,11 +21,11 @@ export class TimeService {
     let timeToEnd = endTime.getTime() - currentTime.getTime();
 
     if (timeToStart >= 900000) {
-      this.currentStatus.next("available");
+      this.currentStatus.next(meetingStatuses.available);
     } else if (timeToStart < 900000 && timeToStart > 0) {
-      this.currentStatus.next("soon");
+      this.currentStatus.next(meetingStatuses.soon);
     } else if (timeToStart < 0) {
-      this.currentStatus.next("inProcess");
+      this.currentStatus.next(meetingStatuses.inProcess);
     }
   }
 
@@ -36,6 +37,7 @@ export class TimeService {
           currentTime = new Date(),
           timeToStart = startTime.getTime() - currentTime.getTime(),
           timeToEnd = endTime.getTime() - currentTime.getTime();
+          console.log(endTime)
 
         this.timeToStart.next(timeToStart);
         this.timeToEnd.next(timeToEnd);

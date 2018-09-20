@@ -22,6 +22,6 @@ export class BodyComponent implements OnInit {
     });
   }
 
-  statuses = ["avalible", "inProcess", "soon"];
+
   changeStyle() {}
 }
