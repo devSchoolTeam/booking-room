@@ -111,22 +111,23 @@ export class GapiService {
   }
 
   createEvent() {
-    const start = new Date('2018-09-03T08:00:00+03:00');
-    const end = new Date('2018-09-03T09:00:00+03:00');
+    const start = new Date('2018-09-22T08:00:00+03:00');
+    const end = new Date('2018-09-22T09:00:00+03:00');
+    console.log(typeof start);
+    console.log(start);
 
     const event = {
       calendarId: 'primary',
-      summary: 'Pizda',
-      description: 'If it works, I am happy',
+      summary: 'Event',
       start: {
-        dateTime: '2018-09-05T14:00:00+03:00'
+        dateTime: start
       },
       end: {
-        dateTime: '2018-09-05T15:00:00+03:00'
+        dateTime: end
       }
     };
 
-    gapi.client['calendar'].events
+    const request = gapi.client['calendar'].events
       .insert({
         calendarId: 'primary',
         resource: event

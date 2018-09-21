@@ -19,6 +19,7 @@ import {
 } from 'ng-gapi';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './shared/resolvers/auth.guard';
+import { EventComponent } from './components/booking-page/event/event.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id:
@@ -47,6 +48,7 @@ export function loadConfig(gapi: GapiService) {
     BodyComponent,
     BookingPageComponent,
     TimerComponent,
+    EventComponent,
   ],
   imports: [
     BrowserModule,
