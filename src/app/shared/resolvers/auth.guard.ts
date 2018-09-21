@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
       // this.gapiService.showLoader()
       return this.gapiService.signIn().then(
         res => {
-          this.gapiService.hideLoader()
+          this.gapiService.hideLoader();
           return true;
         },
         rej => {

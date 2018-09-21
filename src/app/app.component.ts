@@ -24,4 +24,7 @@ export class AppComponent implements OnInit {
   signOut() {
     this.gapiService.signOut();
   }
+  signIn() {
+    this.gapiService.signIn();
+  }
 }

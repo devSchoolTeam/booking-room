@@ -1,4 +1,3 @@
-<app-time-counting (time)="changeStyle($event)"></app-time-counting>
 <div class="button-container">
   <div class="button-row-1">
     <app-button
@@ -13,6 +12,7 @@
     [text]="'Cancel'"
     [class]="'cancel-btn'"
     routerLink="/main-page"
+    [fontColor]="'#7d7e80'"
     ></app-button>
     <app-button
     [text]="currentStatus.bookButtonSecond"

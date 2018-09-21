@@ -1,27 +1,20 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { meetingStatuses } from "../../../shared/constants";
-import { TimeService } from "../../../services/time/time.service";
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { meetingStatuses } from '../../../shared/constants';
+import { TimeService } from '../../../services/time/time.service';
 
 @Component({
-  selector: "app-body",
-  templateUrl: "./body.component.html",
-  styleUrls: ["./body.component.sass"]
+  selector: 'app-body',
+  templateUrl: './body.component.html',
+  styleUrls: ['./body.component.sass']
 })
 export class BodyComponent implements OnInit {
-  public currentStatus = "available";
+  public currentStatus = meetingStatuses.available;
 
-  constructor(
-    private timeService: TimeService
-  ) {}
+  constructor(private timeService: TimeService, private zone: NgZone) {}
 
   ngOnInit() {
-    let self = this;
     this.timeService.currentStatus.subscribe(currentStatus => {
-      this.currentStatus = currentStatus;
-      console.log(this.currentStatus);
+        this.currentStatus = currentStatus;
     });
   }
-
-
-  changeStyle() {}
 }

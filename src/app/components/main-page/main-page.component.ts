@@ -25,5 +25,5 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit() { setInterval(() => {
           this.timeService.updateData();
-        }, 1000);}
+        }, 1000); }
 }

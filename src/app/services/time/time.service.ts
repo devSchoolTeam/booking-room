@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { GapiService } from "../gapi/gapi.service";
-import { Subject } from "rxjs";
-import { meetingStatuses } from "../../shared/constants";
+import { Injectable } from '@angular/core';
+import { GapiService } from '../gapi/gapi.service';
+import { Subject } from 'rxjs';
+import { meetingStatuses } from '../../shared/constants';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class TimeService {
   currentStatus = new Subject<any>();
@@ -15,10 +15,10 @@ export class TimeService {
   constructor(private gapiService: GapiService) {}
 
   changeStatusByTime(startTime: Date, endTime: Date) {
-    let currentTime: Date = new Date();
-    let timeToStart = startTime.getTime() - currentTime.getTime();
+    const currentTime: Date = new Date();
+    const timeToStart = startTime.getTime() - currentTime.getTime();
 
-    let timeToEnd = endTime.getTime() - currentTime.getTime();
+    const timeToEnd = endTime.getTime() - currentTime.getTime();
 
     if (timeToStart >= 900000) {
       this.currentStatus.next(meetingStatuses.available);
@@ -32,13 +32,11 @@ export class TimeService {
   updateData() {
     this.gapiService.getEvents().subscribe({
       next: x => {
-        let startTime = new Date(x[0].start.dateTime),
+        const startTime = new Date(x[0].start.dateTime),
           endTime = new Date(x[0].end.dateTime),
           currentTime = new Date(),
           timeToStart = startTime.getTime() - currentTime.getTime(),
           timeToEnd = endTime.getTime() - currentTime.getTime();
-          console.log(endTime)
-
         this.timeToStart.next(timeToStart);
         this.timeToEnd.next(timeToEnd);
         this.changeStatusByTime(startTime, endTime);
