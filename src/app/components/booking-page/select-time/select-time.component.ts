@@ -11,7 +11,7 @@ export class SelectTimeComponent implements OnInit {
   public selectedDuration: any;
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
-  public interval=0;
+  public interval = 0;
   constructor(private timeService: TimeService) {  }
 
   ngOnInit() {
@@ -20,13 +20,12 @@ export class SelectTimeComponent implements OnInit {
       this.currentStatus = currentStatus;
     });
     this.timeService.intervalForBooking.subscribe({
-      next:x=>{
-        console.log(x.interval)
-       this.interval=x.interval
+      next: gotInterval => {
+        console.log(gotInterval.interval);
+     this.interval = gotInterval.interval;
       }
-    })
+    });
   }
-  
 
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration;

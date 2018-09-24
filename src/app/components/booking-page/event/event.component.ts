@@ -1,11 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { GapiService } from "../../../services/gapi/gapi.service";
-import { TimeService } from "../../../services/time/time.service";
+import { Component, OnInit } from '@angular/core';
+import { TimeService } from '../../../services/time/time.service';
 
 @Component({
-  selector: "app-event",
-  templateUrl: "./event.component.html",
-  styleUrls: ["./event.component.sass"]
+  selector: 'app-event',
+  templateUrl: './event.component.html',
+  styleUrls: ['./event.component.sass']
 })
 export class EventComponent implements OnInit {
   public events;
@@ -21,16 +20,14 @@ export class EventComponent implements OnInit {
         for (let i = 0; i < this.events.length; i++) {
           const startTime = new Date(events[i].start.dateTime);
           const endTime = new Date(events[i].end.dateTime);
-          console.log(startTime.toLocaleTimeString())
           this.eventDuration =
             startTime.toLocaleTimeString().slice(0, 5) +
-            "-" +
+            '-' +
             endTime.toLocaleTimeString().slice(0, 5);
           this.eventDurations.push(this.eventDuration);
+          console.log(this.eventDurations);
         }
       }
     });
-
-    
   }
 }

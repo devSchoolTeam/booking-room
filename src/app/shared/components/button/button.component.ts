@@ -9,8 +9,8 @@ export class ButtonComponent implements OnInit {
   @Input() public backgroundColor: string;
   @Input() public fontColor: string;
   @Input() public classList: string;
-  @Input () public disabled: boolean=false;
-  @Output() public click = new EventEmitter<any>();
+  @Input () public disabled;
+  @Output() public buttonClick = new EventEmitter<any>();
 
   constructor() { }
 
@@ -18,6 +18,6 @@ export class ButtonComponent implements OnInit {
   }
 
   public onClick() {
-    this.click.emit();
+    this.buttonClick.emit();
   }
 }

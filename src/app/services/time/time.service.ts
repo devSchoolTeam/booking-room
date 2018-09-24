@@ -36,12 +36,11 @@ export class TimeService {
     return new Promise((resolve, reject) => {
       this.gapiService.listUpcomingEvents(requiredDate, endTime).then(
         res => {
-          this.events = res["result"]["items"];
+          this.events = res['result']['items'];
           resolve();
         },
         rej => {
-          console.log(rej);
-          reject();
+          reject(rej);
         }
       );
     });
@@ -68,7 +67,7 @@ export class TimeService {
 
   calculateIntervalForBooking(currentTime: Date) {
     if (this.events) {
-      let timeToFirst =
+      const timeToFirst =
         new Date(this.events[0].start.dateTime).getTime() -
         new Date(currentTime).getTime();
       if (timeToFirst > 900000) {
@@ -81,7 +80,7 @@ export class TimeService {
       }
 
       for (let i = 0; i < this.events.length - 1; i++) {
-        let timeToStart =
+        const timeToStart =
           new Date(this.events[i + 1].start.dateTime).getTime() -
           new Date(this.events[i].end.dateTime).getTime();
         if (timeToStart > 900000) {
@@ -93,7 +92,7 @@ export class TimeService {
           return true;
         }
       }
-      let timeAfterLast =
+      const timeAfterLast =
         new Date(
           new Date(
             currentTime.getFullYear(),
@@ -105,7 +104,7 @@ export class TimeService {
           )
         ).getTime() -
         new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-        
+
       if (timeAfterLast > 900000) {
         this.intervalForBooking.next({
           startTime: new Date(
