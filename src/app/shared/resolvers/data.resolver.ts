@@ -12,7 +12,6 @@ export class DataGuard implements CanActivate {
   canActivate(route: Route): Promise<boolean> {
     return this.timeService.loadEvents().then(
       result => {
-        this.timeService.updateData()
         return true;
       },
       error => {

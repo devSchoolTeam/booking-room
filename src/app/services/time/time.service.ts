@@ -17,7 +17,7 @@ export class TimeService {
 
   constructor(private gapiService: GapiService) {
     this.timer.subscribe({
-      next: x => {
+      next: () => {
         this.updateData();
       }
     });
@@ -48,7 +48,7 @@ export class TimeService {
   }
 
   getEvents(observer) {
-    return Observable.of(this.events);
+    return Observable.of(this.events).subscribe(observer);
   }
 
   changeStatusByTime(startTime: Date, endTime: Date) {
@@ -66,31 +66,64 @@ export class TimeService {
     }
   }
 
-  calculateIntervalForBoocking(currentTime: Date) {
+  calculateIntervalForBooking(currentTime: Date) {
     if (this.events) {
-      if (
-        new Date(event[0].start.dateTime).getTime() -
-          new Date(currentTime).getTime() >
-        900000
-      ) {
-        this.intervalForBooking.next(
-          new Date(event[0].start.dateTime).getTime() -
-            new Date(currentTime).getTime()
-        );
+      let timeToFirst =
+        new Date(this.events[0].start.dateTime).getTime() -
+        new Date(currentTime).getTime();
+      if (timeToFirst > 900000) {
+        this.intervalForBooking.next({
+          startTime: currentTime,
+          endTime: new Date(this.events[0].start.dateTime),
+          interval: timeToFirst
+        });
         return true;
       }
 
-      for (let i = 1; i < this.events.length; i++) {
-        if (
-          this.events[i].start.dateTime.getTime() - currentTime.getTime() >
-          900000
-        ) {
-          this.intervalForBooking.next(
-            new Date(event[i].start.dateTime).getTime() -
-              new Date(currentTime).getTime()
-          );
+      for (let i = 0; i < this.events.length - 1; i++) {
+        let timeToStart =
+          new Date(this.events[i + 1].start.dateTime).getTime() -
+          new Date(this.events[i].end.dateTime).getTime();
+        if (timeToStart > 900000) {
+          this.intervalForBooking.next({
+            startTime: new Date(this.events[i].start.dateTime),
+            endTime: new Date(this.events[i + 1].start.dateTime),
+            interval: timeToStart
+          });
           return true;
         }
+      }
+      let timeAfterLast =
+        new Date(
+          new Date(
+            currentTime.getFullYear(),
+            currentTime.getMonth(),
+            currentTime.getDate(),
+            23,
+            59,
+            59
+          )
+        ).getTime() -
+        new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+        
+      if (timeAfterLast > 900000) {
+        this.intervalForBooking.next({
+          startTime: new Date(
+            this.events[this.events.length - 1].end.dateTime
+          ).getTime(),
+          endTime: new Date(
+            new Date(
+              currentTime.getFullYear(),
+              currentTime.getMonth(),
+              currentTime.getDate(),
+              23,
+              59,
+              59
+            )
+          ).getTime(),
+          interval: timeAfterLast
+        });
+        return true;
       }
     }
   }
@@ -106,6 +139,7 @@ export class TimeService {
       this.timeToStart.next(timeToStart);
       this.timeToEnd.next(timeToEnd);
       this.changeStatusByTime(startTime, endTime);
+      this.calculateIntervalForBooking(currentTime);
     }
   }
 }

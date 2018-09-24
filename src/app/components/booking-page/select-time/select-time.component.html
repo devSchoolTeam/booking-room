@@ -5,6 +5,7 @@
       [text]="availableMeetingDuration.label"
       [classList]="selectedDuration == availableMeetingDuration ? 'active' : ''"
       (click)="selectMeetingDuration(availableMeetingDuration)"
+      [disabled]="availableMeetingDuration.value>interval"
     ></app-button>
   </div>
   <div class="button-row-2">

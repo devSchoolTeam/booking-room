@@ -22,8 +22,6 @@ export class GapiService {
     SCOPES: `https://www.googleapis.com/auth/calendar`
   };
 
-
-
   handleClientLoad() {
     return new Promise((resolve, reject) => {
       this.gapiService.onLoad().subscribe(() => {

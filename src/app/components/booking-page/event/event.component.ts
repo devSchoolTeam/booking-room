@@ -21,6 +21,7 @@ export class EventComponent implements OnInit {
         for (let i = 0; i < this.events.length; i++) {
           const startTime = new Date(events[i].start.dateTime);
           const endTime = new Date(events[i].end.dateTime);
+          console.log(startTime.toLocaleTimeString())
           this.eventDuration =
             startTime.toLocaleTimeString().slice(0, 5) +
             "-" +
@@ -29,5 +30,7 @@ export class EventComponent implements OnInit {
         }
       }
     });
+
+    
   }
 }
