@@ -25,9 +25,10 @@ export class EventComponent implements OnInit {
             '-' +
             endTime.toLocaleTimeString().slice(0, 5);
           this.eventDurations.push(this.eventDuration);
-          console.log(this.eventDurations);
         }
       }
     });
+
+
   }
 }

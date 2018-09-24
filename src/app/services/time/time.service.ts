@@ -129,7 +129,7 @@ export class TimeService {
 
   updateData() {
     if (this.events[0]) {
-      let event = this.events[0];
+      const event = this.events[0];
       const startTime = new Date(event.start.dateTime),
         endTime = new Date(event.end.dateTime),
         currentTime = new Date(),

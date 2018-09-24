@@ -1,12 +1,12 @@
-import { GapiService } from "./../../services/gapi/gapi.service";
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { TimeService } from "../../services/time/time.service";
+import { GapiService } from './../../services/gapi/gapi.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { TimeService } from '../../services/time/time.service';
 
 @Component({
-  selector: "app-main-page",
-  templateUrl: "./main-page.component.html",
-  styleUrls: ["./main-page.component.sass"]
+  selector: 'app-main-page',
+  templateUrl: './main-page.component.html',
+  styleUrls: ['./main-page.component.sass']
 })
 export class MainPageComponent implements OnInit {
   constructor(
@@ -18,7 +18,7 @@ export class MainPageComponent implements OnInit {
     //   next: x => {
     //     // this.gapiService.hideLoader();
 
-       
+
     //   }
     // });
   }
