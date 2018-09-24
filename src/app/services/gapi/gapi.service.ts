@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Config } from '../../models/config';
-import { GoogleApiService } from 'ng-gapi';
-import { Observable, Subject } from 'rxjs';
-import 'rxjs/add/observable/fromPromise';
-import { map } from 'rxjs/operators/map';
-import { tap } from 'rxjs/operators/tap';
+import { Injectable } from "@angular/core";
+import { Config } from "../../models/config";
+import { GoogleApiService } from "ng-gapi";
+import { Observable, Subject } from "rxjs";
+import "rxjs/add/observable/fromPromise";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class GapiService {
   private events;
@@ -16,28 +14,20 @@ export class GapiService {
 
   config: Config = {
     CLIENT_ID:
-      '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
-    API_KEY: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
+      "1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com",
+    API_KEY: "AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g",
     DISCOVERY_DOCS: [
       `https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest`
     ],
-    SCOPES: `https://www.googleapis.com/auth/calendar`,
+    SCOPES: `https://www.googleapis.com/auth/calendar`
   };
 
-  loader = new Subject<boolean>();
 
-  showLoader() {
-    this.loader.next(true);
-  }
-
-  hideLoader() {
-    this.loader.next(false);
-  }
 
   handleClientLoad() {
     return new Promise((resolve, reject) => {
       this.gapiService.onLoad().subscribe(() => {
-        gapi.load('client', () => {
+        gapi.load("client", () => {
           gapi.client
             .init({
               apiKey: this.config.API_KEY,
@@ -71,54 +61,26 @@ export class GapiService {
     return gapi.auth2.getAuthInstance().signOut();
   }
 
-  listUpcomingEvents() {
-    const requiredDate: Date = new Date();
-    const endTime: Date = new Date(
-      requiredDate.getFullYear(),
-      requiredDate.getMonth(),
-      requiredDate.getDate(),
-      23,
-      59,
-      59
-    );
-
-    return Observable.fromPromise(
-      gapi.client['calendar'].events.list({
-        calendarId: 'primary',
-        timeMin: requiredDate.toISOString(),
-        timeMax: endTime.toISOString(),
-        showDeleted: false,
-        singleEvents: true,
-        maxResults: 10,
-        orderBy: 'startTime'
-      })
-    ).pipe(
-      map(data => {
-        return data['result']['items'];
-      }),
-      tap(data => {
-        this.events = data;
-      })
-    );
-  }
-
-  getEvents(): Observable<any> {
-    if (this.events) {
-      return Observable.of(this.events);
-    } else {
-      return this.listUpcomingEvents();
-    }
+  listUpcomingEvents(requiredDate: Date, endTime: Date) {
+    return gapi.client["calendar"].events.list({
+      calendarId: "primary",
+      timeMin: requiredDate.toISOString(),
+      timeMax: endTime.toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      orderBy: "startTime"
+    });
   }
 
   createEvent() {
-    const start = new Date('2018-09-22T08:00:00+03:00');
-    const end = new Date('2018-09-22T09:00:00+03:00');
+    const start = new Date("2018-09-22T08:00:00+03:00");
+    const end = new Date("2018-09-22T09:00:00+03:00");
     console.log(typeof start);
     console.log(start);
 
     const event = {
-      calendarId: 'primary',
-      summary: 'Event',
+      calendarId: "primary",
+      summary: "Event",
       start: {
         dateTime: start
       },
@@ -127,9 +89,9 @@ export class GapiService {
       }
     };
 
-    const request = gapi.client['calendar'].events
+    const request = gapi.client["calendar"].events
       .insert({
-        calendarId: 'primary',
+        calendarId: "primary",
         resource: event
       })
       .execute(function(event) {

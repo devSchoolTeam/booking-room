@@ -2,7 +2,6 @@ import { GapiService } from './../../../services/gapi/gapi.service';
 import { TimeService } from './../../../services/time/time.service';
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
@@ -12,7 +11,10 @@ export class TimerComponent implements OnInit {
   hours;
   minutes;
   seconds;
-  constructor(private timeService: TimeService, private gapiService: GapiService) {}
+  constructor(
+    private timeService: TimeService,
+    private gapiService: GapiService
+  ) {}
   ngOnInit() {
     this.timeService.timeToStart.subscribe({
       next: x => {
@@ -24,7 +26,7 @@ export class TimerComponent implements OnInit {
               if (y > 0) {
                 this.countTime(y);
               } else {
-                this.gapiService.listUpcomingEvents().subscribe();
+                this.timeService.loadEvents();
               }
             }
           });

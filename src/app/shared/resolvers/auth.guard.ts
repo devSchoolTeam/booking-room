@@ -8,7 +8,7 @@ import { Route } from "@angular/compiler/src/core";
 })
 export class AuthGuard implements CanActivate {
   constructor(private gapiService: GapiService) {}
-  canActivate(route: Route): boolean | Promise<boolean>{
+  canActivate(route: Route): boolean | Promise<boolean> {
     let status = this.gapiService.getSigninStatus();
 
     if (status) {
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
       // this.gapiService.showLoader()
       return this.gapiService.signIn().then(
         res => {
-          this.gapiService.hideLoader();
+          // this.gapiService.hideLoader();
           return true;
         },
         rej => {

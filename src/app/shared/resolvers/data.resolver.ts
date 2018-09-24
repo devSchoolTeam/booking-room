@@ -1,18 +1,23 @@
-import { GapiService } from "./../../services/gapi/gapi.service";
-import { Observable } from "rxjs";
 import { Injectable } from "@angular/core";
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from "@angular/router";
+import { GapiService } from "./../../services/gapi/gapi.service";
+import { CanActivate } from "@angular/router";
 
-@Injectable()
-export class DataResolver implements Resolve<any> {
-  constructor(private gapiService: GapiService) {}
-
-  resolve(router: ActivatedRouteSnapshot, rstate: RouterStateSnapshot) {
-    // this.gapiService.showLoader();
-    return this.gapiService.listUpcomingEvents();
+import { Route } from "@angular/compiler/src/core";
+import { TimeService } from "../../services/time/time.service";
+@Injectable({
+  providedIn: "root"
+})
+export class DataGuard implements CanActivate {
+  constructor(private timeService: TimeService) {}
+  canActivate(route: Route): Promise<boolean> {
+    return this.timeService.loadEvents().then(
+      result => {
+        this.timeService.updateData()
+        return true;
+      },
+      error => {
+        return false;
+      }
+    );
   }
 }
