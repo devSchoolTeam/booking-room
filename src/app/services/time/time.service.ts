@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
-import { GapiService } from "../gapi/gapi.service";
-import { Subject, interval, timer, Observable } from "rxjs";
-import { meetingStatuses } from "../../shared/constants";
+import { Injectable } from '@angular/core';
+import { GapiService } from '../gapi/gapi.service';
+import { Subject, interval, timer, Observable } from 'rxjs';
+import { meetingStatuses } from '../../shared/constants';
+import { endTimeRange } from '@angular/core/src/profile/wtf_impl';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class TimeService {
   private events;
@@ -140,5 +141,10 @@ export class TimeService {
       this.changeStatusByTime(startTime, endTime);
       this.calculateIntervalForBooking(currentTime);
     }
+  }
+
+  createEvent(startTime: Date, duration: number) {
+    let endTime = new Date(startTime.getTime() + duration);
+    return this.gapiService.createEvent(startTime, endTime);
   }
 }

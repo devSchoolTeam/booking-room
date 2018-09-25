@@ -3,9 +3,9 @@
     <app-button
       *ngFor="let availableMeetingDuration of availableMeetingDurations"
       [text]="availableMeetingDuration.label"
-      [classList]="selectedDuration == availableMeetingDuration ? 'active' : ''"
+      [classList]="selectedDuration == availableMeetingDuration.value ? 'active' : ''"
       (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
-      [disabled]="availableMeetingDuration.value>interval"
+      [disabled]="availableMeetingDuration.value>interval.interval"
     ></app-button>
   </div>
   <div class="button-row-2">
@@ -20,6 +20,7 @@
     [class]="'booking-btn'"
     [backgroundColor]="'#43b799'"
     [fontColor]="'white'"
+    (buttonClick)= "createEvent()"
     ></app-button>
   </div>
 </div>

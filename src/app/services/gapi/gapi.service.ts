@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Config } from "../../models/config";
-import { GoogleApiService } from "ng-gapi";
-import { Observable, Subject } from "rxjs";
-import "rxjs/add/observable/fromPromise";
+import { Injectable } from '@angular/core';
+import { Config } from '../../models/config';
+import { GoogleApiService } from 'ng-gapi';
+import { Observable, Subject } from 'rxjs';
+import 'rxjs/add/observable/fromPromise';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class GapiService {
   private events;
@@ -25,7 +25,7 @@ export class GapiService {
   handleClientLoad() {
     return new Promise((resolve, reject) => {
       this.gapiService.onLoad().subscribe(() => {
-        gapi.load("client", () => {
+        gapi.load('client', () => {
           gapi.client
             .init({
               apiKey: this.config.API_KEY,
@@ -60,25 +60,24 @@ export class GapiService {
   }
 
   listUpcomingEvents(requiredDate: Date, endTime: Date) {
-    return gapi.client["calendar"].events.list({
-      calendarId: "primary",
+    return gapi.client['calendar'].events.list({
+      calendarId: 'primary',
       timeMin: requiredDate.toISOString(),
       timeMax: endTime.toISOString(),
       showDeleted: false,
       singleEvents: true,
-      orderBy: "startTime"
+      orderBy: 'startTime'
     });
   }
 
-  createEvent() {
-    const start = new Date("2018-09-22T08:00:00+03:00");
-    const end = new Date("2018-09-22T09:00:00+03:00");
-    console.log(typeof start);
-    console.log(start);
+  createEvent(startTime:Date, endTime:Date) {
+    const start = startTime.toISOString();
+    const end = endTime.toISOString()
+
 
     const event = {
-      calendarId: "primary",
-      summary: "Event",
+      calendarId: 'primary',
+      summary: 'Event',
       start: {
         dateTime: start
       },
@@ -87,13 +86,11 @@ export class GapiService {
       }
     };
 
-    const request = gapi.client["calendar"].events
+    return gapi.client['calendar'].events
       .insert({
-        calendarId: "primary",
+        calendarId: 'primary',
         resource: event
       })
-      .execute(function(event) {
-        console.log(event);
-      });
+      
   }
 }

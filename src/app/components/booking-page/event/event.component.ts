@@ -7,6 +7,7 @@ import { TimeService } from '../../../services/time/time.service';
   styleUrls: ['./event.component.sass']
 })
 export class EventComponent implements OnInit {
+  public subscription;
   public events;
   eventDuration;
   public eventDurations = [];
@@ -14,7 +15,7 @@ export class EventComponent implements OnInit {
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.getEvents({
+    this.subscription = this.timeService.getEvents({
       next: events => {
         this.events = events;
         for (let i = 0; i < this.events.length; i++) {
@@ -28,7 +29,9 @@ export class EventComponent implements OnInit {
         }
       }
     });
+  }
 
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
