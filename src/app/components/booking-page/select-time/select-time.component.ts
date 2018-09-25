@@ -27,6 +27,7 @@ export class SelectTimeComponent implements OnInit {
     this.subscription = this.timeService.intervalForBooking.subscribe({
       next: gotInterval => {
         this.interval = gotInterval;
+        console.log(gotInterval)
       }
     });
   }

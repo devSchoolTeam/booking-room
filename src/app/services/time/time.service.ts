@@ -86,7 +86,7 @@ export class TimeService {
           new Date(this.events[i].end.dateTime).getTime();
         if (timeToStart > 900000) {
           this.intervalForBooking.next({
-            startTime: new Date(this.events[i].start.dateTime),
+            startTime: new Date(this.events[i].end.dateTime),
             endTime: new Date(this.events[i + 1].start.dateTime),
             interval: timeToStart
           });
