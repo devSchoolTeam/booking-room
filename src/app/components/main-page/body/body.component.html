@@ -1,10 +1,9 @@
 <div class="Mask" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
   <div class="time-status">
-    <span *ngIf="eventsAvailability == false" class="noevents">No upcoming events found</span>
-    <app-timer
-      *ngIf="eventsAvailability == true"
-    ></app-timer>
-    <span class="Available">{{currentStatus.statusLabel}}</span>
+    <div *ngIf="eventsAvailability == true; else noEvents">
+    <app-timer></app-timer>
+      <span class="Available">{{currentStatus.statusLabel}}</span>
+    </div>
   </div>
     <div class="title-container">
       <img src="../../../../assets/images/mesh.png"
@@ -25,6 +24,6 @@
   </div>
 
 <ng-template #noEvents>
-  <h1 class="name">{{currentStatus.statusLabel}}</h1>
+  <h1 class="noevents">{{currentStatus.statusLabel}}</h1>
   <span class="Available">No upcoming events found</span>
 </ng-template>
