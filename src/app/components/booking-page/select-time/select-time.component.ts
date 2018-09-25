@@ -13,10 +13,9 @@ import { TimeService } from '../../../services/time/time.service';
 export class SelectTimeComponent implements OnInit {
   public subscription;
   public selectedDuration: any;
-  public durationValue;
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
-  public interval;
+  public gotInterval: any = 0;
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
@@ -26,8 +25,7 @@ export class SelectTimeComponent implements OnInit {
     });
     this.subscription = this.timeService.intervalForBooking.subscribe({
       next: gotInterval => {
-        this.interval = gotInterval;
-        console.log(gotInterval)
+          this.gotInterval = gotInterval;
       }
     });
   }
@@ -37,19 +35,18 @@ export class SelectTimeComponent implements OnInit {
 
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration.value;
-    
+
   }
 
   createEvent() {
-    console.log(this.selectedDuration);
     if (this.selectedDuration) {
       this.timeService.createEvent(
-        this.interval.startTime,
+        this.gotInterval.startTime,
         this.selectedDuration
-      ).then(res=>{
-        console.log('Succes:'+res)
-      },err=>{
-        console.error(err)
+      ).then(res => {
+        console.log('Success:' + res);
+      }, err => {
+        console.error(err);
       });
     }
   }

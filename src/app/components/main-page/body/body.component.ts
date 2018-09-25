@@ -9,12 +9,16 @@ import { TimeService } from '../../../services/time/time.service';
 })
 export class BodyComponent implements OnInit {
   public currentStatus = meetingStatuses.available;
+  public eventsAvailability = true;
 
-  constructor(private timeService: TimeService, private zone: NgZone) {}
+  constructor(private timeService: TimeService) {}
 
   ngOnInit() {
     this.timeService.currentStatus.subscribe(currentStatus => {
         this.currentStatus = currentStatus;
+    });
+    this.timeService.isEventFound.subscribe(eventsAvailability => {
+      this.eventsAvailability = eventsAvailability;
     });
   }
 }

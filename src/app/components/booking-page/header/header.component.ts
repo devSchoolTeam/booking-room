@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { meetingStatuses } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
 

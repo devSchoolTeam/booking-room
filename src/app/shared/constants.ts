@@ -33,6 +33,7 @@ export const availableMeetingDurations = [
   {
     label: '45m',
     value: 2700000
+
   },
   {
     label: '1h',

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
 import { Subject, interval, timer, Observable } from 'rxjs';
 import { meetingStatuses } from '../../shared/constants';
-import { endTimeRange } from '@angular/core/src/profile/wtf_impl';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ import { endTimeRange } from '@angular/core/src/profile/wtf_impl';
 export class TimeService {
   private events;
   public timer = interval(1000);
-
+  public isEventFound = new Subject<any>();
   public currentStatus = new Subject<any>();
   public timeToStart = new Subject<any>();
   public timeToEnd = new Subject<any>();
@@ -67,7 +66,7 @@ export class TimeService {
   }
 
   calculateIntervalForBooking(currentTime: Date) {
-    if (this.events) {
+    if (this.events.length > 0) {
       const timeToFirst =
         new Date(this.events[0].start.dateTime).getTime() -
         new Date(currentTime).getTime();
@@ -95,14 +94,12 @@ export class TimeService {
       }
       const timeAfterLast =
         new Date(
-          new Date(
             currentTime.getFullYear(),
             currentTime.getMonth(),
             currentTime.getDate(),
             23,
             59,
             59
-          )
         ).getTime() -
         new Date(this.events[this.events.length - 1].end.dateTime).getTime();
 
@@ -125,6 +122,28 @@ export class TimeService {
         });
         return true;
       }
+    } else {
+      const timeToFirst = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        23,
+        59,
+        59
+        ).getTime() -
+        new Date(currentTime).getTime();
+      this.intervalForBooking.next({
+        startTime: currentTime,
+        endTime: new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate(),
+          23,
+          59,
+          59
+        ).getTime(),
+        interval: timeToFirst
+      });
     }
   }
 
@@ -140,11 +159,15 @@ export class TimeService {
       this.timeToEnd.next(timeToEnd);
       this.changeStatusByTime(startTime, endTime);
       this.calculateIntervalForBooking(currentTime);
+    } else {
+      const currentTime = new Date();
+      this.isEventFound.next(false);
+      this.calculateIntervalForBooking(currentTime);
     }
   }
 
   createEvent(startTime: Date, duration: number) {
-    let endTime = new Date(startTime.getTime() + duration);
+    const endTime = new Date(startTime.getTime() + duration);
     return this.gapiService.createEvent(startTime, endTime);
   }
 }
