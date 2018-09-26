@@ -53,7 +53,6 @@ export class TimeService {
   changeStatusByTime(startTime: Date, endTime: Date) {
     const currentTime: Date = new Date();
     const timeToStart = startTime.getTime() - currentTime.getTime();
-
     const timeToEnd = endTime.getTime() - currentTime.getTime();
 
     if (timeToStart >= 900000) {
@@ -78,7 +77,26 @@ export class TimeService {
         });
         return true;
       } else {
-        console.log(this.events.length);
+        if (this.events.length === 1) {
+          const timeAfterLast =
+            new Date(
+              currentTime.getFullYear(),
+              currentTime.getMonth(),
+              currentTime.getDate(),
+              23,
+              59,
+              59
+            ).getTime() -
+            new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+          if (timeAfterLast > 900000) {
+            this.intervalForBooking.next({
+              startTime: new Date(this.events[this.events.length - 1].end.dateTime),
+              endTime: new Date(),
+              interval: timeAfterLast
+            });
+            return true;
+          }
+        }
           for (let i = 0; i < this.events.length; i++) {
             const timeToStart =
               new Date(this.events[i + 1].start.dateTime).getTime() -
