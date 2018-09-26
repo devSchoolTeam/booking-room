@@ -1,5 +1,5 @@
 import { TimeService } from './../../../services/time/time.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.sass']
 })
-export class TimerComponent implements OnInit {
+export class TimerComponent implements OnInit, OnDestroy {
   public timerString: string;
   public timerStringSubscription: Subscription;
   constructor(private timeService: TimeService) {}

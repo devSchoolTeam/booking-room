@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
-import { Subject, interval, Observable } from 'rxjs';
+import { Subject, interval, Observable, of, from } from 'rxjs';
 import { meetingStatuses } from '../../shared/constants';
+import {Event} from '../../models/event';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,8 @@ import { meetingStatuses } from '../../shared/constants';
 export class TimeService {
   private events;
   private timer = interval(1000);
-
+  private eventsSource = new Subject<any>();
+  public events$ = this.eventsSource.asObservable();
   public eventsEmmiter = new Subject<any>();
   public timerString = new Subject<any>();
   public isEventFound = new Subject<any>();
@@ -36,17 +39,12 @@ export class TimeService {
       59,
       59
     );
-    return new Promise((resolve, reject) => {
-      this.gapiService.listUpcomingEvents(requiredDate, endTime).then(
-        res => {
-          this.events = res['result']['items'];
-          resolve();
-        },
-        rej => {
-          reject(rej);
-        }
-      );
-    });
+    return from(this.gapiService.listUpcomingEvents(requiredDate, endTime)).pipe(
+      map((res) => {
+        this.eventsSource.next(res['result']['items']);
+        return this.events = res['result']['items'];
+      })
+    );
   }
 
   createEvent(startTime: Date, duration: number) {
@@ -54,7 +52,7 @@ export class TimeService {
     return this.gapiService.createEvent(startTime, endTime);
   }
 
-  //METHODS FOR CALCULATING DATA
+  // METHODS FOR CALCULATING DATA
 
   private changeStatusByTime(currentTime: Date) {
     if (this.events) {
@@ -157,7 +155,7 @@ export class TimeService {
           if (timeToEnd > 0) {
             this.timerString.next(this.timeConverter(timeToEnd));
           } else {
-            this.loadEvents();
+            this.loadEvents().subscribe();
           }
         }
       } else {
@@ -210,12 +208,7 @@ export class TimeService {
     }
   }
 
-  //PUBLIC METHODS
-
-  public getEvents(observer) {
-    return this.eventsEmmiter.subscribe(observer);
-  }
-
+   // PUBLIC METHODS
   public getTimerString(observer) {
     return this.timerString.subscribe(observer);
   }

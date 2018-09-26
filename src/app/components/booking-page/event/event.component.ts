@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
+import {Event} from '../../../models/event';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.sass']
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnDestroy {
   public subscription;
   public events;
   eventDuration;
@@ -15,9 +16,7 @@ export class EventComponent implements OnInit {
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.subscription = this.timeService.getEvents({
-      next: events => {
-        console.log(events);
+    this.subscription = this.timeService.events$.subscribe((events: Event[]) => {
         this.events = events;
         for (let i = 0; i < this.events.length; i++) {
           const startTime = new Date(events[i].start.dateTime);
@@ -28,8 +27,7 @@ export class EventComponent implements OnInit {
             endTime.toLocaleTimeString().slice(0, 5);
           this.eventDurations.push(this.eventDuration);
         }
-      }
-    });
+      });
   }
 
   ngOnDestroy(): void {

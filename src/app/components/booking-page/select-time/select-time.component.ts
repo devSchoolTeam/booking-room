@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   availableMeetingDurations,
   meetingStatuses
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './select-time.component.html',
   styleUrls: ['./select-time.component.sass']
 })
-export class SelectTimeComponent implements OnInit {
+export class SelectTimeComponent implements OnInit, OnDestroy {
   public intervalSubscription: Subscription;
   public statusSubscription: Subscription;
   public selectedDuration: any;
@@ -53,7 +53,7 @@ export class SelectTimeComponent implements OnInit {
         .then(
           res => {
             console.log('Success:' + res);
-            this.timeService.loadEvents().then();
+            this.timeService.loadEvents().subscribe();
           },
           err => {
             console.error(err);

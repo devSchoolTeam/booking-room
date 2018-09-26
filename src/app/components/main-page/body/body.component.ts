@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { meetingStatuses } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
 
@@ -7,12 +7,14 @@ import { TimeService } from '../../../services/time/time.service';
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.sass']
 })
-export class BodyComponent implements OnInit {
+export class BodyComponent implements OnInit, OnDestroy {
   public currentStatus = meetingStatuses.available;
   public eventsAvailability = true;
   public eventsSubscription;
   public isEventsFoundSubscription;
-  constructor(private timeService: TimeService) {}
+
+  constructor(private timeService: TimeService) {
+  }
 
   ngOnInit() {
     this.eventsSubscription = this.timeService.getStatus(currentStatus => {
