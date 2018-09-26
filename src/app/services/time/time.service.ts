@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
-import { Subject, interval, timer, Observable } from 'rxjs';
+import { Subject, interval, Observable } from 'rxjs';
 import { meetingStatuses } from '../../shared/constants';
 
 @Injectable({
@@ -77,50 +77,39 @@ export class TimeService {
           interval: timeToFirst
         });
         return true;
-      }
-
-      for (let i = 0; i < this.events.length - 1; i++) {
-        const timeToStart =
-          new Date(this.events[i + 1].start.dateTime).getTime() -
-          new Date(this.events[i].end.dateTime).getTime();
-        if (timeToStart > 900000) {
-          this.intervalForBooking.next({
-            startTime: new Date(this.events[i].end.dateTime),
-            endTime: new Date(this.events[i + 1].start.dateTime),
-            interval: timeToStart
-          });
-          return true;
+      } else {
+        console.log(this.events.length);
+          for (let i = 0; i < this.events.length; i++) {
+            const timeToStart =
+              new Date(this.events[i + 1].start.dateTime).getTime() -
+              new Date(this.events[i].end.dateTime).getTime();
+            if (timeToStart > 900000) {
+              this.intervalForBooking.next({
+                startTime: new Date(this.events[i].end.dateTime),
+                endTime: new Date(this.events[i + 1].start.dateTime),
+                interval: timeToStart
+            });
+          } else {
+              const timeAfterLast =
+                new Date(
+                  currentTime.getFullYear(),
+                  currentTime.getMonth(),
+                  currentTime.getDate(),
+                  23,
+                  59,
+                  59
+                ).getTime() -
+                new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+              if (timeAfterLast > 900000) {
+                this.intervalForBooking.next({
+                  startTime: new Date(this.events[this.events.length - 1].end.dateTime),
+                  endTime: new Date(),
+                  interval: timeAfterLast
+                });
+                return true;
+              }
+            }
         }
-      }
-      const timeAfterLast =
-        new Date(
-            currentTime.getFullYear(),
-            currentTime.getMonth(),
-            currentTime.getDate(),
-            23,
-            59,
-            59
-        ).getTime() -
-        new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-
-      if (timeAfterLast > 900000) {
-        this.intervalForBooking.next({
-          startTime: new Date(
-            this.events[this.events.length - 1].end.dateTime
-          ).getTime(),
-          endTime: new Date(
-            new Date(
-              currentTime.getFullYear(),
-              currentTime.getMonth(),
-              currentTime.getDate(),
-              23,
-              59,
-              59
-            )
-          ).getTime(),
-          interval: timeAfterLast
-        });
-        return true;
       }
     } else {
       const timeToFirst = new Date(
