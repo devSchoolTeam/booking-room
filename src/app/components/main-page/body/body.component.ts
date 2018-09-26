@@ -10,15 +10,28 @@ import { TimeService } from '../../../services/time/time.service';
 export class BodyComponent implements OnInit {
   public currentStatus = meetingStatuses.available;
   public eventsAvailability = true;
-
+  public eventsSubscription;
+  public isEventsFoundSubscription;
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.currentStatus.subscribe(currentStatus => {
-        this.currentStatus = currentStatus;
+    this.eventsSubscription = this.timeService.getStatus(currentStatus => {
+      this.currentStatus = currentStatus;
     });
-    this.timeService.isEventFound.subscribe(eventsAvailability => {
-      this.eventsAvailability = eventsAvailability;
-    });
+    this.isEventsFoundSubscription = this.timeService.getBooleanIsEventsFound(
+      eventsAvailability => {
+        this.eventsAvailability = eventsAvailability;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.isEventsFoundSubscription) {
+      this.isEventsFoundSubscription.unsubscribe();
+    }
+
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
   }
 }

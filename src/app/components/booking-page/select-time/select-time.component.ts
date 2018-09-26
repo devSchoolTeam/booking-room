@@ -4,6 +4,7 @@ import {
   meetingStatuses
 } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-select-time',
@@ -11,7 +12,8 @@ import { TimeService } from '../../../services/time/time.service';
   styleUrls: ['./select-time.component.sass']
 })
 export class SelectTimeComponent implements OnInit {
-  public subscription;
+  public intervalSubscription: Subscription;
+  public statusSubscription: Subscription;
   public selectedDuration: any;
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
@@ -20,34 +22,43 @@ export class SelectTimeComponent implements OnInit {
 
   ngOnInit() {
     this.currentStatus = meetingStatuses.available;
-    this.timeService.currentStatus.subscribe(currentStatus => {
-      this.currentStatus = currentStatus;
-    });
-    this.subscription = this.timeService.intervalForBooking.subscribe({
+    this.statusSubscription = this.timeService.currentStatus.subscribe(
+      currentStatus => {
+        this.currentStatus = currentStatus;
+      }
+    );
+    this.intervalSubscription = this.timeService.getIntervalForBooking({
       next: gotInterval => {
-          this.gotInterval = gotInterval;
+        this.gotInterval = gotInterval;
       }
     });
   }
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+    if (this.statusSubscription) {
+      this.statusSubscription.unsubscribe();
+    }
   }
 
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration.value;
-
   }
 
   createEvent() {
     if (this.selectedDuration) {
-      this.timeService.createEvent(
-        this.gotInterval.startTime,
-        this.selectedDuration
-      ).then(res => {
-        console.log('Success:' + res);
-      }, err => {
-        console.error(err);
-      });
+      this.timeService
+        .createEvent(this.gotInterval.startTime, this.selectedDuration)
+        .then(
+          res => {
+            console.log('Success:' + res);
+            this.timeService.loadEvents().then();
+          },
+          err => {
+            console.error(err);
+          }
+        );
     }
   }
 }

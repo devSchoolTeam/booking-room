@@ -17,13 +17,9 @@ export class MainPageComponent implements OnInit {
     // this.active.data.subscribe({
     //   next: x => {
     //     // this.gapiService.hideLoader();
-
-
     //   }
     // });
   }
 
-  ngOnInit() { setInterval(() => {
-          this.timeService.updateData();
-        }, 1000); }
+  ngOnInit() {}
 }

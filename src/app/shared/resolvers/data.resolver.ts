@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { GapiService } from "./../../services/gapi/gapi.service";
+import { CanActivate } from "@angular/router";
 
-import { Route } from '@angular/compiler/src/core';
-import { TimeService } from '../../services/time/time.service';
+import { Route } from "@angular/compiler/src/core";
+import { TimeService } from "../../services/time/time.service";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DataGuard implements CanActivate {
   constructor(private timeService: TimeService) {}

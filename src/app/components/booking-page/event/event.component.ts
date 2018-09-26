@@ -17,6 +17,7 @@ export class EventComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.timeService.getEvents({
       next: events => {
+        console.log(events);
         this.events = events;
         for (let i = 0; i < this.events.length; i++) {
           const startTime = new Date(events[i].start.dateTime);

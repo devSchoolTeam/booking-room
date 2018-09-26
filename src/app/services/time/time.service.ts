@@ -8,11 +8,12 @@ import { meetingStatuses } from '../../shared/constants';
 })
 export class TimeService {
   private events;
-  public timer = interval(1000);
+  private timer = interval(1000);
+
+  public eventsEmmiter = new Subject<any>();
+  public timerString = new Subject<any>();
   public isEventFound = new Subject<any>();
   public currentStatus = new Subject<any>();
-  public timeToStart = new Subject<any>();
-  public timeToEnd = new Subject<any>();
   public intervalForBooking = new Subject<any>();
 
   constructor(private gapiService: GapiService) {
@@ -22,6 +23,8 @@ export class TimeService {
       }
     });
   }
+
+  // METHODS FOR WORKING WITH API
 
   loadEvents() {
     const requiredDate: Date = new Date();
@@ -46,135 +49,186 @@ export class TimeService {
     });
   }
 
-  getEvents(observer) {
-    return Observable.of(this.events).subscribe(observer);
+  createEvent(startTime: Date, duration: number) {
+    const endTime = new Date(startTime.getTime() + duration);
+    return this.gapiService.createEvent(startTime, endTime);
   }
 
-  changeStatusByTime(startTime: Date, endTime: Date) {
-    const currentTime: Date = new Date();
-    const timeToStart = startTime.getTime() - currentTime.getTime();
-    const timeToEnd = endTime.getTime() - currentTime.getTime();
+  //METHODS FOR CALCULATING DATA
 
-    if (timeToStart >= 900000) {
-      this.currentStatus.next(meetingStatuses.available);
-    } else if (timeToStart < 900000 && timeToStart > 0) {
-      this.currentStatus.next(meetingStatuses.soon);
-    } else if (timeToStart < 0) {
-      this.currentStatus.next(meetingStatuses.inProcess);
+  private changeStatusByTime(currentTime: Date) {
+    if (this.events) {
+      {
+        if (this.events.length > 0) {
+          const event = this.events[0];
+          const startTime = new Date(event.start.dateTime),
+            timeToStart = startTime.getTime() - currentTime.getTime();
+
+          if (timeToStart >= 900000) {
+            this.currentStatus.next(meetingStatuses.available);
+          } else if (timeToStart < 900000 && timeToStart > 0) {
+            this.currentStatus.next(meetingStatuses.soon);
+          } else if (timeToStart < 0) {
+            this.currentStatus.next(meetingStatuses.inProcess);
+          }
+        }
+      }
     }
   }
 
-  calculateIntervalForBooking(currentTime: Date) {
-    if (this.events.length > 0) {
-      const timeToFirst =
-        new Date(this.events[0].start.dateTime).getTime() -
-        new Date(currentTime).getTime();
-      if (timeToFirst > 900000) {
-        this.intervalForBooking.next({
-          startTime: currentTime,
-          endTime: new Date(this.events[0].start.dateTime),
-          interval: timeToFirst
-        });
-        return true;
-      } else {
-        if (this.events.length === 1) {
-          const timeAfterLast =
-            new Date(
-              currentTime.getFullYear(),
-              currentTime.getMonth(),
-              currentTime.getDate(),
-              23,
-              59,
-              59
-            ).getTime() -
-            new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-          if (timeAfterLast > 900000) {
+  private calculateIntervalForBooking(currentTime: Date) {
+    const todaysMidnight = new Date(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
+      currentTime.getDate(),
+      23,
+      59,
+      59
+    );
+
+    if (this.events) {
+      if (this.events.length > 0) {
+        const timeToFirstEvent =
+          new Date(this.events[0].start.dateTime).getTime() -
+          new Date(currentTime).getTime();
+        if (timeToFirstEvent > 900000) {
+          this.intervalForBooking.next({
+            startTime: currentTime,
+            endTime: new Date(this.events[0].start.dateTime),
+            interval: timeToFirstEvent
+          });
+          return true;
+        }
+
+        for (let i = 0; i < this.events.length - 1; i++) {
+          const timeBetwenEvents =
+            new Date(this.events[i + 1].start.dateTime).getTime() -
+            new Date(this.events[i].end.dateTime).getTime();
+          if (timeBetwenEvents > 900000) {
             this.intervalForBooking.next({
-              startTime: new Date(this.events[this.events.length - 1].end.dateTime),
-              endTime: new Date(),
-              interval: timeAfterLast
+              startTime: new Date(this.events[i].end.dateTime),
+              endTime: new Date(this.events[i + 1].start.dateTime),
+              interval: timeBetwenEvents
             });
             return true;
           }
         }
-          for (let i = 0; i < this.events.length; i++) {
-            const timeToStart =
-              new Date(this.events[i + 1].start.dateTime).getTime() -
-              new Date(this.events[i].end.dateTime).getTime();
-            if (timeToStart > 900000) {
-              this.intervalForBooking.next({
-                startTime: new Date(this.events[i].end.dateTime),
-                endTime: new Date(this.events[i + 1].start.dateTime),
-                interval: timeToStart
-            });
-          } else {
-              const timeAfterLast =
-                new Date(
-                  currentTime.getFullYear(),
-                  currentTime.getMonth(),
-                  currentTime.getDate(),
-                  23,
-                  59,
-                  59
-                ).getTime() -
-                new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-              if (timeAfterLast > 900000) {
-                this.intervalForBooking.next({
-                  startTime: new Date(this.events[this.events.length - 1].end.dateTime),
-                  endTime: new Date(),
-                  interval: timeAfterLast
-                });
-                return true;
-              }
-            }
+
+        const timeAfterLast =
+          todaysMidnight.getTime() -
+          new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+        if (timeAfterLast > 900000) {
+          this.intervalForBooking.next({
+            startTime: new Date(
+              this.events[this.events.length - 1].end.dateTime
+            ),
+            endTime: todaysMidnight,
+            interval: timeAfterLast
+          });
+          return true;
+        }
+      } else {
+        const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
+
+        if (timeToDayEnd > 900000) {
+          this.intervalForBooking.next({
+            startTime: currentTime,
+            endTime: todaysMidnight,
+            interval: timeToDayEnd
+          });
+        } else {
+          this.intervalForBooking.next(false);
         }
       }
-    } else {
-      const timeToFirst = new Date(
-        currentTime.getFullYear(),
-        currentTime.getMonth(),
-        currentTime.getDate(),
-        23,
-        59,
-        59
-        ).getTime() -
-        new Date(currentTime).getTime();
-      this.intervalForBooking.next({
-        startTime: currentTime,
-        endTime: new Date(
-          currentTime.getFullYear(),
-          currentTime.getMonth(),
-          currentTime.getDate(),
-          23,
-          59,
-          59
-        ).getTime(),
-        interval: timeToFirst
-      });
     }
   }
 
-  updateData() {
-    if (this.events[0]) {
-      const event = this.events[0];
-      const startTime = new Date(event.start.dateTime),
-        endTime = new Date(event.end.dateTime),
-        currentTime = new Date(),
-        timeToStart = startTime.getTime() - currentTime.getTime(),
-        timeToEnd = endTime.getTime() - currentTime.getTime();
-      this.timeToStart.next(timeToStart);
-      this.timeToEnd.next(timeToEnd);
-      this.changeStatusByTime(startTime, endTime);
-      this.calculateIntervalForBooking(currentTime);
+  private calculateTimerString(currentTime) {
+    if (this.events) {
+      if (this.events.length > 0) {
+        const event = this.events[0];
+        const startTime = new Date(event.start.dateTime),
+          endTime = new Date(event.end.dateTime),
+          timeToStart = startTime.getTime() - currentTime.getTime(),
+          timeToEnd = endTime.getTime() - currentTime.getTime();
+        if (timeToStart > 0) {
+          this.timerString.next(this.timeConverter(timeToStart));
+        } else {
+          if (timeToEnd > 0) {
+            this.timerString.next(this.timeConverter(timeToEnd));
+          } else {
+            this.loadEvents();
+          }
+        }
+      } else {
+        this.timerString.next('No upcoming events');
+      }
+    }
+  }
+
+  private timeConverter(miliseconds: number) {
+    let hours = Math.floor(
+        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      ),
+      minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds = Math.floor((miliseconds % (1000 * 60)) / 1000),
+      hoursString = hours.toString(),
+      minutesString = minutes.toString(),
+      secondsString = seconds.toString();
+    if (hours < 10) {
+      hoursString = '0' + hoursString;
+    }
+    if (minutes < 10) {
+      minutesString = '0' + minutesString;
+    }
+    if (seconds < 10) {
+      secondsString = '0' + secondsString;
+    }
+
+    return hoursString + ':' + minutesString + ':' + secondsString;
+  }
+
+  private foundingEvents() {
+    if (this.events) {
+      if (this.events.length > 0) {
+        this.isEventFound.next(true);
+      } else {
+        this.isEventFound.next(false);
+      }
     } else {
+      this.isEventFound.next(true);
+    }
+  }
+
+  private updateData() {
+    if (this.events) {
       const currentTime = new Date();
-      this.isEventFound.next(false);
+      this.changeStatusByTime(currentTime);
+      this.calculateTimerString(currentTime);
       this.calculateIntervalForBooking(currentTime);
+      this.foundingEvents();
     }
   }
 
-  createEvent(startTime: Date, duration: number) {
-    const endTime = new Date(startTime.getTime() + duration);
-    return this.gapiService.createEvent(startTime, endTime);
+  //PUBLIC METHODS
+
+  public getEvents(observer) {
+    return this.eventsEmmiter.subscribe(observer);
+  }
+
+  public getTimerString(observer) {
+    return this.timerString.subscribe(observer);
+  }
+
+  public getStatus(observer) {
+    return this.currentStatus.subscribe(observer);
+  }
+
+  public getIntervalForBooking(observer) {
+    return this.intervalForBooking.subscribe(observer);
+  }
+
+  public getBooleanIsEventsFound(observer) {
+    return this.isEventFound.subscribe(observer);
   }
 }
