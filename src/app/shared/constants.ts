@@ -24,23 +24,28 @@ export const meetingStatuses = {
 export const availableMeetingDurations = [
   {
     label: '15m',
-    value: 900000
+    value: 900000,
+    blockHeight: 50
   },
   {
     label: '30m',
-    value: 1800000
+    value: 1800000,
+    blockHeight: 100
   },
   {
     label: '45m',
-    value: 2700000
+    value: 2700000,
+    blockHeight: 150
 
   },
   {
     label: '1h',
-    value: 3600000
+    value: 3600000,
+    blockHeight: 200
   },
   {
     label: '1h 30m',
-    value: 5400000
+    value: 5400000,
+    blockHeight: 300
   }
 ];

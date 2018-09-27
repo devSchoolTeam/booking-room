@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
 import { from, interval, Subject } from 'rxjs';
-import { meetingStatuses } from '../../shared/constants';
+import { availableMeetingDurations, meetingStatuses } from '../../shared/constants';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -16,6 +16,7 @@ export class TimeService {
   public isEventFound = new Subject<any>();
   public currentStatus = new Subject<any>();
   public intervalForBooking = new Subject<any>();
+
 
   constructor(private gapiService: GapiService) {
     this.timer.subscribe({
@@ -160,7 +161,7 @@ export class TimeService {
 
   private timeConverter(miliseconds: number) {
     let hours = Math.floor(
-        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000),
@@ -192,6 +193,7 @@ export class TimeService {
     }
   }
 
+
   private updateData() {
     if (this.events) {
       const currentTime = new Date();
@@ -202,7 +204,7 @@ export class TimeService {
     }
   }
 
-   // PUBLIC METHODS
+  // PUBLIC METHODS
   public getTimerString(observer) {
     return this.timerString.subscribe(observer);
   }

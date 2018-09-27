@@ -72,7 +72,7 @@ export class GapiService {
 
   createEvent(startTime:Date, endTime:Date) {
     const start = startTime.toISOString();
-    const end = endTime.toISOString()
+    const end = endTime.toISOString();
 
 
     const event = {
@@ -90,7 +90,6 @@ export class GapiService {
       .insert({
         calendarId: 'primary',
         resource: event
-      })
-      
+      });
   }
 }
