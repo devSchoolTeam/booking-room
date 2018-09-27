@@ -18,6 +18,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
   public gotInterval: any = 0;
+  public abilityToBook = true;
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
@@ -29,14 +30,14 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
     );
     this.intervalSubscription = this.timeService.getIntervalForBooking({
       next: gotInterval => {
+        if (gotInterval === false) {
+          this.abilityToBook = false;
+        }
         this.gotInterval = gotInterval;
       }
     });
   }
   ngOnDestroy(): void {
-    if (this.intervalSubscription) {
-      this.intervalSubscription.unsubscribe();
-    }
     if (this.statusSubscription) {
       this.statusSubscription.unsubscribe();
     }

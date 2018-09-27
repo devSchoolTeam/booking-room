@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
-import { Subject, interval, Observable, of, from } from 'rxjs';
+import { from, interval, Subject } from 'rxjs';
 import { meetingStatuses } from '../../shared/constants';
-import {Event} from '../../models/event';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,6 @@ export class TimeService {
   private timer = interval(1000);
   private eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
-  public eventsEmmiter = new Subject<any>();
   public timerString = new Subject<any>();
   public isEventFound = new Subject<any>();
   public currentStatus = new Subject<any>();
@@ -99,31 +97,29 @@ export class TimeService {
         }
 
         for (let i = 0; i < this.events.length - 1; i++) {
-          const timeBetwenEvents =
+          const timeBetweenEvents =
             new Date(this.events[i + 1].start.dateTime).getTime() -
             new Date(this.events[i].end.dateTime).getTime();
-          if (timeBetwenEvents > 900000) {
+          if (timeBetweenEvents > 900000) {
             this.intervalForBooking.next({
               startTime: new Date(this.events[i].end.dateTime),
               endTime: new Date(this.events[i + 1].start.dateTime),
-              interval: timeBetwenEvents
+              interval: timeBetweenEvents
             });
             return true;
           }
         }
-
         const timeAfterLast =
-          todaysMidnight.getTime() -
-          new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+          todaysMidnight.getTime() - new Date(this.events[this.events.length - 1].end.dateTime).getTime();
         if (timeAfterLast > 900000) {
           this.intervalForBooking.next({
-            startTime: new Date(
-              this.events[this.events.length - 1].end.dateTime
-            ),
+            startTime: new Date(this.events[this.events.length - 1].end.dateTime),
             endTime: todaysMidnight,
             interval: timeAfterLast
           });
           return true;
+        } else {
+          this.intervalForBooking.next(false);
         }
       } else {
         const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
@@ -134,8 +130,6 @@ export class TimeService {
             endTime: todaysMidnight,
             interval: timeToDayEnd
           });
-        } else {
-          this.intervalForBooking.next(false);
         }
       }
     }

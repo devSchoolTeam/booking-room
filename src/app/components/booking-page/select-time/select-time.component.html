@@ -15,7 +15,7 @@
     routerLink="/main-page"
     [fontColor]="'#7d7e80'"
     ></app-button>
-
+  <div *ngIf="abilityToBook == true">
     <app-button
     [text]="currentStatus.bookButtonSecond"
     [class]="'booking-btn'"
@@ -23,5 +23,6 @@
     [fontColor]="'white'"
     (buttonClick)= "createEvent()"
     ></app-button>
+  </div>
   </div>
 </div>
