@@ -54,6 +54,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
           res => {
             console.log('Success:' + res);
             this.timeService.loadEvents().subscribe();
+            this.selectedDuration = 0;
           },
           err => {
             console.error(err);
