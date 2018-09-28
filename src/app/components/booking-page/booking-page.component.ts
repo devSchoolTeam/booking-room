@@ -9,12 +9,13 @@ import { TimeService } from '../../services/time/time.service';
   styleUrls: ['./booking-page.component.sass']
 })
 export class BookingPageComponent implements OnInit {
+  public currentStatus;
   constructor(
-    private active: ActivatedRoute,
+    private route: ActivatedRoute,
     private gapiService: GapiService,
     private timeService: TimeService
   ) {
-    this.active.data.subscribe({
+    this.route.data.subscribe({
       next: x => {
         // this.gapiService.loader.next(false);
       }
@@ -22,6 +23,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentStatus = this.route.snapshot.data.currentStatus;
     this.timeService.loadEvents().subscribe();
   }
 }

@@ -1,11 +1,13 @@
-import { Injectable } from "@angular/core";
-import { CanActivate } from "@angular/router";
-import { Route } from "@angular/compiler/src/core";
-import { TimeService } from "../../services/time/time.service";
+import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
+import { TimeService } from '../../services/time/time.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Resolve } from '@angular/router';
+
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DataGuard implements CanActivate {
   constructor(private timeService: TimeService) {}

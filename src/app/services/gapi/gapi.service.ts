@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Config } from '../../models/config';
 import { GoogleApiService } from 'ng-gapi';
-import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/fromPromise';
 
 @Injectable({
@@ -10,7 +9,8 @@ import 'rxjs/add/observable/fromPromise';
 export class GapiService {
   private events;
 
-  constructor(private gapiService: GoogleApiService) {}
+  constructor(private gapiService: GoogleApiService) {
+  }
 
   config: Config = {
     CLIENT_ID:
@@ -70,7 +70,7 @@ export class GapiService {
     });
   }
 
-  createEvent(startTime:Date, endTime:Date) {
+  createEvent(startTime: Date, endTime: Date) {
     const start = startTime.toISOString();
     const end = endTime.toISOString();
 

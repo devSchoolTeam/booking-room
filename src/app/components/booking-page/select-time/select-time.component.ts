@@ -41,7 +41,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
       value => {
 
       }
-    )
+    );
   }
   ngOnDestroy(): void {
     if (this.statusSubscription) {

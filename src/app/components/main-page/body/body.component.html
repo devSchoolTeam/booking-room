@@ -1,4 +1,5 @@
-<div class="Mask" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
+<div class="full-page" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
+<div class="container" >
   <div class="time-status">
     <div *ngIf="eventsAvailability == true; else noEvents">
     <app-timer></app-timer>
@@ -21,8 +22,8 @@
           ></app-button>
       </div>
     </div>
-  </div>
-
+</div>
+</div>
 <ng-template #noEvents>
   <h1 class="noevents">{{currentStatus.statusLabel}}</h1>
   <span class="Available">No upcoming events found</span>
