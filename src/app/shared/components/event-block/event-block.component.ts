@@ -10,6 +10,7 @@ export class EventBlockComponent implements OnInit {
   @Input() public backgroundColor: string;
   @Input() public fontColor: string;
   @Input() public classList: string;
+  @Input() public eventHeight;
   constructor() { }
   ngOnInit() {
   }

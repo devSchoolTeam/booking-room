@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  availableMeetingDurations,
-  meetingStatuses
-} from '../../../shared/constants';
+import { availableMeetingDurations, meetingStatuses } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { EventService } from '../../../services/event/event.service';
 
 @Component({
   selector: 'app-select-time',
@@ -12,6 +10,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./select-time.component.sass']
 })
 export class SelectTimeComponent implements OnInit, OnDestroy {
+  loading=false;
   public intervalSubscription: Subscription;
   public statusSubscription: Subscription;
   public selectedDuration: any;
@@ -19,7 +18,10 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
   public currentStatus;
   public gotInterval: any = 0;
   public abilityToBook = true;
-  constructor(private timeService: TimeService) {}
+  public blockHeightSource = new Subject<any>();
+  public blockHeight$ = this.blockHeightSource.asObservable();
+
+  constructor(private timeService: TimeService, private eventService: EventService) {}
 
   ngOnInit() {
     this.currentStatus = meetingStatuses.available;
@@ -36,6 +38,11 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
         this.gotInterval = gotInterval;
       }
     });
+    // this.eventService.selectedDuration$.subscribe(
+    //   value => {
+
+    //   }
+    // )
   }
   ngOnDestroy(): void {
     if (this.statusSubscription) {
@@ -45,10 +52,12 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
 
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration.value;
+  //  this.eventService.selectMeetingDuration(availableMeetingDuration);
   }
 
   createEvent() {
     if (this.selectedDuration) {
+      this.loading=true;
       this.timeService
         .createEvent(this.gotInterval.startTime, this.selectedDuration)
         .then(
@@ -56,6 +65,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
             console.log('Success:' + res);
             this.timeService.loadEvents().subscribe();
             this.selectedDuration = 0;
+            this.loading=false;
           },
           err => {
             console.error(err);

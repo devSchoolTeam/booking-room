@@ -1,22 +1,18 @@
-import { Injectable } from "@angular/core";
-import { CanActivate } from "@angular/router";
-import { Route } from "@angular/compiler/src/core";
-import { TimeService } from "../../services/time/time.service";
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-@Injectable({
-  providedIn: "root"
-})
-export class DataGuard implements CanActivate {
+import { TimeService } from './../../services/time/time.service';
+
+import { Injectable } from '@angular/core';
+
+import { Resolve } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
+
+@Injectable()
+export class DataResolver implements Resolve<Observable<string>> {
   constructor(private timeService: TimeService) {}
-  canActivate(route: Route): Observable<boolean> {
-    return this.timeService.loadEvents().pipe(
-      map(events => {
-        return true;
-      }),
-      catchError( (err) => {
-        return of(false);
-      })
-    );
+
+  resolve() {
+    return this.timeService.loadEvents();
   }
 }
