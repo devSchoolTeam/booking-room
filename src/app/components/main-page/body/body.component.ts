@@ -18,7 +18,6 @@ export class BodyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.data);
     this.currentStatus = this.route.snapshot.data.currentStatus;
   /*  this.eventsSubscription = this.timeService.getStatus(currentStatus => {
       this.currentStatus = currentStatus;
