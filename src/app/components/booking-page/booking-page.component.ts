@@ -1,4 +1,4 @@
-import { GapiService } from './../../services/gapi/gapi.service';
+import { GapiService } from '../../services/gapi/gapi.service';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { TimeService } from '../../services/time/time.service';
@@ -10,17 +10,7 @@ import { TimeService } from '../../services/time/time.service';
 })
 export class BookingPageComponent implements OnInit {
   public currentStatus;
-  constructor(
-    private route: ActivatedRoute,
-    private gapiService: GapiService,
-    private timeService: TimeService
-  ) {
-    this.route.data.subscribe({
-      next: x => {
-        // this.gapiService.loader.next(false);
-      }
-    });
-  }
+  constructor(private route: ActivatedRoute, private gapiService: GapiService, private timeService: TimeService) {}
 
   ngOnInit() {
     this.currentStatus = this.route.snapshot.data.currentStatus;

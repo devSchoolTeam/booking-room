@@ -4,9 +4,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { SelectTimeComponent } from './components/booking-page/select-time/select-time.component';
 import { HeaderComponent } from './components/booking-page/header/header.component';
-import { BodyComponent } from './components/main-page/body/body.component';
 import { BookingPageComponent } from './components/booking-page/booking-page.component';
-import { TimerComponent } from './components/main-page/timer/timer.component';
 import { AppRoutingModule } from './app-routing.module';
 import { GapiService } from './services/gapi/gapi.service';
 import {
@@ -40,9 +38,7 @@ export function loadConfig(gapi: GapiService) {
     MainPageComponent,
     SelectTimeComponent,
     HeaderComponent,
-    BodyComponent,
     BookingPageComponent,
-    TimerComponent,
     EventComponent
   ],
   imports: [

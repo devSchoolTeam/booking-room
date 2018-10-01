@@ -1,30 +1,37 @@
 <div class="container">
-<div class="button-container">
-  <div class="button-row-1">
-    <app-button
-      *ngFor="let availableMeetingDuration of availableMeetingDurations"
-      [text]="availableMeetingDuration.label"
-      [classList]="selectedDuration == availableMeetingDuration.value ? 'active' : ''"
-      (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
-      [disabled]="availableMeetingDuration.value>gotInterval.interval"
-    ></app-button>
+  <div class="button-container">
+    <div class="button-row-1">
+      <app-button
+        *ngFor="let availableMeetingDuration of availableMeetingDurations"
+        [text]="availableMeetingDuration.label"
+        [classList]="selectedDuration == availableMeetingDuration.value ? 'active' : ''"
+        (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
+        [disabled]="availableMeetingDuration.value>gotInterval.interval"
+      ></app-button>
+    </div>
+    <div class="button-row-2">
+      <app-button
+        [text]="'Cancel'"
+        [class]="'cancel-btn'"
+        routerLink="/main-page"
+        [fontColor]="'#7d7e80'"
+      ></app-button>
+      <div *ngIf="abilityToBook == true">
+        <app-button
+          *ngIf="loaderIsShown == false; else loader"
+          [text]="currentStatus.bookButtonSecond"
+          [class]="'booking-btn blockHeight'"
+          [backgroundColor]="'#43b799'"
+          [fontColor]="'white'"
+          (buttonClick)="createEvent()"
+        ></app-button>
+      </div>
+    </div>
   </div>
-  <div class="button-row-2">
-    <app-button
-    [text]="'Cancel'"
-    [class]="'cancel-btn'"
-    routerLink="/main-page"
-    [fontColor]="'#7d7e80'"
-    ></app-button>
-  <div *ngIf="abilityToBook == true">
-    <app-button
-    [text]="currentStatus.bookButtonSecond"
+</div>
+<ng-template #loader>
+  <app-button
     [class]="'booking-btn blockHeight'"
-    [backgroundColor]="'#43b799'"
-    [fontColor]="'white'"
-    (buttonClick)= "createEvent()"
-    ></app-button>
-  </div>
-  </div>
-</div>
-</div>
+    [backgroundColor]="'red'"
+  ></app-button>
+</ng-template>
