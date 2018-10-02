@@ -1,11 +1,11 @@
-<div
-  [class]="loading == true ? 'disabled' : null">
+<div [class]="loading == true ? 'disabled-loader-btn' : null">
 <button
+        type="button"
         [class]="'btn '+ classList"
         (click)="onClick()"
-        [ngStyle]="{backgroundColor: backgroundColor}"
+        [ngStyle]="{backgroundColor: backgroundColor, width: width, fontSize: fontSize}"
+        [attr.disabled]="disabled ? true: null"
 ><span
-    [class]="labelClass"
     [ngStyle]="{color: fontColor}"
     *ngIf="!loading; else loader"
   >{{text}}</span>

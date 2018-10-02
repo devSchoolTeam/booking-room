@@ -37,6 +37,9 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
           this.abilityToBook = false;
         }
         this.gotInterval = gotInterval;
+        if (this.selectedDuration > this.gotInterval) {
+          this.selectedDuration = 0;
+        }
       }
     });
   }
@@ -61,6 +64,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
           res => {
             console.log('Success:' + res);
             this.timeService.loadEvents().subscribe();
+            this.selectedDuration = 0;
             this.loaderIsShown = false;
           },
           err => {

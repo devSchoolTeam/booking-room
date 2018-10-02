@@ -11,7 +11,8 @@ export class ButtonComponent implements OnInit {
   @Input() public classList: string;
   @Input () public disabled;
   @Input () public loading = false;
-  @Input () public labelClass;
+  @Input () public width;
+  @Input() public fontSize;
   @Output() public buttonClick = new EventEmitter<any>();
 
   constructor() { }
