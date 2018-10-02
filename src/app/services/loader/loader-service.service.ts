@@ -6,10 +6,8 @@ import { Subject, BehaviorSubject } from 'rxjs';
 })
 export class LoaderServiceService {
 
-  constructor() { 
-    
+  constructor() {
   }
-  
   loader = new BehaviorSubject<boolean>(false);
 
   showLoader() {

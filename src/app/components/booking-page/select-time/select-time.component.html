@@ -4,23 +4,24 @@
       <app-button
         *ngFor="let availableMeetingDuration of availableMeetingDurations"
         [text]="availableMeetingDuration.label"
-        [classList]="selectedDuration == availableMeetingDuration.value ? 'active' : ''"
+        [classList]="selectedDuration == availableMeetingDuration.value ? 'active buttons' : 'buttons'"
         (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
         [disabled]="availableMeetingDuration.value>gotInterval.interval"
       ></app-button>
     </div>
+
     <div class="button-row-2">
       <app-button
         [text]="'Cancel'"
-        [class]="'cancel-btn'"
+        [classList]="'cancel-btn'"
         routerLink="/main-page"
         [fontColor]="'#7d7e80'"
       ></app-button>
       <div *ngIf="abilityToBook == true">
         <app-button
-          *ngIf="loaderIsShown == false; else loader"
+          [loading]="loaderIsShown"
           [text]="currentStatus.bookButtonSecond"
-          [class]="'booking-btn blockHeight'"
+          [classList]="'book-btn'"
           [backgroundColor]="'#43b799'"
           [fontColor]="'white'"
           (buttonClick)="createEvent()"
@@ -29,9 +30,5 @@
     </div>
   </div>
 </div>
-<ng-template #loader>
-  <app-button
-    [class]="'booking-btn blockHeight'"
-    [backgroundColor]="'red'"
-  ></app-button>
-</ng-template>
+
+

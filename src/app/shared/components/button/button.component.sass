@@ -1,26 +1,58 @@
-.btn
+.btn 
   background-color: #e0e3e5
   border: none
-  padding:
-    top: 25px
-    bottom: 25px
-    left: 32px
-    right: 32px
-  margin-left: 12px
+.btn.focus, .btn:focus
+  outline: 0
+  box-shadow: none
+span
+  font-size: 21px
+  font-family: 'Open Sans', sans-serif
+  border-radius: 0
+  font-weight: bold
+  font-style: normal
+  font-stretch: normal
+  line-height: normal
+  letter-spacing: -1px
+  text-align: center
+  color: #526072
 
-  span
-    font-size: 21px
-    font-family: 'Open Sans', sans-serif
-    border-radius: 0px
-    font-weight: bold
-    font-style: normal
-    font-stretch: normal
-    line-height: normal
-    letter-spacing: -1px
-    text-align: center
-    color: #526072
-
-.active
+.active 
   background-color: #526072
   span
     color: #ffffff
+
+.lds-ring
+  width: 35px
+  height: 35px
+  position: relative
+  padding-left: 68px
+.disabled
+  pointer-events: none
+.lds-ring div
+  box-sizing: border-box
+  position: absolute
+  width: 35px
+  border: 6px solid
+  height: 35px
+  border-radius: 50%
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite
+  border-color: #fff transparent transparent transparent
+
+.lds-ring div:nth-child(1) 
+  animation-delay: -0.45s
+
+.lds-ring div:nth-child(2) 
+  animation-delay: -0.3s
+
+.lds-ring div:nth-child(3) 
+  animation-delay: -0.15s
+
+@keyframes lds-ring 
+  0% 
+    transform: rotate(0deg)
+  100% 
+    transform: rotate(360deg)
+
+
+
+

@@ -10,6 +10,8 @@ export class ButtonComponent implements OnInit {
   @Input() public fontColor: string;
   @Input() public classList: string;
   @Input () public disabled;
+  @Input () public loading = false;
+  @Input () public labelClass;
   @Output() public buttonClick = new EventEmitter<any>();
 
   constructor() { }

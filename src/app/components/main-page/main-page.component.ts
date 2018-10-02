@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TimeService } from '../../services/time/time.service';
 import { ActivatedRoute } from '@angular/router';
 import { meetingStatuses } from '../../shared/constants';
@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.sass']
+  styleUrls: ['./main-page.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public currentStatus = meetingStatuses.available;

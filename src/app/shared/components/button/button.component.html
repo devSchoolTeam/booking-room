@@ -1,8 +1,16 @@
+<div
+  [class]="loading == true ? 'disabled' : null">
 <button
-        type="button"
         [class]="'btn '+ classList"
         (click)="onClick()"
         [ngStyle]="{backgroundColor: backgroundColor}"
-        [attr.disabled]="disabled ? true: null">
-  <span [ngStyle]="{color: fontColor}">{{text}}</span>
+><span
+    [class]="labelClass"
+    [ngStyle]="{color: fontColor}"
+    *ngIf="!loading; else loader"
+  >{{text}}</span>
 </button>
+</div>
+<ng-template #loader>
+  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+</ng-template>

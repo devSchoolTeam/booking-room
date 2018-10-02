@@ -1,14 +1,14 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { availableMeetingDurations } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EventService } from '../../../services/event/event.service';
-import set = Reflect.set;
 
 @Component({
   selector: 'app-select-time',
   templateUrl: './select-time.component.html',
-  styleUrls: ['./select-time.component.sass']
+  styleUrls: ['./select-time.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SelectTimeComponent implements OnInit, OnDestroy {
   @Input() initialStatus;
@@ -19,7 +19,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
   public currentStatus;
   public gotInterval: any = 0;
   public abilityToBook = true;
-  public loaderIsShown = false;
+  public loaderIsShown;
 
   constructor(private timeService: TimeService, private eventService: EventService) {
   }
@@ -54,11 +54,11 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
 
   createEvent() {
     if (this.selectedDuration) {
+      this.loaderIsShown = true;
       this.timeService
         .createEvent(this.gotInterval.startTime, this.selectedDuration)
         .then(
           res => {
-            this.loaderIsShown = true;
             console.log('Success:' + res);
             this.timeService.loadEvents().subscribe();
             this.loaderIsShown = false;
