@@ -159,7 +159,7 @@ export class TimeService {
     }
   }
 
-  private timeConverter(miliseconds: number) {
+ public timeConverter(miliseconds: number) {
     let hours = Math.floor(
       (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),

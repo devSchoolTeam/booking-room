@@ -10,8 +10,9 @@ import { EventService } from '../../../services/event/event.service';
   styleUrls: ['./event.component.sass']
 })
 export class EventComponent implements OnInit, OnDestroy {
-  blocks = [];
+  blocks ;
   dayInterval;
+
   constructor(
     private timeService: TimeService,
     private eventService: EventService,
@@ -22,19 +23,23 @@ export class EventComponent implements OnInit, OnDestroy {
     this.eventService.blocksForRendering.subscribe({
       next: x => {
         this.blocks = x;
-
-        
+        this.ref.detectChanges();
+        console.log(this.blocks)
       }
     });
 
     this.eventService.dayInterval.subscribe({
       next: x => {
-        x=x/10000
-        this.dayInterval=x.toString()+'px';
-        console.log(this.dayInterval);
-        this.ref.detectChanges()
+        console.log(x)
       }
     });
+  }
+
+  pxStringBuider(miliseconds) {
+    let string = Math.ceil(miliseconds / 20000);
+    string = Math.abs(string);
+    let pxString = string.toString() + 'px';
+    return pxString
   }
 
   ngOnDestroy(): void {}
