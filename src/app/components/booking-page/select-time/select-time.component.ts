@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { availableMeetingDurations } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
-import { EventService } from '../../../services/event/event.service';
 
 @Component({
   selector: 'app-select-time',

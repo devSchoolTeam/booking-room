@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  public currentStatus = meetingStatuses.available;
+  public currentStatus;
   public eventsAvailability = true;
   public eventsSubscription;
   public isEventsFoundSubscription;

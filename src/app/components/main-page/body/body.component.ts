@@ -8,7 +8,7 @@ import { TimeService } from '../../../services/time/time.service';
   styleUrls: ['./body.component.sass']
 })
 export class BodyComponent implements OnInit, OnDestroy {
-  public currentStatus = meetingStatuses.available;
+  public currentStatus;
   public eventsAvailability = true;
   public eventsSubscription;
   public isEventsFoundSubscription;

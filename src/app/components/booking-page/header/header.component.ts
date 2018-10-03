@@ -10,16 +10,14 @@ import { meetingStatuses } from '../../../shared/constants';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   public statusSubscription: Subscription;
-  public currentStatus = meetingStatuses.available;
+  public currentStatus;
 
   constructor(private timeService: TimeService) {
   }
 
   ngOnInit() {
-    this.currentStatus = meetingStatuses.available;
     this.statusSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
-      console.log(this.currentStatus);
     });
   }
 
