@@ -1,13 +1,15 @@
-<div
-  *ngIf="blocks"
-  class="events-block"
-  [ngStyle]="{ 'background-color': 'red'}">
+<div class="scrolling-block">
   <div
-    *ngFor="let block of blocks"
-    [ngClass]="block.type"
-    [ngStyle]="{'height': pxStringBuider(block.duration)}">
+    *ngIf="blocks"
+    class="events-block"
+    [ngStyle]="{ 'background-color': 'white'}">
+    <div
+      *ngFor="let block of blocks"
+      [ngClass]="block.type"
+      [ngStyle]="{'height': pxStringBuider(block.duration)}">
    <span
      *ngIf="block.type!='space'">{{block.string}} {{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}
    </span>
+    </div>
   </div>
 </div>

@@ -16,7 +16,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.statusSubscription = this.timeService.getStatus(currentStatus => {
+    this.currentStatus = meetingStatuses.available;
+    this.statusSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
       console.log(this.currentStatus);
     });

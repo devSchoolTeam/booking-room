@@ -10,13 +10,13 @@ import { meetingStatuses } from '../../shared/constants';
 export class TimeService {
   private events;
   private timer = interval(1000);
+
   private eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
   public timerString = new Subject<any>();
   public isEventFound = new Subject<any>();
   public currentStatus = new Subject<any>();
   public intervalForBooking = new Subject<any>();
-
 
   constructor(private gapiService: GapiService) {
     this.timer.subscribe({
@@ -38,10 +38,13 @@ export class TimeService {
       59,
       59
     );
-    return from(this.gapiService.listUpcomingEvents(requiredDate, endTime)).pipe(
-      map((res) => {
+    return from(
+      this.gapiService.listUpcomingEvents(requiredDate, endTime)
+    ).pipe(
+      map(res => {
         this.eventsSource.next(res['result']['items']);
-        return this.events = res['result']['items'];
+        this.updateData();
+        return (this.events = res['result']['items']);
       })
     );
   }
@@ -52,7 +55,7 @@ export class TimeService {
   }
 
   // METHODS FOR CALCULATING DATA
-  private changeStatusByTime(currentTime: Date) {
+  changeStatusByTime(currentTime: Date) {
     if (this.events) {
       {
         if (this.events.length > 0) {
@@ -109,10 +112,13 @@ export class TimeService {
           }
         }
         const timeAfterLast =
-          todaysMidnight.getTime() - new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+          todaysMidnight.getTime() -
+          new Date(this.events[this.events.length - 1].end.dateTime).getTime();
         if (timeAfterLast > 900000) {
           this.intervalForBooking.next({
-            startTime: new Date(this.events[this.events.length - 1].end.dateTime),
+            startTime: new Date(
+              this.events[this.events.length - 1].end.dateTime
+            ),
             endTime: todaysMidnight,
             interval: timeAfterLast
           });
@@ -157,9 +163,9 @@ export class TimeService {
     }
   }
 
- public timeConverter(miliseconds: number) {
+  public timeConverter(miliseconds: number) {
     let hours = Math.floor(
-      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000),
@@ -191,7 +197,6 @@ export class TimeService {
     }
   }
 
-
   private updateData() {
     if (this.events) {
       const currentTime = new Date();
@@ -200,22 +205,5 @@ export class TimeService {
       this.calculateIntervalForBooking(currentTime);
       this.foundingEvents();
     }
-  }
-
-  // PUBLIC METHODS
-  public getTimerString(observer) {
-    return this.timerString.subscribe(observer);
-  }
-
-  public getStatus(observer) {
-    return this.currentStatus.subscribe(observer);
-  }
-
-  public getIntervalForBooking(observer) {
-    return this.intervalForBooking.subscribe(observer);
-  }
-
-  public getBooleanIsEventsFound(observer) {
-    return this.isEventFound.subscribe(observer);
   }
 }

@@ -22,15 +22,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.eventsSubscription = this.timeService.getStatus(currentStatus => {
+    this.eventsSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
-    this.timerStringSubscription = this.timeService.getTimerString({
+    this.timerStringSubscription = this.timeService.timerString.subscribe({
       next: timerString => {
         this.timerString = timerString;
       }
     });
-    this.isEventsFoundSubscription = this.timeService.getBooleanIsEventsFound(
+    this.isEventsFoundSubscription = this.timeService.isEventFound.subscribe(
       eventsAvailability => {
         this.eventsAvailability = eventsAvailability;
       }
