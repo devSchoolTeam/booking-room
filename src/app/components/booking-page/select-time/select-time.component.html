@@ -6,7 +6,7 @@
         [text]="availableMeetingDuration.label"
         [classList]="selectedDuration == availableMeetingDuration.value ? 'active buttons' : 'buttons'"
         (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
-        [disabled]="availableMeetingDuration.value>gotInterval.interval"
+        [disabled]="availableMeetingDuration.value>gotInterval.interval || !gotInterval"
         [width]="'126px'"
         [fontSize]="'21px'"
       ></app-button>
@@ -25,6 +25,7 @@
         <app-button
           [fontSize]="'24px'"
           [width]="'210px'"
+          [disabled]="!gotInterval"
           [loading]="loaderIsShown"
           [text]="currentStatus.bookButtonSecond"
           [backgroundColor]="'#43b799'"
@@ -35,5 +36,3 @@
     </div>
   </div>
 </div>
-
-

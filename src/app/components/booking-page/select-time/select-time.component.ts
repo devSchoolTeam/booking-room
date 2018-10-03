@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { availableMeetingDurations } from '../../../shared/constants';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
@@ -11,21 +11,20 @@ import { EventService } from '../../../services/event/event.service';
   encapsulation: ViewEncapsulation.None
 })
 export class SelectTimeComponent implements OnInit, OnDestroy {
-  @Input() initialStatus;
   public intervalSubscription: Subscription;
   public statusSubscription: Subscription;
-  public selectedDuration: any;
+  public selectedDuration = 0;
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
-  public gotInterval: any = 0;
+  public gotInterval: any;
   public abilityToBook = true;
   public loaderIsShown;
+  currentDate;
 
   constructor(private timeService: TimeService, private eventService: EventService) {
   }
 
   ngOnInit() {
-    this.currentStatus = this.initialStatus;
     this.statusSubscription = this.timeService.currentStatus.subscribe(
       currentStatus => {
         this.currentStatus = currentStatus;
@@ -33,15 +32,13 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
     );
     this.intervalSubscription = this.timeService.getIntervalForBooking({
       next: gotInterval => {
-        if (gotInterval === false) {
-          this.abilityToBook = false;
-        }
         this.gotInterval = gotInterval;
-        if (this.selectedDuration > this.gotInterval) {
+        if (this.selectedDuration >= this.gotInterval.value) {
           this.selectedDuration = 0;
         }
       }
     });
+
   }
 
   ngOnDestroy(): void {
@@ -52,18 +49,30 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
 
   selectMeetingDuration(availableMeetingDuration: any) {
     this.selectedDuration = availableMeetingDuration.value;
-    this.eventService.selectMeetingDuration(availableMeetingDuration);
+    this.eventService.calculateInterval(new Date());
+    this.eventService.calculateBlocks(new Date(), {
+      start: this.gotInterval.startTime,
+      endTime: new Date(
+        this.gotInterval.startTime.getTime() + this.selectedDuration
+      )
+    });
   }
 
   createEvent() {
-    if (this.selectedDuration) {
+    if (this.selectedDuration > 0) {
       this.loaderIsShown = true;
       this.timeService
         .createEvent(this.gotInterval.startTime, this.selectedDuration)
         .then(
           res => {
             console.log('Success:' + res);
-            this.timeService.loadEvents().subscribe();
+            this.timeService.loadEvents().subscribe({
+              next: x => {
+                this.currentDate = new Date();
+                this.eventService.calculateInterval(this.currentDate);
+                this.eventService.calculateBlocks(this.currentDate);
+              }
+            });
             this.selectedDuration = 0;
             this.loaderIsShown = false;
           },

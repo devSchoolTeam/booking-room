@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
 import { from, interval, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { meetingStatuses } from '../../shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,24 @@ export class TimeService {
   }
 
   // METHODS FOR CALCULATING DATA
+  private changeStatusByTime(currentTime: Date) {
+    if (this.events) {
+      {
+        if (this.events.length > 0) {
+          const event = this.events[0];
+          const startTime = new Date(event.start.dateTime),
+            timeToStart = startTime.getTime() - currentTime.getTime();
+          if (timeToStart >= 900000) {
+            this.currentStatus.next(meetingStatuses.available);
+          } else if (timeToStart < 900000 && timeToStart > 0) {
+            this.currentStatus.next(meetingStatuses.soon);
+          } else if (timeToStart < 0) {
+            this.currentStatus.next(meetingStatuses.inProcess);
+          }
+        }
+      }
+    }
+  }
 
   private calculateIntervalForBooking(currentTime: Date) {
     const todaysMidnight = new Date(
@@ -138,7 +157,7 @@ export class TimeService {
     }
   }
 
-  private timeConverter(miliseconds: number) {
+ public timeConverter(miliseconds: number) {
     let hours = Math.floor(
       (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
@@ -176,6 +195,7 @@ export class TimeService {
   private updateData() {
     if (this.events) {
       const currentTime = new Date();
+      this.changeStatusByTime(currentTime);
       this.calculateTimerString(currentTime);
       this.calculateIntervalForBooking(currentTime);
       this.foundingEvents();

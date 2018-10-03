@@ -22,7 +22,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentStatus = this.route.snapshot.data.currentStatus;
+    this.eventsSubscription = this.timeService.getStatus(currentStatus => {
+      this.currentStatus = currentStatus;
+    });
     this.timerStringSubscription = this.timeService.getTimerString({
       next: timerString => {
         this.timerString = timerString;

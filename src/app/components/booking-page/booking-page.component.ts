@@ -9,10 +9,13 @@ import { TimeService } from '../../services/time/time.service';
 })
 export class BookingPageComponent implements OnInit {
   public currentStatus;
+  public eventsSubscription;
   constructor(private route: ActivatedRoute, private timeService: TimeService) {}
 
   ngOnInit() {
-    this.currentStatus = this.route.snapshot.data.currentStatus;
+    this.eventsSubscription = this.timeService.getStatus(currentStatus => {
+      this.currentStatus = currentStatus;
+    });
     this.timeService.loadEvents().subscribe();
   }
 }

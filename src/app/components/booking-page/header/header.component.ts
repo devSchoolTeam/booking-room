@@ -1,6 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
+import { meetingStatuses } from '../../../shared/constants';
 
 @Component({
   selector: 'app-header',
@@ -8,17 +9,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Input() initialStatus;
   public statusSubscription: Subscription;
-  public currentStatus;
+  public currentStatus = meetingStatuses.available;
 
   constructor(private timeService: TimeService) {
   }
 
   ngOnInit() {
-    this.currentStatus = this.initialStatus;
     this.statusSubscription = this.timeService.getStatus(currentStatus => {
       this.currentStatus = currentStatus;
+      console.log(this.currentStatus);
     });
   }
 
