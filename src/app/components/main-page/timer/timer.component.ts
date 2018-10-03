@@ -12,7 +12,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   public timerStringSubscription: Subscription;
   constructor(private timeService: TimeService) {}
   ngOnInit() {
-    this.timerStringSubscription = this.timeService.getTimerString({
+    this.timerStringSubscription = this.timeService.timerString.subscribe({
       next: timerString => {
         this.timerString = timerString;
       }

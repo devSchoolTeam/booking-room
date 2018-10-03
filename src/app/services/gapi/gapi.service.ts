@@ -56,6 +56,7 @@ export class GapiService {
   }
 
   signOut() {
+    
     return gapi.auth2.getAuthInstance().signOut();
   }
 
@@ -70,10 +71,9 @@ export class GapiService {
     });
   }
 
-  createEvent(startTime:Date, endTime:Date) {
+  createEvent(startTime: Date, endTime: Date) {
     const start = startTime.toISOString();
     const end = endTime.toISOString();
-
 
     const event = {
       calendarId: 'primary',
@@ -86,10 +86,9 @@ export class GapiService {
       }
     };
 
-    return gapi.client['calendar'].events
-      .insert({
-        calendarId: 'primary',
-        resource: event
-      });
+    return gapi.client['calendar'].events.insert({
+      calendarId: 'primary',
+      resource: event
+    });
   }
 }

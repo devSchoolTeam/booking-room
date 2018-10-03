@@ -9,17 +9,18 @@ import { TimeService } from '../../services/time/time.service';
   styleUrls: ['./main-page.component.sass']
 })
 export class MainPageComponent implements OnInit {
+  events;
+  timer;
   constructor(
     private active: ActivatedRoute,
     private gapiService: GapiService,
     private timeService: TimeService
   ) {
-    // this.active.data.subscribe({
-    //   next: x => {
-    //     // this.gapiService.hideLoader();
-    //   }
-    // });
+    
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+
+  }
 }

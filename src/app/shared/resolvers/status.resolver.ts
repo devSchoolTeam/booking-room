@@ -10,12 +10,16 @@ import 'rxjs/add/operator/delay';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class DataResolver implements Resolve<Observable<any>> {
-  constructor(private timeService: TimeService) {}
-
+export class StatusResolver implements Resolve<Observable<any>> {
+  constructor(private timeService: TimeService) {
+    this.currentDate = new Date();
+  }
+  currentDate;
   resolve() {
-    return this.timeService.loadEvents().pipe(map((res)=>{
-
-    }));
+    return this.timeService.currentStatus.asObservable().pipe(
+      map(res => {
+        console.count('huiii');
+      })
+    );
   }
 }

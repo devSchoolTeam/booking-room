@@ -13,14 +13,15 @@ export class BodyComponent implements OnInit, OnDestroy {
   public eventsSubscription;
   public isEventsFoundSubscription;
 
-  constructor(private timeService: TimeService) {
-  }
+  constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.eventsSubscription = this.timeService.getStatus(currentStatus => {
-      this.currentStatus = currentStatus;
-    });
-    this.isEventsFoundSubscription = this.timeService.getBooleanIsEventsFound(
+    this.eventsSubscription = this.timeService.currentStatus.subscribe(
+      currentStatus => {
+        this.currentStatus = currentStatus;
+      }
+    );
+    this.isEventsFoundSubscription = this.timeService.isEventFound.subscribe(
       eventsAvailability => {
         this.eventsAvailability = eventsAvailability;
       }

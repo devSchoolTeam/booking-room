@@ -21,7 +21,7 @@ export class EventService {
   }
 
   calculateInterval(currentTime: Date) {
-    console.log(1)
+    console.log(1);
     let endTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -180,8 +180,6 @@ export class EventService {
             eventAboutToCreate.endTime.getTime() -
               eventAboutToCreate.start.getTime()
         ) {
-    
-
           let array = [
             {
               type: 'space',

@@ -5,7 +5,7 @@
       [text]="availableMeetingDuration.label"
       [classList]="selectedDuration == availableMeetingDuration.value ? 'active' : ''"
       (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
-      [disabled]="availableMeetingDuration.value>gotInterval.interval"
+      [disabled]="availableMeetingDuration.value>gotInterval.interval||!gotInterval"
     ></app-button>
   </div>
   <div class="button-row-2">
@@ -14,11 +14,12 @@
     [class]="'cancel-btn'"
     routerLink="/main-page"
     [fontColor]="'#7d7e80'"
+    
     ></app-button>
-  <div *ngIf="abilityToBook == true">
+  <div>
     <app-button
-    [disabled]="loading"
-    [disabled]= "selectedDuration>0"
+
+    [disabled]= "selectedDuration===0||!gotInterval||loading"
     [text]="currentStatus.bookButtonSecond"
     [class]="'booking-btn blockHeight'"
     [backgroundColor]="'#43b799'"
@@ -28,3 +29,14 @@
   </div>
   </div>
 </div>
+
+
+
+<div class="scrolling-block">
+  <div *ngIf="blocks" class="events-block" [ngStyle]="{ 'background-color': 'red'}">
+  <div  *ngFor="let block of blocks" [ngClass]="block.type" [ngStyle]="{'height': pxStringBuider(block.duration)}"> 
+   <span *ngIf="block.type!='space'">{{block.string}} {{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+  </div>
+</div>
+</div>
+
