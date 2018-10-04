@@ -21,7 +21,10 @@ export class EventComponent implements OnInit {
     });
     this.timeService.events$.subscribe({
       next: events => {
+<<<<<<< HEAD
         console.log('Events uploaded')
+=======
+>>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -31,7 +34,11 @@ export class EventComponent implements OnInit {
   }
 
   calculateMeasure() {
+<<<<<<< HEAD
     let startDate = this.interval.start,
+=======
+    const startDate = this.interval.start,
+>>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
       endDate = this.interval.end,
       arr = [];
 
@@ -41,9 +48,9 @@ export class EventComponent implements OnInit {
   }
 
   pxStringBuider(miliseconds) {
-    let x = (miliseconds * 100) / this.interval.interval;
+    const x = (miliseconds * 100) / this.interval.interval;
 
-    let string = x.toString() + '%';
+    const string = x.toString() + '%';
     return string;
   }
 
@@ -75,7 +82,7 @@ export class EventComponent implements OnInit {
   }
 
   calculateInterval(currentTime: Date) {
-    let startTime = new Date(
+    const startTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),
@@ -83,7 +90,7 @@ export class EventComponent implements OnInit {
       0,
       0
     );
-    let endTime = new Date(
+    const endTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),

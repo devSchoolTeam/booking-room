@@ -1,27 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  public statusSubscription: Subscription;
+export class HeaderComponent implements OnInit {
   public currentStatus;
 
-  constructor(private timeService: TimeService) {}
+  constructor(private timeService: TimeService) {
+  }
 
   ngOnInit() {
-    this.statusSubscription = this.timeService.dataSubject.subscribe(
+    this.timeService.data.subscribe(
       data => {
         this.currentStatus = data.status;
       }
     );
-  }
-
-  ngOnDestroy(): void {
-    this.statusSubscription.unsubscribe();
   }
 }
