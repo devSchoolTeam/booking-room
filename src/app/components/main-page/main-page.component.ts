@@ -12,39 +12,36 @@ import { Subscription } from 'rxjs';
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public currentStatus;
-  public eventsAvailability = true;
-  public eventsSubscription;
+  public subscription;
   public isEventsFoundSubscription;
   public timerString: string;
   public timerStringSubscription: Subscription;
+
   public loaderIsShown = true;
 
-  constructor(private timeService: TimeService, private route: ActivatedRoute) {
-  }
+  constructor(
+    private timeService: TimeService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.timeService.currentStatus$.subscribe(currentStatus => {
-      this.currentStatus = currentStatus;
+    this.timeService.loadEvents().subscribe();
+
+    this.subscription = this.timeService.data.subscribe(data => {
+      this.currentStatus = data.status;
+      this.timerString = data.timer;
+      this.loaderIsShown = false;
+
     });
-    this.timerStringSubscription = this.timeService.timerString.subscribe({
-      next: timerString => {
-        this.timerString = timerString;
-      }
-    });
-    this.isEventsFoundSubscription = this.timeService.isEventFound.subscribe(
-      eventsAvailability => {
-        this.eventsAvailability = eventsAvailability;
-        if (this.eventsAvailability === false) {
-          this.currentStatus = meetingStatuses.available;
-        }
-      }
-    );
-    this.loaderIsShown = false;
   }
 
   ngOnDestroy(): void {
     if (this.isEventsFoundSubscription) {
       this.isEventsFoundSubscription.unsubscribe();
+    }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

@@ -9,18 +9,12 @@ const routes: Routes = [
   {
     path: 'main-page',
     component: MainPageComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      data: DataResolver
-    }
+    canActivate: [AuthGuard]
   },
   {
     path: 'booking-page',
     component: BookingPageComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      data: DataResolver
-    }
+    canActivate: [AuthGuard]
   },
   { path: '', redirectTo: '/main-page', pathMatch: 'full' }
 ];

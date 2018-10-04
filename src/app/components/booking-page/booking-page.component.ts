@@ -8,13 +8,14 @@ import { TimeService } from '../../services/time/time.service';
   styleUrls: ['./booking-page.component.sass']
 })
 export class BookingPageComponent implements OnInit {
-  public currentStatus;
+  public data;
   public eventsSubscription;
-  constructor(private route: ActivatedRoute, private timeService: TimeService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private timeService: TimeService
+  ) {}
 
   ngOnInit() {
-    this.eventsSubscription = this.timeService.currentStatus$.subscribe(currentStatus => {
-      this.currentStatus = currentStatus;
-    });
+    
   }
 }

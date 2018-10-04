@@ -3,7 +3,7 @@
      [ngStyle]="{'background-color': currentStatus.backgroundColor}">
   <div class="container">
     <div class="time-block">
-      <div *ngIf="eventsAvailability == true; else noEvents">
+      <div *ngIf="timerString; else noEvents">
         <h1 class="timer">{{timerString}}</h1>
         <span class="status-name">{{currentStatus.statusLabel}}</span>
       </div>
@@ -29,8 +29,8 @@
 </div>
 </div>
 <ng-template #noEvents>
-  <h1 class="noevents">{{currentStatus.statusLabel}}</h1>
-  <span class="status-name">No upcoming events found</span>
+  <h1 class="noevents">Available</h1>
+  <span class="status-name">No upcoming events</span>
 </ng-template>
 
 <ng-template #loader>

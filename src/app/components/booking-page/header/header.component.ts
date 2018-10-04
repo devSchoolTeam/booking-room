@@ -11,13 +11,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public statusSubscription: Subscription;
   public currentStatus;
 
-  constructor(private timeService: TimeService) {
-  }
+  constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.statusSubscription = this.timeService.currentStatus$.subscribe(currentStatus => {
-      this.currentStatus = currentStatus;
-    });
+    this.statusSubscription = this.timeService.dataSubject.subscribe(
+      data => {
+        this.currentStatus = data.status;
+      }
+    );
   }
 
   ngOnDestroy(): void {

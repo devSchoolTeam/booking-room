@@ -10,24 +10,17 @@ import { meetingStatuses } from '../../shared/constants';
 export class TimeService {
   private events;
   private timer = interval(1000);
-  private timerEvents = interval(30000);
+
+  public dataSubject = new Subject<any>();
+  public data = this.dataSubject.asObservable();
+
   private eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
-  public timerString = new Subject<any>();
-  public isEventFound = new Subject<any>();
-  private currentStatusSource = new Subject<any>();
-  public currentStatus$ = this.currentStatusSource.asObservable();
-  public intervalForBooking = new Subject<any>();
 
   constructor(private gapiService: GapiService) {
     this.timer.subscribe({
       next: () => {
         this.updateData();
-      }
-    });
-    this.timerEvents.subscribe({
-      next: () => {
-        this.loadEvents().subscribe();
       }
     });
   }
@@ -36,17 +29,23 @@ export class TimeService {
 
   loadEvents() {
     const requiredDate: Date = new Date();
+    const startTime: Date = new Date(
+      requiredDate.getFullYear(),
+      requiredDate.getMonth(),
+      requiredDate.getDate(),
+      9,
+      0,
+      0
+    );
     const endTime: Date = new Date(
       requiredDate.getFullYear(),
       requiredDate.getMonth(),
       requiredDate.getDate(),
-      23,
-      59,
-      59
+      22,
+      0,
+      0
     );
-    return from(
-      this.gapiService.listUpcomingEvents(requiredDate, endTime)
-    ).pipe(
+    return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
         this.eventsSource.next(res['result']['items']);
         this.updateData();
@@ -63,19 +62,21 @@ export class TimeService {
   // METHODS FOR CALCULATING DATA
   changeStatusByTime(currentTime: Date) {
     if (this.events) {
-      {
-        if (this.events.length > 0) {
-          const event = this.events[0];
+      if (this.events.length > 0) {
+        for (let i = 0; i < this.events.length; i++) {
+          const event = this.events[i];
           const startTime = new Date(event.start.dateTime),
             timeToStart = startTime.getTime() - currentTime.getTime();
           if (timeToStart >= 900000) {
-            this.currentStatusSource.next(meetingStatuses.available);
+            return meetingStatuses.available;
           } else if (timeToStart < 900000 && timeToStart > 0) {
-            this.currentStatusSource.next(meetingStatuses.soon);
+            return meetingStatuses.soon;
           } else if (timeToStart < 0) {
-            this.currentStatusSource.next(meetingStatuses.inProcess);
+            return meetingStatuses.inProcess;
           }
         }
+      } else {
+        return meetingStatuses.available;
       }
     }
   }
@@ -85,9 +86,9 @@ export class TimeService {
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),
-      23,
-      59,
-      59
+      22,
+      0,
+      0
     );
 
     if (this.events) {
@@ -96,12 +97,11 @@ export class TimeService {
           new Date(this.events[0].start.dateTime).getTime() -
           new Date(currentTime).getTime();
         if (timeToFirstEvent > 900000) {
-          this.intervalForBooking.next({
+          return {
             startTime: currentTime,
             endTime: new Date(this.events[0].start.dateTime),
             interval: timeToFirstEvent
-          });
-          return true;
+          };
         }
 
         for (let i = 0; i < this.events.length - 1; i++) {
@@ -109,38 +109,36 @@ export class TimeService {
             new Date(this.events[i + 1].start.dateTime).getTime() -
             new Date(this.events[i].end.dateTime).getTime();
           if (timeBetweenEvents > 900000) {
-            this.intervalForBooking.next({
+            return {
               startTime: new Date(this.events[i].end.dateTime),
               endTime: new Date(this.events[i + 1].start.dateTime),
               interval: timeBetweenEvents
-            });
-            return true;
+            };
           }
         }
         const timeAfterLast =
           todaysMidnight.getTime() -
           new Date(this.events[this.events.length - 1].end.dateTime).getTime();
         if (timeAfterLast > 900000) {
-          this.intervalForBooking.next({
+          return {
             startTime: new Date(
               this.events[this.events.length - 1].end.dateTime
             ),
             endTime: todaysMidnight,
             interval: timeAfterLast
-          });
-          return true;
+          };
         } else {
-          this.intervalForBooking.next(false);
+          return false;
         }
       } else {
         const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
 
         if (timeToDayEnd > 900000) {
-          this.intervalForBooking.next({
+          return {
             startTime: currentTime,
             endTime: todaysMidnight,
             interval: timeToDayEnd
-          });
+          };
         }
       }
     }
@@ -149,22 +147,22 @@ export class TimeService {
   private calculateTimerString(currentTime) {
     if (this.events) {
       if (this.events.length > 0) {
-        const event = this.events[0];
-        const startTime = new Date(event.start.dateTime),
-          endTime = new Date(event.end.dateTime),
-          timeToStart = startTime.getTime() - currentTime.getTime(),
-          timeToEnd = endTime.getTime() - currentTime.getTime();
-        if (timeToStart > 0) {
-          this.timerString.next(this.timeConverter(timeToStart));
-        } else {
-          if (timeToEnd > 0) {
-            this.timerString.next(this.timeConverter(timeToEnd));
+        for (let i = 0; i < this.events.length; i++) {
+          const event = this.events[i];
+          const startTime = new Date(event.start.dateTime),
+            endTime = new Date(event.end.dateTime),
+            timeToStart = startTime.getTime() - currentTime.getTime(),
+            timeToEnd = endTime.getTime() - currentTime.getTime();
+          if (timeToStart > 0) {
+            return this.timeConverter(timeToStart);
           } else {
-            this.loadEvents().subscribe();
+            if (timeToEnd > 0) {
+              return this.timeConverter(timeToEnd);
+            }
           }
         }
       } else {
-        this.timerString.next('No upcoming events');
+        return undefined;
       }
     }
   }
@@ -191,25 +189,14 @@ export class TimeService {
     return hoursString + ':' + minutesString + ':' + secondsString;
   }
 
-  private foundingEvents() {
-    if (this.events) {
-      if (this.events.length > 0) {
-        this.isEventFound.next(true);
-      } else {
-        this.isEventFound.next(false);
-      }
-    } else {
-      this.isEventFound.next(true);
-    }
-  }
-
-  private updateData() {
+  public updateData() {
     if (this.events) {
       const currentTime = new Date();
-      this.changeStatusByTime(currentTime);
-      this.calculateTimerString(currentTime);
-      this.calculateIntervalForBooking(currentTime);
-      this.foundingEvents();
+      this.dataSubject.next({
+        status: this.changeStatusByTime(currentTime),
+        timer: this.calculateTimerString(currentTime),
+        intervalForBooking: this.calculateIntervalForBooking(currentTime)
+      });
     }
   }
 }
