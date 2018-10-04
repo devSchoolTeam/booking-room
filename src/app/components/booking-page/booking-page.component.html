@@ -1,6 +1,52 @@
-
 <app-header></app-header>
-<app-select-time></app-select-time>
-<app-event></app-event>
+
+<div class="container" *ngIf="interval!=undefined">
+    <div class="button-container">
+      <div class="button-row-1">
+        <button
+          class="time-buttons"
+          *ngFor="let availableMeetingDuration of availableMeetingDurations"
+          (click)="selectMeetingDuration(availableMeetingDuration)"
+          [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null"
+          [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
+          <span>
+            {{availableMeetingDuration.label}}
+          </span>
+        </button>
+      </div>
+  
+      <div class="button-row-2">
+        <button
+          class="cancel-btn"
+          routerLink="/main-page">
+          <span>Cancel</span>
+        </button>
+        <div [class]="loaderIsShown ? 'disabled-loader-btn' : null">
+          <button
+            class="book-button book-button-addition"
+            [ngClass]="!interval.interval? ' disabled-button' : null"
+            (click)="createEvent()">
+            <span
+              *ngIf="!loaderIsShown; else loader"
+            >{{currentStatus.bookButtonSecond}}</span>
+          </button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <ng-template #loader>
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </ng-template>
+  <app-event [event]="tempEvent"></app-event>
+
+
+
 
 

@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { SelectTimeComponent } from './components/booking-page/select-time/select-time.component';
 import { HeaderComponent } from './components/booking-page/header/header.component';
 import { BookingPageComponent } from './components/booking-page/booking-page.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -36,7 +35,6 @@ export function loadConfig(gapi: GapiService) {
   declarations: [
     AppComponent,
     MainPageComponent,
-    SelectTimeComponent,
     HeaderComponent,
     BookingPageComponent,
     EventComponent

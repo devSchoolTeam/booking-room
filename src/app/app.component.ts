@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
     private timeService: TimeService
   ) {}
   ngOnInit() {
+ 
   }
 
   signOut() {

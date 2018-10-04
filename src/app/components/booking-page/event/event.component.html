@@ -12,8 +12,8 @@ class="events-block"
 </div>
 <div
 *ngIf="event"
-  class="event"
-  [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.fromStart)}">
+  class="newEvent"
+  [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.timeFromStart)}">
 <span
  >{{event.string}} {{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
 </span>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { EventService } from '../../../services/event/event.service';
 
@@ -11,40 +11,31 @@ export class EventComponent implements OnInit {
   blocks;
   measure = [];
   interval;
-  date1 = new Date(
-    'Thu Oct 04 2018 09:00:00 GMT+0300 (Eastern European Summer Time)'
-  );
-  date2 = new Date(
-    'Thu Oct 04 2018 22:00:00 GMT+0300 (Eastern European Summer Time)'
-  );
+  @Input() event;
 
-  event;
-
-  constructor(private timeService: TimeService) {}
+  constructor(private timeService: TimeService,private  ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe(()=>{
-      this.timeService.updateData()
+    this.timeService.loadEvents().subscribe(() => {
+      this.timeService.updateData();
     });
     this.timeService.events$.subscribe({
       next: events => {
-        console.log(events)
+        console.log('Events uploaded')
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
+        this.ref.detectChanges()
       }
     });
   }
 
   calculateMeasure() {
-
-
     let startDate = this.interval.start,
       endDate = this.interval.end,
       arr = [];
 
     while (startDate <= endDate) {
-
       startDate.setDate(startDate.getMinutes() + 15);
     }
   }
