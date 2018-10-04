@@ -96,49 +96,51 @@ export class TimeService {
         const timeToFirstEvent =
           new Date(this.events[0].start.dateTime).getTime() -
           new Date(currentTime).getTime();
-        if (timeToFirstEvent > 900000) {
-          return {
-            startTime: currentTime,
-            endTime: new Date(this.events[0].start.dateTime),
-            interval: timeToFirstEvent
-          };
-        }
-
-        for (let i = 0; i < this.events.length - 1; i++) {
-          const timeBetweenEvents =
-            new Date(this.events[i + 1].start.dateTime).getTime() -
-            new Date(this.events[i].end.dateTime).getTime();
-          if (timeBetweenEvents > 900000) {
+        if (currentTime.getTime() < timeToFirstEvent) {
+          if (timeToFirstEvent > 900000) {
             return {
-              startTime: new Date(this.events[i].end.dateTime),
-              endTime: new Date(this.events[i + 1].start.dateTime),
-              interval: timeBetweenEvents
+              startTime: currentTime,
+              endTime: new Date(this.events[0].start.dateTime),
+              interval: timeToFirstEvent
             };
           }
-        }
-        const timeAfterLast =
-          todaysMidnight.getTime() -
-          new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-        if (timeAfterLast > 900000) {
-          return {
-            startTime: new Date(
-              this.events[this.events.length - 1].end.dateTime
-            ),
-            endTime: todaysMidnight,
-            interval: timeAfterLast
-          };
-        } else {
-          return false;
-        }
-      } else {
-        const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
 
-        if (timeToDayEnd > 900000) {
-          return {
-            startTime: currentTime,
-            endTime: todaysMidnight,
-            interval: timeToDayEnd
-          };
+          for (let i = 0; i < this.events.length - 1; i++) {
+            const timeBetweenEvents =
+              new Date(this.events[i + 1].start.dateTime).getTime() -
+              new Date(this.events[i].end.dateTime).getTime();
+            if (timeBetweenEvents > 900000) {
+              return {
+                startTime: new Date(this.events[i].end.dateTime),
+                endTime: new Date(this.events[i + 1].start.dateTime),
+                interval: timeBetweenEvents
+              };
+            }
+          }
+          const timeAfterLast =
+            todaysMidnight.getTime() -
+            new Date(this.events[this.events.length - 1].end.dateTime).getTime();
+          if (timeAfterLast > 900000) {
+            return {
+              startTime: new Date(
+                this.events[this.events.length - 1].end.dateTime
+              ),
+              endTime: todaysMidnight,
+              interval: timeAfterLast
+            };
+          } else {
+            return false;
+          }
+        } else {
+          const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
+
+          if (timeToDayEnd > 900000) {
+            return {
+              startTime: currentTime,
+              endTime: todaysMidnight,
+              interval: timeToDayEnd
+            };
+          }
         }
       }
     }

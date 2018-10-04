@@ -1,21 +1,20 @@
 <div
 *ngIf="blocks"
-class="events-block"
-[ngStyle]="{ 'background-color': 'red'}">
+class="container">
 <div
   *ngFor="let block of blocks"
-  [ngClass]="block.type"
+  [class]="'event'"
   [ngStyle]="{'height': pxStringBuider(block.duration), 'top':pxStringBuider(block.fromStart)}">
-<span
- >{{block.string}} {{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}
+<span class="event-status">{{block.string}}</span>
+  <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}
 </span>
 </div>
 <div
 *ngIf="event"
   class="newEvent"
   [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.timeFromStart)}">
-<span
- >{{event.string}} {{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
+  <span class="newEvent-status">New meeting, </span>
+  <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
 </span>
 </div>
 </div>
