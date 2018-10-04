@@ -1,9 +1,9 @@
-
+import { TimeService } from './../../services/time/time.service';
 import { availableMeetingDurations } from './../../shared/constants';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+
 import { Component, OnInit } from '@angular/core';
-import { TimeService } from '../../services/time/time.service';
 
 @Component({
   selector: 'app-booking-page',
@@ -28,6 +28,15 @@ export class BookingPageComponent implements OnInit {
       this.currentStatus = data.status;
       this.interval = data.intervalForBooking;
     });
+
+    this.route.data
+      .subscribe({
+        next: data => {
+          this.currentStatus = data['data'].status;
+          this.interval = data['data'].intervalForBooking;
+        }
+      })
+      .unsubscribe();
   }
 
   selectMeetingDuration(availableMeetingDuration: any) {
@@ -70,5 +79,5 @@ export class BookingPageComponent implements OnInit {
           }
         );
     }
-}
+  }
 }

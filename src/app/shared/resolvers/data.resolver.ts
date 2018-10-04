@@ -14,8 +14,18 @@ export class DataResolver implements Resolve<Observable<any>> {
   constructor(private timeService: TimeService) {}
 
   resolve() {
-    return this.timeService.loadEvents().pipe(map((res) => {
-
-    }));
+    return this.timeService.loadEvents().pipe(
+      map(res => {
+        let date = new Date();
+        return {
+          status: this.timeService.changeStatusByTime(res, date),
+          timer: this.timeService.calculateTimerString(res, date),
+          intervalForBooking: this.timeService.calculateIntervalForBooking(
+            res,
+            date
+          )
+        };
+      })
+    );
   }
 }

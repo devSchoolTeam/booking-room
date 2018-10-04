@@ -11,21 +11,30 @@ export class EventComponent implements OnInit {
   blocks;
   measure = [];
   interval;
-  @Input() event;
+  @Input()
+  event;
+  subscription;
+
 
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe(() => {
-      this.timeService.updateData();
-    });
-    this.timeService.events$.subscribe({
+    this.timeService.loadEvents().subscribe()
+
+    this.subscription=this.timeService.events$.subscribe({
       next: events => {
+        console.log('Events uploaded');
+
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+    
   }
 
   calculateMeasure() {

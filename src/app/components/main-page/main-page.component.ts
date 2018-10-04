@@ -24,12 +24,21 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe();
+
+    this.route.data
+      .subscribe({
+        next: data => {
+          this.currentStatus = data['data'].status;
+          this.timerString = data['data'].timer
+        }
+      })
+      .unsubscribe();
 
     this.subscription = this.timeService.data.subscribe(data => {
       this.currentStatus = data.status;
       this.timerString = data.timer;
       this.loaderIsShown = false;
+
 
     });
   }
