@@ -16,7 +16,6 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
   public availableMeetingDurations = availableMeetingDurations;
   public currentStatus;
   public gotInterval: any;
-  public abilityToBook = true;
   public loaderIsShown;
   public events;
   public blocks;
@@ -36,7 +35,6 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
         this.events = events;
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
-        console.log(this.blocks);
       }
     });
 

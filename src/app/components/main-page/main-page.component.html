@@ -1,4 +1,6 @@
-<div class="full-page" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
+<div *ngIf="currentStatus; else loader">
+<div class="full-page"
+     [ngStyle]="{'background-color': currentStatus.backgroundColor}">
   <div class="container">
     <div class="time-block">
       <div *ngIf="eventsAvailability == true; else noEvents">
@@ -25,9 +27,12 @@
     </div>
   </div>
 </div>
-
-
+</div>
 <ng-template #noEvents>
   <h1 class="noevents">{{currentStatus.statusLabel}}</h1>
   <span class="status-name">No upcoming events found</span>
+</ng-template>
+
+<ng-template #loader>
+  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
 </ng-template>

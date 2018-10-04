@@ -6,7 +6,7 @@
         *ngFor="let availableMeetingDuration of availableMeetingDurations"
         (click)="selectMeetingDuration(availableMeetingDuration)"
         [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null"
-        [class]="availableMeetingDuration.value>gotInterval.interval? 'disabled-button' : null">
+        [class]="availableMeetingDuration.value>gotInterval.interval || !gotInterval? 'disabled-button' : null">
         <span>
           {{availableMeetingDuration.label}}
         </span>
@@ -19,12 +19,10 @@
         routerLink="/main-page">
         <span>Cancel</span>
       </button>
-      <div *ngIf="abilityToBook == true"
-           [class]="loaderIsShown ? 'disabled-loader-btn' : null"
-      >
+      <div [class]="loaderIsShown ? 'disabled-loader-btn' : null">
         <button
           class="book-button book-button-addition"
-          [disabled]="!gotInterval"
+          [ngClass]="!gotInterval? ' disabled-button' : null"
           (click)="createEvent()">
           <span
             *ngIf="!loaderIsShown; else loader"

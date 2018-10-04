@@ -17,6 +17,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public isEventsFoundSubscription;
   public timerString: string;
   public timerStringSubscription: Subscription;
+  public loaderIsShown = true;
 
   constructor(private timeService: TimeService, private route: ActivatedRoute) {
   }
@@ -38,6 +39,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.loaderIsShown = false;
   }
 
   ngOnDestroy(): void {
