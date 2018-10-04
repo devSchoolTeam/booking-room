@@ -1,10 +1,9 @@
-<<<<<<< HEAD
+
 import { availableMeetingDurations } from './../../shared/constants';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-=======
->>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
 import { Component, OnInit } from '@angular/core';
+import { TimeService } from '../../services/time/time.service';
 
 @Component({
   selector: 'app-booking-page',
@@ -12,7 +11,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./booking-page.component.sass']
 })
 export class BookingPageComponent implements OnInit {
-<<<<<<< HEAD
   currentStatus;
   interval;
   availableMeetingDurations = availableMeetingDurations;
@@ -72,11 +70,5 @@ export class BookingPageComponent implements OnInit {
           }
         );
     }
-=======
-  constructor() {
-  }
-
-  ngOnInit() {
->>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
-  }
+}
 }

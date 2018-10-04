@@ -13,7 +13,7 @@ export class EventComponent implements OnInit {
   interval;
   @Input() event;
 
-  constructor(private timeService: TimeService,private  ref: ChangeDetectorRef) {}
+  constructor(private timeService: TimeService) {}
 
   ngOnInit() {
     this.timeService.loadEvents().subscribe(() => {
@@ -21,24 +21,15 @@ export class EventComponent implements OnInit {
     });
     this.timeService.events$.subscribe({
       next: events => {
-<<<<<<< HEAD
-        console.log('Events uploaded')
-=======
->>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
-        this.ref.detectChanges()
       }
     });
   }
 
   calculateMeasure() {
-<<<<<<< HEAD
-    let startDate = this.interval.start,
-=======
     const startDate = this.interval.start,
->>>>>>> 99fec92c6e802ebaa07fb7208d5df6dcd8710880
       endDate = this.interval.end,
       arr = [];
 
