@@ -4,7 +4,6 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { BookingPageComponent } from './components/booking-page/booking-page.component';
 import { DataResolver } from './shared/resolvers/data.resolver';
 import { AuthGuard } from './shared/resolvers/auth.guard';
-import { StatusResolver } from './shared/resolvers/status.resolver';
 const routes: Routes = [
   {
     path: 'main-page',
@@ -21,6 +20,6 @@ const routes: Routes = [
 @NgModule({
   exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
-  providers: [DataResolver, StatusResolver]
+  providers: [DataResolver]
 })
 export class AppRoutingModule {}

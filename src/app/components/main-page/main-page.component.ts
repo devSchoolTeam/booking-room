@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TimeService } from '../../services/time/time.service';
 import { ActivatedRoute } from '@angular/router';
-import { meetingStatuses } from '../../shared/constants';
 import { Subscription } from 'rxjs';
 
 @Component({

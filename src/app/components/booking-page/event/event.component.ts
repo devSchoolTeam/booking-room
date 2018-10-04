@@ -23,12 +23,11 @@ export class EventComponent implements OnInit {
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe(()=>{
-      this.timeService.updateData()
+    this.timeService.loadEvents().subscribe(() => {
+      this.timeService.updateData();
     });
     this.timeService.events$.subscribe({
       next: events => {
-        console.log(events)
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -37,9 +36,7 @@ export class EventComponent implements OnInit {
   }
 
   calculateMeasure() {
-
-
-    let startDate = this.interval.start,
+    const startDate = this.interval.start,
       endDate = this.interval.end,
       arr = [];
 
@@ -50,9 +47,9 @@ export class EventComponent implements OnInit {
   }
 
   pxStringBuider(miliseconds) {
-    let x = (miliseconds * 100) / this.interval.interval;
+    const x = (miliseconds * 100) / this.interval.interval;
 
-    let string = x.toString() + '%';
+    const string = x.toString() + '%';
     return string;
   }
 
@@ -84,7 +81,7 @@ export class EventComponent implements OnInit {
   }
 
   calculateInterval(currentTime: Date) {
-    let startTime = new Date(
+    const startTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),
@@ -92,7 +89,7 @@ export class EventComponent implements OnInit {
       0,
       0
     );
-    let endTime = new Date(
+    const endTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),
