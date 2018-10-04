@@ -1,6 +1,16 @@
-.buttons
+.time-buttons
   margin-left: 12px
-
+  width: 126px
+  span
+    color: #526072
+    font-size: 21px
+.selected-button
+  background-color: #526072
+  span
+    color: white
+.disabled-button
+  opacity: 0.5
+  pointer-events: none
 .button-row-1
   display: flex
   justify-content: center
@@ -9,17 +19,26 @@
 
 .cancel-btn
   margin-right: 16px
+  width: 158px
+  font-size: 24px
+  span
+    color: #7d7e80
 
 .button-row-2
   display: flex
   justify-content: center
   flex-direction: row
   padding-top: 36px
-.booking-btn
-  padding-left: 16px
 
+.disabled-loader-btn
+  pointer-events: none
 
-  .loader 
+.book-button-addition
+  background-color: #43b799
+  span
+    color: white
+
+  .loader
     border: 16px solid #f3f3f3
     border-top: 16px solid #3498db
     border-radius: 50%
@@ -46,6 +65,39 @@
   background-color: #526072
 
 .scrolling-block
+  padding-top: 50px
   overflow: scroll
   height: 700px
   width: 500px
+
+//SPINNER
+.lds-ring
+  width: 35px
+  height: 35px
+  position: relative
+  padding-left: 80px
+
+.lds-ring div
+  box-sizing: border-box
+  position: absolute
+  width: 35px
+  border: 6px solid
+  height: 35px
+  border-radius: 50%
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite
+  border-color: #fff transparent transparent transparent
+
+.lds-ring div:nth-child(1)
+  animation-delay: -0.45s
+
+.lds-ring div:nth-child(2)
+  animation-delay: -0.3s
+
+.lds-ring div:nth-child(3)
+  animation-delay: -0.15s
+
+@keyframes lds-ring
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)

@@ -1,48 +1,53 @@
 <div class="container">
   <div class="button-container">
     <div class="button-row-1">
-      <app-button
+      <button
+        class="time-buttons"
         *ngFor="let availableMeetingDuration of availableMeetingDurations"
-        [text]="availableMeetingDuration.label"
-        [classList]="selectedDuration == availableMeetingDuration.value ? 'active buttons' : 'buttons'"
-        (buttonClick)="selectMeetingDuration(availableMeetingDuration)"
-        [disabled]="availableMeetingDuration.value>gotInterval.interval || !gotInterval"
-        [width]="'126px'"
-        [fontSize]="'21px'"
-      ></app-button>
+        (click)="selectMeetingDuration(availableMeetingDuration)"
+        [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null"
+        [class]="availableMeetingDuration.value>gotInterval.interval? 'disabled-button' : null">
+        <span>
+          {{availableMeetingDuration.label}}
+        </span>
+      </button>
     </div>
 
     <div class="button-row-2">
-      <app-button
-        [fontSize]="'24px'"
-        [width]="'158px'"
-        [text]="'Cancel'"
-        [classList]="'cancel-btn'"
-        routerLink="/main-page"
-        [fontColor]="'#7d7e80'"
-      ></app-button>
-      <div *ngIf="abilityToBook == true">
-        <app-button
-          [fontSize]="'24px'"
-          [width]="'210px'"
+      <button
+        class="cancel-btn"
+        routerLink="/main-page">
+        <span>Cancel</span>
+      </button>
+      <div *ngIf="abilityToBook == true"
+           [class]="loaderIsShown ? 'disabled-loader-btn' : null"
+      >
+        <button
+          class="book-button book-button-addition"
           [disabled]="!gotInterval"
-          [loading]="loaderIsShown"
-          [text]="currentStatus.bookButtonSecond"
-          [backgroundColor]="'#43b799'"
-          [fontColor]="'white'"
-          (buttonClick)="createEvent()"
-        ></app-button>
+          (click)="createEvent()">
+          <span
+            *ngIf="!loaderIsShown; else loader"
+          >{{currentStatus.bookButtonSecond}}</span>
+        </button>
       </div>
     </div>
 
-
-
-<div class="scrolling-block">
-  <div *ngIf="blocks" class="events-block" [ngStyle]="{ 'background-color': 'white'}">
-  <div  *ngFor="let block of blocks" [ngClass]="block.type" [ngStyle]="{'height': pxStringBuider(block.duration)}"> 
-   <span *ngIf="block.type!='space'">{{block.string}} {{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+    <div class="scrolling-block">
+      <div *ngIf="blocks" class="events-block" [ngStyle]="{ 'background-color': 'white'}">
+        <div *ngFor="let block of blocks" [ngClass]="block.type" [ngStyle]="{'height': pxStringBuider(block.duration)}">
+          <span *ngIf="block.type!='space'">{{block.string}} {{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-</div>
+
+<ng-template #loader>
+  <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
-</div>
+</ng-template>

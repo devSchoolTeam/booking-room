@@ -10,18 +10,24 @@ import { meetingStatuses } from '../../shared/constants';
 export class TimeService {
   private events;
   private timer = interval(1000);
-
+  private timerEvents = interval(30000);
   private eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
   public timerString = new Subject<any>();
   public isEventFound = new Subject<any>();
-  public currentStatus = new Subject<any>();
+  private currentStatusSource = new Subject<any>();
+  public currentStatus$ = this.currentStatusSource.asObservable();
   public intervalForBooking = new Subject<any>();
 
   constructor(private gapiService: GapiService) {
     this.timer.subscribe({
       next: () => {
         this.updateData();
+      }
+    });
+    this.timerEvents.subscribe({
+      next: () => {
+        this.loadEvents().subscribe();
       }
     });
   }
@@ -63,11 +69,11 @@ export class TimeService {
           const startTime = new Date(event.start.dateTime),
             timeToStart = startTime.getTime() - currentTime.getTime();
           if (timeToStart >= 900000) {
-            this.currentStatus.next(meetingStatuses.available);
+            this.currentStatusSource.next(meetingStatuses.available);
           } else if (timeToStart < 900000 && timeToStart > 0) {
-            this.currentStatus.next(meetingStatuses.soon);
+            this.currentStatusSource.next(meetingStatuses.soon);
           } else if (timeToStart < 0) {
-            this.currentStatus.next(meetingStatuses.inProcess);
+            this.currentStatusSource.next(meetingStatuses.inProcess);
           }
         }
       }

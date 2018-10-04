@@ -22,7 +22,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.eventsSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
+    this.timeService.currentStatus$.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
     this.timerStringSubscription = this.timeService.timerString.subscribe({
@@ -33,6 +33,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.isEventsFoundSubscription = this.timeService.isEventFound.subscribe(
       eventsAvailability => {
         this.eventsAvailability = eventsAvailability;
+        if (this.eventsAvailability === false) {
+          this.currentStatus = meetingStatuses.available;
+        }
       }
     );
   }
@@ -40,10 +43,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.isEventsFoundSubscription) {
       this.isEventsFoundSubscription.unsubscribe();
-    }
-
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
     }
   }
 }

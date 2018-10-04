@@ -25,7 +25,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.statusSubscription = this.timeService.currentStatus.subscribe(
+    this.timeService.currentStatus$.subscribe(
       currentStatus => {
         this.currentStatus = currentStatus;
       }
@@ -127,7 +127,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
         ) {
           eventBlock.push({
             type: 'event',
-            string: 'Next event',
+            string: 'Next event,',
             start: new Date(events[0].start.dateTime),
             end: new Date(events[0].end.dateTime),
             duration:
@@ -153,7 +153,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
       } else {
         eventBlock.push({
           type: 'event',
-          string: 'In process',
+          string: 'In process, ',
           start: currentTime,
           end: new Date(events[0].end.dateTime),
           duration:
@@ -184,7 +184,7 @@ export class SelectTimeComponent implements OnInit, OnDestroy {
       for (let i = 1; i < events.length; i++) {
         eventBlock.push({
           type: 'event',
-          string: 'Next event',
+          string: 'Next event, ',
           start: new Date(events[i].start.dateTime),
           end: new Date(events[i].end.dateTime),
           duration:

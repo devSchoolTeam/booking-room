@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
-import { meetingStatuses } from '../../../shared/constants';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +15,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.statusSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
+    this.statusSubscription = this.timeService.currentStatus$.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
   }

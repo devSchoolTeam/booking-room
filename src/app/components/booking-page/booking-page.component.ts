@@ -16,6 +16,5 @@ export class BookingPageComponent implements OnInit {
     this.eventsSubscription = this.timeService.currentStatus.subscribe(currentStatus => {
       this.currentStatus = currentStatus;
     });
-    this.timeService.loadEvents().subscribe();
   }
 }

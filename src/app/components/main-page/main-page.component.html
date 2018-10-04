@@ -13,15 +13,14 @@
            class="image">
       <div class="center-block">
         <h1 class="name">Hall Room</h1>
-        <app-button
-          [fontSize]="'24px'"
-          [text]="currentStatus.bookButton"
-          [fontColor]="currentStatus.fontColor"
+        <button
           routerLink="/booking-page"
-          [classList]="'booking-btn'"
-          [backgroundColor]="'white'"
-          [width]="'210px'"
-        ></app-button>
+          class="book-button button-addition-style"
+          [ngStyle]="{color: currentStatus.fontColor}">
+          <span>
+            {{currentStatus.bookButton}}
+          </span>
+        </button>
       </div>
     </div>
   </div>
