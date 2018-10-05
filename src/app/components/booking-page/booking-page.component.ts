@@ -1,5 +1,5 @@
-import { TimeService } from './../../services/time/time.service';
-import { availableMeetingDurations } from './../../shared/constants';
+import { TimeService } from '../../services/time/time.service';
+import { availableMeetingDurations } from '../../shared/constants';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 

@@ -1,13 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { EventService } from '../../../services/event/event.service';
+import { el } from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.sass']
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnDestroy {
   blocks;
   measure = [];
   interval;
@@ -22,8 +23,6 @@ export class EventComponent implements OnInit {
 
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
-        console.log('Events uploaded');
-
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -75,19 +74,58 @@ export class EventComponent implements OnInit {
       0
     );
     for (let i = 0; i < events.length; i++) {
-      eventBlock.push({
-        type: 'event',
-        string: 'Next event',
-        start: new Date(events[i].start.dateTime),
-        end: new Date(events[i].end.dateTime),
-        duration:
-          new Date(events[i].end.dateTime).getTime() -
-          new Date(events[i].start.dateTime).getTime(),
-        fromStart:
-          new Date(events[i].start.dateTime).getTime() - startTime.getTime()
-      });
-    }
-
+      if ((new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() > 900000) {
+        eventBlock.push({
+          type: 'event',
+          string: 'Next event, ',
+          start: new Date(events[i].start.dateTime),
+          end: new Date(events[i].end.dateTime),
+          duration:
+            new Date(events[i].end.dateTime).getTime() -
+            new Date(events[i].start.dateTime).getTime(),
+          fromStart:
+            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
+        });
+      } else if ((new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() < 900000 &&
+        (new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() > 0) {
+        eventBlock.push({
+          type: 'event',
+          string: 'Soon, ',
+          start: new Date(events[i].start.dateTime),
+          end: new Date(events[i].end.dateTime),
+          duration:
+            new Date(events[i].end.dateTime).getTime() -
+            new Date(events[i].start.dateTime).getTime(),
+          fromStart:
+            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
+        });
+      } else if ((new Date(events[i].end.dateTime).getTime()) < new Date(currentTime).getTime()) {
+        eventBlock.push({
+          type: 'event',
+          string: 'Finished event, ',
+          start: new Date(events[i].start.dateTime),
+          end: new Date(events[i].end.dateTime),
+          duration:
+            new Date(events[i].end.dateTime).getTime() -
+            new Date(events[i].start.dateTime).getTime(),
+          fromStart:
+            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
+        });
+      } else if (new Date(events[i].start.dateTime).getTime() < new Date(currentTime).getTime() &&
+      (new Date(events[i].end.dateTime).getTime()) > new Date(currentTime).getTime()) {
+        eventBlock.push({
+          type: 'event',
+          string: 'In process, ',
+          start: new Date(events[i].start.dateTime),
+          end: new Date(events[i].end.dateTime),
+          duration:
+            new Date(events[i].end.dateTime).getTime() -
+            new Date(events[i].start.dateTime).getTime(),
+          fromStart:
+            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
+        });
+      }
+        }
     return eventBlock;
   }
 

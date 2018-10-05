@@ -48,8 +48,12 @@ export class TimeService {
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
         return res['result']['items'];
+<<<<<<< HEAD
       }),
       tap(res => {
+=======
+      }), tap(res => {
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
         console.log(1);
         this.events = res;
         this.updateData();
@@ -65,6 +69,7 @@ export class TimeService {
 
   // METHODS FOR CALCULATING DATA
   changeStatusByTime(events, currentTime: Date) {
+<<<<<<< HEAD
     const startTime = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -83,6 +88,14 @@ export class TimeService {
           timeToEnd = eventEndTime.getTime() - currentTime.getTime();
 
         if (timeToEnd > 0) {
+=======
+    if (events) {
+      if (events.length > 0) {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
+          const startTime = new Date(event.start.dateTime),
+            timeToStart = startTime.getTime() - currentTime.getTime();
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
           if (timeToStart >= 900000) {
             return meetingStatuses.available;
           } else if (timeToStart < 900000 && timeToStart > 0) {
@@ -97,7 +110,11 @@ export class TimeService {
     }
   }
 
+<<<<<<< HEAD
   calculateIntervalForBooking(events: Array<any>, currentTime: Date) {
+=======
+  public calculateIntervalForBooking(events, currentTime: Date) {
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -107,6 +124,7 @@ export class TimeService {
       0
     );
 
+<<<<<<< HEAD
     if (events.length > 0) {
       const timeToFirstEvent =
         new Date(events[0].start.dateTime).getTime() - currentTime.getTime();
@@ -154,11 +172,68 @@ export class TimeService {
           endTime: todaysMidnight,
           interval: timeToDayEnd
         };
+=======
+    if (events) {
+      if (events.length > 0) {
+        const timeToFirstEvent =
+          new Date(events[0].start.dateTime).getTime() -
+          new Date(currentTime).getTime();
+        if (currentTime.getTime() < timeToFirstEvent) {
+          if (timeToFirstEvent > 900000) {
+            return {
+              startTime: currentTime,
+              endTime: new Date(events[0].start.dateTime),
+              interval: timeToFirstEvent
+            };
+          }
+
+          for (let i = 0; i < events.length - 1; i++) {
+            const timeBetweenEvents =
+              new Date(events[i + 1].start.dateTime).getTime() -
+              new Date(events[i].end.dateTime).getTime();
+            if (timeBetweenEvents > 900000) {
+              return {
+                startTime: new Date(events[i].end.dateTime),
+                endTime: new Date(events[i + 1].start.dateTime),
+                interval: timeBetweenEvents
+              };
+            }
+          }
+          const timeAfterLast =
+            todaysMidnight.getTime() -
+            new Date(events[events.length - 1].end.dateTime).getTime();
+          if (timeAfterLast > 900000) {
+            return {
+              startTime: new Date(
+                events[events.length - 1].end.dateTime
+              ),
+              endTime: todaysMidnight,
+              interval: timeAfterLast
+            };
+          } else {
+            return false;
+          }
+        } else {
+          const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
+
+          if (timeToDayEnd > 900000) {
+            return {
+              startTime: currentTime,
+              endTime: todaysMidnight,
+              interval: timeToDayEnd
+            };
+          }
+        }
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
       }
     }
   }
 
+<<<<<<< HEAD
   calculateTimerString(events, currentTime) {
+=======
+calculateTimerString(events, currentTime) {
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
     if (events) {
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
@@ -209,10 +284,14 @@ export class TimeService {
       this.dataSubject.next({
         status: this.changeStatusByTime(this.events, currentTime),
         timer: this.calculateTimerString(this.events, currentTime),
+<<<<<<< HEAD
         intervalForBooking: this.calculateIntervalForBooking(
           this.events,
           currentTime
         )
+=======
+        intervalForBooking: this.calculateIntervalForBooking(this.events, currentTime)
+>>>>>>> 3269ec99adab42c1cfea3cb625eeba3322b5d5f2
       });
     }
   }

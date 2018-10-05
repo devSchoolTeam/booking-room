@@ -20,10 +20,7 @@ export class DataResolver implements Resolve<Observable<any>> {
         return {
           status: this.timeService.changeStatusByTime(res, date),
           timer: this.timeService.calculateTimerString(res, date),
-          intervalForBooking: this.timeService.calculateIntervalForBooking(
-            res,
-            date
-          )
+          intervalForBooking: this.timeService.calculateIntervalForBooking(res, date)
         };
       })
     );

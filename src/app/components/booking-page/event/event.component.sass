@@ -1,30 +1,39 @@
-
-.events-block
-  width: 100%
+.container
   position: relative
   height: 2000px
-  background-color: red
-
+  margin-top: 75px
+  display: flex
+  justify-content: flex-end
 
 .event
-  margin: -3px
-  padding: 3px
+  margin-top: 5px
   position: absolute
-  width: 100%
-  background-color:   #e0e3e5
-  border: 1px solid black
-  overflow: hidden
-
+  width: 70%
+  background-color: #e0e3e5
+  border: 1px solid white
+  .event-status
+    color: #526072
+    font-size: 21px
+    padding-left: 18px
+  .event-time
+    color: #526072
+    font-size: 21px
+    font-weight: 600
   
 .newEvent
-  margin: 3px
   padding: 3px
   position: absolute
-  width: 100%
-  background-color:   #526072
-  border: 1px solid black
-  overflow: hidden
-  
+  width: 70%
+  background-color: #526072
+  border: 1px solid white
+  .newEvent-status
+    color: white
+    font-size: 21px
+    padding-left: 18px
+  .newEvent-time
+    color: white
+    font-size: 21px
+    font-weight: 600
 
 .scrolling-block
   overflow: scroll
