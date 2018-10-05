@@ -90,10 +90,12 @@ export class TimeService {
           }
         }
       }
+      return meetingStatuses.available;
     } else {
       return meetingStatuses.available;
     }
   }
+
   calculateIntervalForBooking(events: Array<any>, currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
@@ -119,8 +121,10 @@ export class TimeService {
           new Date(events[i + 1].start.dateTime).getTime() -
           new Date(events[i].end.dateTime).getTime();
         const timeFromStart =
-          new Date(events[i + 1].start.dateTime).getTime() - currentTime.getTime();
+          new Date(events[i].end.dateTime).getTime() - currentTime.getTime();
+
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
+          console.log(timeFromStart.toString() + ' ' + i);
           return {
             startTime: new Date(events[i].end.dateTime),
             endTime: new Date(events[i + 1].start.dateTime),
@@ -128,14 +132,30 @@ export class TimeService {
           };
         }
       }
+
       const timeAfterLast =
         todaysMidnight.getTime() -
         new Date(events[events.length - 1].end.dateTime).getTime();
-      if (timeAfterLast > 900000) {
+      const lastEventStartTime = new Date(
+        events[events.length - 1].end.dateTime
+      );
+
+      if (timeAfterLast > 900000 &&
+        lastEventStartTime.getTime() - currentTime.getTime() >= 0
+      ) {
         return {
-          startTime: new Date(events[events.length - 1].end.dateTime),
+          startTime: lastEventStartTime,
           endTime: todaysMidnight,
           interval: timeAfterLast
+        };
+      } else if (
+        timeAfterLast > 900000 &&
+        lastEventStartTime.getTime() - currentTime.getTime() < 0
+      ) {
+        return {
+          startTime: currentTime,
+          endTime: todaysMidnight,
+          interval: todaysMidnight.getTime() - currentTime.getTime()
         };
       } else {
         return false;
@@ -152,6 +172,7 @@ export class TimeService {
       }
     }
   }
+
   calculateTimerString(events, currentTime) {
     if (events) {
       if (events.length > 0) {
@@ -177,7 +198,7 @@ export class TimeService {
 
   public timeConverter(miliseconds: number) {
     let hours = Math.floor(
-        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000),
