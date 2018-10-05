@@ -24,19 +24,16 @@ export class BookingPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.route.data.subscribe({
+      next: data => {
+        this.currentStatus = data['data'].status;
+        this.interval = data['data'].intervalForBooking;
+      }
+    });
     this.subscription = this.timeService.dataSubject.subscribe(data => {
       this.currentStatus = data.status;
       this.interval = data.intervalForBooking;
     });
-
-    this.route.data
-      .subscribe({
-        next: data => {
-          this.currentStatus = data['data'].status;
-          this.interval = data['data'].intervalForBooking;
-        }
-      })
-      .unsubscribe();
   }
 
   selectMeetingDuration(availableMeetingDuration: any) {

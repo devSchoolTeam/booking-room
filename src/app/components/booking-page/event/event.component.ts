@@ -15,36 +15,46 @@ export class EventComponent implements OnInit {
   event;
   subscription;
 
-
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe()
+    this.timeService.loadEvents().subscribe();
 
-    this.subscription=this.timeService.events$.subscribe({
+    this.subscription = this.timeService.events$.subscribe({
       next: events => {
         console.log('Events uploaded');
 
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
+        this.calculateMeasure(this.interval.start, this.interval.end);
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
-    
+    this.subscription.unsubscribe();
   }
 
-  calculateMeasure() {
-    const startDate = this.interval.start,
-      endDate = this.interval.end,
-      arr = [];
+  calculateMeasure(startTime: Date, endTime: Date) {
+    let objects = [];
+    while (startTime < endTime) {
+      if (startTime.getMinutes() != 0) {
+        objects.push({
+          time: startTime,
+          type: 'small'
+        });
+      } else {
+        objects.push({
+          time: startTime,
+          type: 'big'
+        });
+      }
 
-    while (startDate <= endDate) {
-      startDate.setDate(startDate.getMinutes() + 15);
+      startTime = new Date(startTime.getTime() + 900000);
     }
+
+    console.log(objects);
   }
 
   pxStringBuider(miliseconds) {
