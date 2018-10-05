@@ -1,5 +1,15 @@
-<app-header></app-header>
-<div class="container" *ngIf="interval!=undefined">
+<div
+class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
+  <img src="../../../../assets/images/mesh.png"
+       srcset="../../../../assets/images/mesh@2x.png 2x,
+             ../../../../assets/images/mesh@3x.png 3x"
+       class="image">
+  <div class="center-block">
+    <h1 class="name">Hall Room</h1>
+  </div>
+</div>
+
+<div class="container" >
     <div class="button-container">
       <div class="button-row-1">
         <button
@@ -43,7 +53,7 @@
       <div></div>
     </div>
   </ng-template>
-  <app-event [event]="tempEvent"></app-event>
+  <app-event [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
 
 
 

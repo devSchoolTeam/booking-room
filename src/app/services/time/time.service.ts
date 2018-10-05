@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
 import { from, interval, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
 
 @Injectable({
@@ -47,9 +47,12 @@ export class TimeService {
     );
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
-        this.eventsSource.next(res['result']['items']);
+        return res['result']['items'];
+      }),tap(res=>{
+        console.log(1);
+        this.events=res;
         this.updateData();
-        return (this.events = res['result']['items']);
+        this.eventsSource.next(res);
       })
     );
   }
@@ -60,11 +63,11 @@ export class TimeService {
   }
 
   // METHODS FOR CALCULATING DATA
-  changeStatusByTime(currentTime: Date) {
-    if (this.events) {
-      if (this.events.length > 0) {
-        for (let i = 0; i < this.events.length; i++) {
-          const event = this.events[i];
+  changeStatusByTime(events,currentTime: Date) {
+    if (events) {
+      if (events.length > 0) {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
           const startTime = new Date(event.start.dateTime),
             timeToStart = startTime.getTime() - currentTime.getTime();
           if (timeToStart >= 900000) {
@@ -81,7 +84,7 @@ export class TimeService {
     }
   }
 
-  private calculateIntervalForBooking(currentTime: Date) {
+ calculateIntervalForBooking(events,currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -91,66 +94,64 @@ export class TimeService {
       0
     );
 
-    if (this.events) {
-      if (this.events.length > 0) {
+    if (events) {
+      if (events.length > 0) {
         const timeToFirstEvent =
-          new Date(this.events[0].start.dateTime).getTime() -
+          new Date(events[0].start.dateTime).getTime() -
           new Date(currentTime).getTime();
-        if (currentTime.getTime() < timeToFirstEvent) {
-          if (timeToFirstEvent > 900000) {
-            return {
-              startTime: currentTime,
-              endTime: new Date(this.events[0].start.dateTime),
-              interval: timeToFirstEvent
-            };
-          }
+        if (timeToFirstEvent > 900000) {
+          return {
+            startTime: currentTime,
+            endTime: new Date(events[0].start.dateTime),
+            interval: timeToFirstEvent
+          };
+        }
 
-          for (let i = 0; i < this.events.length - 1; i++) {
-            const timeBetweenEvents =
-              new Date(this.events[i + 1].start.dateTime).getTime() -
-              new Date(this.events[i].end.dateTime).getTime();
-            if (timeBetweenEvents > 900000) {
-              return {
-                startTime: new Date(this.events[i].end.dateTime),
-                endTime: new Date(this.events[i + 1].start.dateTime),
-                interval: timeBetweenEvents
-              };
-            }
-          }
-          const timeAfterLast =
-            todaysMidnight.getTime() -
-            new Date(this.events[this.events.length - 1].end.dateTime).getTime();
-          if (timeAfterLast > 900000) {
+        for (let i = 0; i < events.length - 1; i++) {
+          const timeBetweenEvents =
+            new Date(events[i + 1].start.dateTime).getTime() -
+            new Date(events[i].end.dateTime).getTime();
+          if (timeBetweenEvents > 900000) {
             return {
-              startTime: new Date(
-                this.events[this.events.length - 1].end.dateTime
-              ),
-              endTime: todaysMidnight,
-              interval: timeAfterLast
+              startTime: new Date(events[i].end.dateTime),
+              endTime: new Date(events[i + 1].start.dateTime),
+              interval: timeBetweenEvents
             };
-          } else {
-            return false;
           }
+        }
+        const timeAfterLast =
+          todaysMidnight.getTime() -
+          new Date(events[events.length - 1].end.dateTime).getTime();
+        if (timeAfterLast > 900000) {
+          return {
+            startTime: new Date(
+              events[events.length - 1].end.dateTime
+            ),
+            endTime: todaysMidnight,
+            interval: timeAfterLast
+          };
         } else {
-          const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
+          return false;
+        }
+      } else {
+        const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
 
-          if (timeToDayEnd > 900000) {
-            return {
-              startTime: currentTime,
-              endTime: todaysMidnight,
-              interval: timeToDayEnd
-            };
-          }
+        if (timeToDayEnd > 900000) {
+          return {
+            startTime: currentTime,
+            endTime: todaysMidnight,
+            interval: timeToDayEnd
+          };
         }
       }
     }
   }
 
-  private calculateTimerString(currentTime) {
-    if (this.events) {
-      if (this.events.length > 0) {
-        for (let i = 0; i < this.events.length; i++) {
-          const event = this.events[i];
+calculateTimerString(events,currentTime) {
+    if (events) {
+      if (events.length > 0) {
+        for (let i = 0; i < events.length; i++) {
+          const event = events[i];
           const startTime = new Date(event.start.dateTime),
             endTime = new Date(event.end.dateTime),
             timeToStart = startTime.getTime() - currentTime.getTime(),
@@ -195,9 +196,9 @@ export class TimeService {
     if (this.events) {
       const currentTime = new Date();
       this.dataSubject.next({
-        status: this.changeStatusByTime(currentTime),
-        timer: this.calculateTimerString(currentTime),
-        intervalForBooking: this.calculateIntervalForBooking(currentTime)
+        status: this.changeStatusByTime(this.events,currentTime),
+        timer: this.calculateTimerString(this.events,currentTime),
+        intervalForBooking: this.calculateIntervalForBooking(this.events,currentTime)
       });
     }
   }
