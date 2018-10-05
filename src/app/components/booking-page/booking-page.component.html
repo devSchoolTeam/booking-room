@@ -1,8 +1,8 @@
 <div
 class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
-  <img src="../../../../assets/images/mesh.png"
-       srcset="../../../../assets/images/mesh@2x.png 2x,
-             ../../../../assets/images/mesh@3x.png 3x"
+  <img src="../../../assets/images/mesh.png"
+       srcset="../../../assets/images/mesh@2x.png 2x,
+             ../../../assets/images/mesh@3x.png 3x"
        class="image">
   <div class="center-block">
     <h1 class="name">Hall Room</h1>
@@ -44,7 +44,9 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
   
     </div>
   </div>
-  
+<app-event [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
+
+
   <ng-template #loader>
     <div class="lds-ring">
       <div></div>
@@ -53,7 +55,7 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
       <div></div>
     </div>
   </ng-template>
-  <app-event [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
+
 
 
 

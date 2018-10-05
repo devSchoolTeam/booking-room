@@ -48,9 +48,9 @@ export class TimeService {
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
         return res['result']['items'];
-      }),tap(res=>{
+      }), tap(res => {
         console.log(1);
-        this.events=res;
+        this.events = res;
         this.updateData();
         this.eventsSource.next(res);
       })
@@ -63,7 +63,7 @@ export class TimeService {
   }
 
   // METHODS FOR CALCULATING DATA
-  changeStatusByTime(events,currentTime: Date) {
+  changeStatusByTime(events, currentTime: Date) {
     if (events) {
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
@@ -84,7 +84,7 @@ export class TimeService {
     }
   }
 
- calculateIntervalForBooking(events,currentTime: Date) {
+  public calculateIntervalForBooking(events, currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -99,55 +99,57 @@ export class TimeService {
         const timeToFirstEvent =
           new Date(events[0].start.dateTime).getTime() -
           new Date(currentTime).getTime();
-        if (timeToFirstEvent > 900000) {
-          return {
-            startTime: currentTime,
-            endTime: new Date(events[0].start.dateTime),
-            interval: timeToFirstEvent
-          };
-        }
-
-        for (let i = 0; i < events.length - 1; i++) {
-          const timeBetweenEvents =
-            new Date(events[i + 1].start.dateTime).getTime() -
-            new Date(events[i].end.dateTime).getTime();
-          if (timeBetweenEvents > 900000) {
+        if (currentTime.getTime() < timeToFirstEvent) {
+          if (timeToFirstEvent > 900000) {
             return {
-              startTime: new Date(events[i].end.dateTime),
-              endTime: new Date(events[i + 1].start.dateTime),
-              interval: timeBetweenEvents
+              startTime: currentTime,
+              endTime: new Date(events[0].start.dateTime),
+              interval: timeToFirstEvent
             };
           }
-        }
-        const timeAfterLast =
-          todaysMidnight.getTime() -
-          new Date(events[events.length - 1].end.dateTime).getTime();
-        if (timeAfterLast > 900000) {
-          return {
-            startTime: new Date(
-              events[events.length - 1].end.dateTime
-            ),
-            endTime: todaysMidnight,
-            interval: timeAfterLast
-          };
-        } else {
-          return false;
-        }
-      } else {
-        const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
 
-        if (timeToDayEnd > 900000) {
-          return {
-            startTime: currentTime,
-            endTime: todaysMidnight,
-            interval: timeToDayEnd
-          };
+          for (let i = 0; i < events.length - 1; i++) {
+            const timeBetweenEvents =
+              new Date(events[i + 1].start.dateTime).getTime() -
+              new Date(events[i].end.dateTime).getTime();
+            if (timeBetweenEvents > 900000) {
+              return {
+                startTime: new Date(events[i].end.dateTime),
+                endTime: new Date(events[i + 1].start.dateTime),
+                interval: timeBetweenEvents
+              };
+            }
+          }
+          const timeAfterLast =
+            todaysMidnight.getTime() -
+            new Date(events[events.length - 1].end.dateTime).getTime();
+          if (timeAfterLast > 900000) {
+            return {
+              startTime: new Date(
+                events[events.length - 1].end.dateTime
+              ),
+              endTime: todaysMidnight,
+              interval: timeAfterLast
+            };
+          } else {
+            return false;
+          }
+        } else {
+          const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
+
+          if (timeToDayEnd > 900000) {
+            return {
+              startTime: currentTime,
+              endTime: todaysMidnight,
+              interval: timeToDayEnd
+            };
+          }
         }
       }
     }
   }
 
-calculateTimerString(events,currentTime) {
+calculateTimerString(events, currentTime) {
     if (events) {
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
@@ -196,9 +198,9 @@ calculateTimerString(events,currentTime) {
     if (this.events) {
       const currentTime = new Date();
       this.dataSubject.next({
-        status: this.changeStatusByTime(this.events,currentTime),
-        timer: this.calculateTimerString(this.events,currentTime),
-        intervalForBooking: this.calculateIntervalForBooking(this.events,currentTime)
+        status: this.changeStatusByTime(this.events, currentTime),
+        timer: this.calculateTimerString(this.events, currentTime),
+        intervalForBooking: this.calculateIntervalForBooking(this.events, currentTime)
       });
     }
   }

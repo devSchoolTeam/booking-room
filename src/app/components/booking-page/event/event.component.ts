@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { EventService } from '../../../services/event/event.service';
 import { el } from '@angular/platform-browser/testing/src/browser_util';
@@ -8,7 +8,7 @@ import { el } from '@angular/platform-browser/testing/src/browser_util';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.sass']
 })
-export class EventComponent implements OnInit {
+export class EventComponent implements OnInit, OnDestroy {
   blocks;
   measure = [];
   interval;
@@ -22,10 +22,8 @@ export class EventComponent implements OnInit {
   ngOnInit() {
     this.timeService.loadEvents().subscribe()
 
-    this.subscription=this.timeService.events$.subscribe({
+    this.subscription = this.timeService.events$.subscribe({
       next: events => {
-        console.log('Events uploaded');
-
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -34,8 +32,7 @@ export class EventComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
-    
+    this.subscription.unsubscribe();
   }
 
   calculateMeasure() {
