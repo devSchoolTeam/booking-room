@@ -30,8 +30,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
           this.currentStatus = data['data'].status;
           this.timerString = data['data'].timer;
         }
-      })
-   
+      });
 
     this.subscription = this.timeService.data.subscribe(data => {
       this.currentStatus = data.status;

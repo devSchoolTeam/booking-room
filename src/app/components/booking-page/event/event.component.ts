@@ -10,11 +10,11 @@ import { el } from '@angular/platform-browser/testing/src/browser_util';
 })
 export class EventComponent implements OnInit, OnDestroy {
   blocks;
-  measure = [];
   interval;
   @Input()
   event;
   subscription;
+  public measure;
 
   constructor(private timeService: TimeService) {}
 
@@ -37,22 +37,24 @@ export class EventComponent implements OnInit, OnDestroy {
 
   calculateMeasure(startTime: Date, endTime: Date) {
     let objects = [];
-    while (startTime < endTime) {
+    while (startTime <= endTime) {
       if (startTime.getMinutes() !== 0) {
         objects.push({
           time: startTime,
-          type: 'small'
+          type: 'small',
+          height: this.pxStringBuider(900000)
         });
       } else {
         objects.push({
           time: startTime,
-          type: 'big'
+          type: 'big',
+          height: this.pxStringBuider(900000)
         });
       }
 
       startTime = new Date(startTime.getTime() + 900000);
     }
-
+    this.measure = objects;
     console.log(objects);
   }
 

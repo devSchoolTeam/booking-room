@@ -18,10 +18,7 @@ export class BookingPageComponent implements OnInit {
   tempEvent;
   loaderIsShown = false;
   public subscription: Subscription;
-  constructor(
-    private route: ActivatedRoute,
-    private timeService: TimeService
-  ) {}
+  constructor(private route: ActivatedRoute, private timeService: TimeService) {}
 
   ngOnInit() {
     this.route.data.subscribe({
