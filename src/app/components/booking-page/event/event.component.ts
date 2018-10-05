@@ -38,7 +38,7 @@ export class EventComponent implements OnInit, OnDestroy {
   calculateMeasure(startTime: Date, endTime: Date) {
     let objects = [];
     while (startTime < endTime) {
-      if (startTime.getMinutes() != 0) {
+      if (startTime.getMinutes() !== 0) {
         objects.push({
           time: startTime,
           type: 'small'
