@@ -1,10 +1,10 @@
-<div class="wrapper"  (swiperight)="swipe()">
+<div class="wrapper"
+     (swiperight)="swipe()"
+     (swipeleft)="swipe()" >
 <div
 class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
   <img src="../../../assets/images/mesh.png"
-       srcset="../../../assets/images/mesh@2x.png 2x,
-             ../../../assets/images/mesh@3x.png 3x"
-       class="image">
+       class="images">
   <div class="center-block">
     <h1 class="name">Hall Room</h1>
   </div>
