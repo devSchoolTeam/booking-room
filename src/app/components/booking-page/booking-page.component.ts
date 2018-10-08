@@ -1,9 +1,8 @@
 import { TimeService } from '../../services/time/time.service';
 import { availableMeetingDurations } from '../../shared/constants';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-booking-page',
@@ -17,10 +16,13 @@ export class BookingPageComponent implements OnInit {
   selectedDuration = 0;
   tempEvent;
   eventIsCreating = false;
+  @ViewChild('child')
+  child;
   public subscription: Subscription;
   constructor(
     private route: ActivatedRoute,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -33,7 +35,6 @@ export class BookingPageComponent implements OnInit {
     this.subscription = this.timeService.dataSubject.subscribe(data => {
       this.currentStatus = data.status;
       this.interval = data.intervalForBooking;
-      console.log(this.interval);
     });
   }
 
@@ -60,12 +61,17 @@ export class BookingPageComponent implements OnInit {
             0
           ).getTime()
       };
+      setTimeout(() => {
+        this.child.scrollToNewEvent();
+      }, 0);
     } else {
       this.selectedDuration = availableMeetingDuration;
       this.tempEvent = undefined;
     }
   }
-
+  swipe() {
+    return this.router.navigate(['/main-page']);
+  }
   createEvent() {
     if (this.selectedDuration > 0 && !this.eventIsCreating) {
       this.eventIsCreating = true;

@@ -1,13 +1,14 @@
+import { Event } from './../../../models/event';
 import {
   ChangeDetectorRef,
   Component,
   OnInit,
   Input,
-  OnDestroy
+  OnDestroy,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { EventService } from '../../../services/event/event.service';
-import { el } from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-event',
@@ -19,6 +20,9 @@ export class EventComponent implements OnInit, OnDestroy {
   interval;
   @Input()
   event;
+  @ViewChild('pidar')
+  newEvent;
+
   subscription;
   public measure;
 
@@ -61,8 +65,6 @@ export class EventComponent implements OnInit, OnDestroy {
       startTime = new Date(startTime.getTime() + 900000);
     }
     this.measure = objects;
-    console.log(objects.length);
-    console.log(this.interval.interval / 900000);
   }
 
   pxStringBuider(miliseconds) {
@@ -70,6 +72,13 @@ export class EventComponent implements OnInit, OnDestroy {
 
     const string = x.toString() + '%';
     return string;
+  }
+  scrollToNewEvent() {
+    console.log(this.newEvent);
+    this.newEvent.nativeElement.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth'
+    });
   }
 
   calculateBlocks(events, currentTime: Date) {

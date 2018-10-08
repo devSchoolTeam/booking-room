@@ -128,7 +128,7 @@ export class TimeService {
           currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
-          console.log(timeFromStart.toString() + ' ' + i);
+
           return {
             startTime: new Date(events[i].end.dateTime),
             endTime: new Date(events[i + 1].start.dateTime),
