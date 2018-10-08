@@ -15,7 +15,7 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
         <button
           class="time-buttons"
           *ngFor="let availableMeetingDuration of availableMeetingDurations"
-          (click)="selectMeetingDuration(availableMeetingDuration)"
+          (click)="selectMeetingDuration(availableMeetingDuration.value)"
           [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null"
           [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
           <span>
@@ -27,16 +27,18 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
       <div class="button-row-2">
         <button
           class="cancel-btn"
-          routerLink="/main-page">
+          (click)="selectMeetingDuration(0)"
+          [ngClass]="{'disabled-button':selectedDuration === 0}"
+        >
           <span>Cancel</span>
         </button>
         <div [class]="loaderIsShown ? 'disabled-loader-btn' : null">
           <button
             class="book-button book-button-addition"
-            [ngClass]="!interval.interval? ' disabled-button' : null"
+            [ngClass]="{'disabled-button':selectedDuration===0}"
             (click)="createEvent()">
             <span
-              *ngIf="!loaderIsShown; else loader"
+              *ngIf="!eventIsCreating; else loader"
             >{{currentStatus.bookButtonSecond}}</span>
           </button>
         </div>
@@ -45,7 +47,6 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
     </div>
   </div>
 <app-event [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
-
 
   <ng-template #loader>
     <div class="lds-ring">

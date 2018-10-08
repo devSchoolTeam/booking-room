@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { EventService } from '../../../services/event/event.service';
 import { el } from '@angular/platform-browser/testing/src/browser_util';
@@ -10,11 +16,11 @@ import { el } from '@angular/platform-browser/testing/src/browser_util';
 })
 export class EventComponent implements OnInit, OnDestroy {
   blocks;
-  measure = [];
   interval;
   @Input()
   event;
   subscription;
+  public measure;
 
   constructor(private timeService: TimeService) {}
 
@@ -36,24 +42,27 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateMeasure(startTime: Date, endTime: Date) {
-    let objects = [];
-    while (startTime < endTime) {
+    const objects = [];
+    while (startTime <= endTime) {
       if (startTime.getMinutes() !== 0) {
         objects.push({
           time: startTime,
-          type: 'small'
+          type: 'small',
+          height: this.pxStringBuider(900000)
         });
       } else {
         objects.push({
           time: startTime,
-          type: 'big'
+          type: 'big',
+          height: this.pxStringBuider(900000)
         });
       }
 
       startTime = new Date(startTime.getTime() + 900000);
     }
-
-    console.log(objects);
+    this.measure = objects;
+    console.log(objects.length);
+    console.log(this.interval.interval / 900000);
   }
 
   pxStringBuider(miliseconds) {
@@ -74,7 +83,11 @@ export class EventComponent implements OnInit, OnDestroy {
       0
     );
     for (let i = 0; i < events.length; i++) {
-      if ((new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() > 900000) {
+      if (
+        new Date(events[i].start.dateTime).getTime() -
+          new Date(currentTime).getTime() >
+        900000
+      ) {
         eventBlock.push({
           type: 'event',
           string: 'Next event, ',
@@ -86,8 +99,14 @@ export class EventComponent implements OnInit, OnDestroy {
           fromStart:
             new Date(events[i].start.dateTime).getTime() - startTime.getTime()
         });
-      } else if ((new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() < 900000 &&
-        (new Date(events[i].start.dateTime).getTime()) - new Date(currentTime).getTime() > 0) {
+      } else if (
+        new Date(events[i].start.dateTime).getTime() -
+          new Date(currentTime).getTime() <
+          900000 &&
+        new Date(events[i].start.dateTime).getTime() -
+          new Date(currentTime).getTime() >
+          0
+      ) {
         eventBlock.push({
           type: 'event',
           string: 'Soon, ',
@@ -99,7 +118,10 @@ export class EventComponent implements OnInit, OnDestroy {
           fromStart:
             new Date(events[i].start.dateTime).getTime() - startTime.getTime()
         });
-      } else if ((new Date(events[i].end.dateTime).getTime()) < new Date(currentTime).getTime()) {
+      } else if (
+        new Date(events[i].end.dateTime).getTime() <
+        new Date(currentTime).getTime()
+      ) {
         eventBlock.push({
           type: 'event',
           string: 'Finished event, ',
@@ -111,8 +133,12 @@ export class EventComponent implements OnInit, OnDestroy {
           fromStart:
             new Date(events[i].start.dateTime).getTime() - startTime.getTime()
         });
-      } else if (new Date(events[i].start.dateTime).getTime() < new Date(currentTime).getTime() &&
-      (new Date(events[i].end.dateTime).getTime()) > new Date(currentTime).getTime()) {
+      } else if (
+        new Date(events[i].start.dateTime).getTime() <
+          new Date(currentTime).getTime() &&
+        new Date(events[i].end.dateTime).getTime() >
+          new Date(currentTime).getTime()
+      ) {
         eventBlock.push({
           type: 'event',
           string: 'In process, ',
@@ -125,7 +151,7 @@ export class EventComponent implements OnInit, OnDestroy {
             new Date(events[i].start.dateTime).getTime() - startTime.getTime()
         });
       }
-        }
+    }
     return eventBlock;
   }
 

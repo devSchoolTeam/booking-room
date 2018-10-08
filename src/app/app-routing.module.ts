@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'main-page',
     component: MainPageComponent,
     canActivate: [AuthGuard],
-    resolve:{
+    resolve: {
       data: DataResolver
     }
   },
@@ -17,7 +17,7 @@ const routes: Routes = [
     path: 'booking-page',
     component: BookingPageComponent,
     canActivate: [AuthGuard],
-    resolve:{
+    resolve: {
       data: DataResolver
     }
   },

@@ -16,7 +16,7 @@ export class DataResolver implements Resolve<Observable<any>> {
   resolve() {
     return this.timeService.loadEvents().pipe(
       map(res => {
-        let date = new Date();
+        const date = new Date();
         return {
           status: this.timeService.changeStatusByTime(res, date),
           timer: this.timeService.calculateTimerString(res, date),

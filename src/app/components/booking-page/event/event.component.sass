@@ -1,9 +1,24 @@
 .container
   position: relative
-  height: 2000px
+ 
   margin-top: 75px
+  flex-wrap: nowrap
+.measure
+  height: 2000px
+.big
+  color: #52647a
+  font-size: 21px
+  font-family: OpenSans, sans-serif
+  font-weight: 600
+.small
+  font-size: 18px
+  font-family: OpenSans, sans-serif
+  color: #7b7b7b
+  margin-left: 70px
+.event-blocks
   display: flex
   justify-content: flex-end
+   height: 2000px
 
 .event
   margin-top: 5px
@@ -11,6 +26,7 @@
   width: 70%
   background-color: #e0e3e5
   border: 1px solid white
+  border-radius: 2px
   .event-status
     color: #526072
     font-size: 21px
@@ -19,13 +35,15 @@
     color: #526072
     font-size: 21px
     font-weight: 600
-  
+
 .newEvent
+  display: flex
   padding: 3px
   position: absolute
   width: 70%
   background-color: #526072
   border: 1px solid white
+  border-radius: 2px
   .newEvent-status
     color: white
     font-size: 21px

@@ -91,12 +91,12 @@ export class TimeService {
           }
         }
       }
-
-      return meetingStatuses.available;
+      return meetingStatuses.inProcess;
     } else {
       return meetingStatuses.available;
     }
   }
+
   calculateIntervalForBooking(events: Array<any>, currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
@@ -123,11 +123,24 @@ export class TimeService {
           new Date(events[i].end.dateTime).getTime();
         const timeFromStart =
           new Date(events[i].end.dateTime).getTime() - currentTime.getTime();
+        const timeFromEnd =
+          new Date(events[i + 1].start.dateTime).getTime() -
+          currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
           console.log(timeFromStart.toString() + ' ' + i);
           return {
             startTime: new Date(events[i].end.dateTime),
+            endTime: new Date(events[i + 1].start.dateTime),
+            interval: timeBetweenEvents
+          };
+        } else if (
+          timeBetweenEvents > 900000 &&
+          timeFromStart < 0 &&
+          timeFromEnd >= 900000
+        ) {
+          return {
+            startTime: currentTime,
             endTime: new Date(events[i + 1].start.dateTime),
             interval: timeBetweenEvents
           };
@@ -174,6 +187,7 @@ export class TimeService {
       }
     }
   }
+
   calculateTimerString(events, currentTime) {
     if (events) {
       if (events.length > 0) {
