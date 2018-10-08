@@ -1,14 +1,19 @@
-body
 
-.full-page
+.background
   height: 100vh
-  width: 100vw
+.content
+  display: flex
+  overflow: hidden
+  flex-direction: column
+  justify-content: space-around
+  height: 100vh
+  
 
 .time-block
   display: flex
   flex-direction: column
   align-items: center
-  padding-top: 135px
+  flex-basis: 
 
 .timer
   font-weight: bold
@@ -19,6 +24,8 @@ body
   letter-spacing: normal
 
 .image
+  max-width: 100%
+  
   padding-top: 50px
   object-fit: contain
   opacity: 0.71
@@ -32,7 +39,6 @@ body
   font-weight: bold
   color: #ffffff
   display: flex
-  margin-top: -15px
   justify-content: center
 
 
@@ -56,7 +62,6 @@ body
   justify-content: center
 
 .button-addition-style
-  margin-top: 55px
   background-color: white
 
 .noevents
@@ -64,33 +69,5 @@ body
   color: white
   font-family: OpenSans, sans-serif
   font-size: 60px
-.lds-ring
-  margin-left: 350px
-  margin-top: 300px
-  position: relative
 
-.lds-ring div
-  box-sizing: border-box
-  position: absolute
-  width: 150px
-  border: 15px solid
-  height: 150px
-  border-radius: 50%
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite
-  border-color: #43b799 transparent transparent transparent
-
-.lds-ring div:nth-child(1)
-  animation-delay: -0.45s
-
-.lds-ring div:nth-child(2)
-  animation-delay: -0.3s
-
-.lds-ring div:nth-child(3)
-  animation-delay: -0.15s
-
-@keyframes lds-ring
-  0%
-    transform: rotate(0deg)
-  100%
-    transform: rotate(360deg)
 

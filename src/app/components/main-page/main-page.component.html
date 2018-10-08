@@ -1,32 +1,31 @@
-<div >
-<div class="full-page"
-     [ngStyle]="{'background-color': currentStatus.backgroundColor}">
+<div class="background" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
+
+
   <div class="container">
-    <div class="time-block">
-      <div *ngIf="timerString; else noEvents">
-        <h1 class="timer">{{timerString}}</h1>
-        <span class="status-name">{{currentStatus.statusLabel}}</span>
+
+    <div class="content">
+      <div class="time-block">
+        <div *ngIf="timerString; else noEvents">
+          <h1 class="timer">{{timerString}}</h1>
+          <span class="status-name">{{currentStatus.statusLabel}}</span>
+        </div>
       </div>
-    </div>
-    <div class="title-container">
-      <img src="../../../assets/images/mesh.png"
-           srcset="../../../assets/images/mesh@2x.png 2x,
+      <div class="title-container">
+        <!-- <img src="../../../assets/images/mesh.png" srcset="../../../assets/images/mesh@2x.png 2x,
                ../../../assets/images/mesh@3x.png 3x"
-           class="image">
-      <div class="center-block">
-        <h1 class="name">Hall Room</h1>
-        <button
-          routerLink="/booking-page"
-          class="book-button button-addition-style"
-          [ngStyle]="{color: currentStatus.fontColor}">
-          <span>
-            {{currentStatus.bookButton}}
-          </span>
-        </button>
+          class="image"> -->
+        <div class="center-block">
+          <h1 class="name">Hall Room</h1>
+          <button routerLink="/booking-page" class="book-button button-addition-style" [ngStyle]="{color: currentStatus.fontColor}">
+            <span>
+              {{currentStatus.bookButton}}
+            </span>
+          </button>
+        </div>
       </div>
     </div>
+
   </div>
-</div>
 </div>
 <ng-template #noEvents>
   <h1 class="noevents">Available</h1>
@@ -34,5 +33,10 @@
 </ng-template>
 
 <ng-template #loader>
-  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  <div class="lds-ring">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </ng-template>

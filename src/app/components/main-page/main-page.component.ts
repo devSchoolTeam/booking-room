@@ -24,14 +24,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.data
-      .subscribe({
-        next: data => {
-          this.currentStatus = data['data'].status;
-          this.timerString = data['data'].timer;
-        }
-      })
-   
+    this.route.data.subscribe({
+      next: data => {
+        this.currentStatus = data['data'].status;
+        this.timerString = data['data'].timer;
+      }
+    });
 
     this.subscription = this.timeService.data.subscribe(data => {
       this.currentStatus = data.status;

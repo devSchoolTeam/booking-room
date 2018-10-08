@@ -28,13 +28,15 @@
   width: 100%
 
 .time-buttons
-  margin-left: 12px
-  width: 126px
+  margin: 12px
+  min-width: 126px
+  cursor: pointer
   span
     color: #526072
     font-size: 21px
 .selected-button
   background-color: #526072
+  cursor: default
   span
     color: white
 .disabled-button
@@ -42,6 +44,7 @@
   pointer-events: none
 .button-row-1
   display: flex
+  flex-wrap: wrap
   justify-content: center
   flex-direction: row
   padding-top: 80px

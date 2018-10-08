@@ -14,9 +14,7 @@ export class AppComponent implements OnInit {
     private gapiService: GapiService,
     private timeService: TimeService
   ) {}
-  ngOnInit() {
- 
-  }
+  ngOnInit() {}
 
   signOut() {
     this.gapiService.signOut();
