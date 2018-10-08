@@ -1,3 +1,4 @@
+<div class="wrapper"  (swiperight)="swipe()">
 <div
 class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundColor}">
   <img src="../../../assets/images/mesh.png"
@@ -41,10 +42,10 @@ class="title-container" [ngStyle]="{backgroundColor: currentStatus.backgroundCol
           </button>
         </div>
       </div>
-  
     </div>
   </div>
 <app-event [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
+</div>
 
   <ng-template #loader>
     <div class="lds-ring">

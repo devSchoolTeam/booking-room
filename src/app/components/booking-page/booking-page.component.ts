@@ -1,8 +1,7 @@
 import { TimeService } from '../../services/time/time.service';
 import { availableMeetingDurations } from '../../shared/constants';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -18,7 +17,7 @@ export class BookingPageComponent implements OnInit {
   tempEvent;
   loaderIsShown = false;
   public subscription: Subscription;
-  constructor(private route: ActivatedRoute, private timeService: TimeService) {}
+  constructor(private route: ActivatedRoute, private timeService: TimeService, private router: Router) {}
 
   ngOnInit() {
     this.route.data.subscribe({
@@ -54,7 +53,9 @@ export class BookingPageComponent implements OnInit {
         ).getTime()
     };
   }
-
+  swipe() {
+    return this.router.navigate(['/main-page']);
+  }
   createEvent() {
     if (this.selectedDuration > 0) {
       this.loaderIsShown = true;
