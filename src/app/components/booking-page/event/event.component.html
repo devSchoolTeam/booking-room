@@ -1,32 +1,30 @@
-<div
-  *ngIf="blocks"
-  class="container">
-  <div class="measure">
-  <div
-       *ngFor="let time of measure"
-       [ngStyle]="{'height': time.height}"
-       [ngClass]="time.type == 'small'? 'small' : 'big'"
-  >{{time.time | date: 'HH:mm'}}
-  </div>
+<div class="main">
+  <div *ngIf="blocks" class="measure">
+    <div
+      *ngFor="let time of measure"
+      [ngStyle]="{'height': time.height}"
+      [ngClass]="time.type == 'small'? 'small' : 'big'"
+    >{{time.time | date: 'HH:mm'}}
+      <span class="line"
+        *ngIf="time.type == 'big'"></span>
+    </div>
   </div>
   <div class="event-blocks">
     <div
       *ngFor="let block of blocks"
       [class]="'event'"
       [ngStyle]="{'height': pxStringBuider(block.duration), 'top':pxStringBuider(block.fromStart)}">
-      <span class="event-status">{{block.string}}</span>
-      <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}
+      <span class="event-status">{{block.string}}&nbsp;</span>
+      <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+    </div>
+    <div
+      #pidar
+      *ngIf="event"
+      class="newEvent"
+      [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.timeFromStart)}">
+      <span class="newEvent-status">New meeting, &nbsp;</span>
+      <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
 </span>
     </div>
-  <div
-  #pidar
-    *ngIf="event"
-    class="newEvent"
-    
-    [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.timeFromStart)}">
-    <span class="newEvent-status">New meeting, &nbsp;</span>
-    <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
-</span>
-  </div>
   </div>
 </div>

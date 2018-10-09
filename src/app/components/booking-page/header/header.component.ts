@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { TimeService } from '../../../services/time/time.service';
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit {
-  public currentStatus;
+  @Input() currentStatus;
 
   constructor(private timeService: TimeService) {
   }

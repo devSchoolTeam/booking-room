@@ -1,4 +1,3 @@
-
 .background
   height: 100vh
 .content
@@ -7,13 +6,11 @@
   flex-direction: column
   justify-content: space-around
   height: 100vh
-  
 
 .time-block
   display: flex
   flex-direction: column
   align-items: center
-  flex-basis: 
 
 .timer
   font-weight: bold
@@ -25,7 +22,7 @@
 
 .image
   max-width: 100%
-  
+
   padding-top: 50px
   object-fit: contain
   opacity: 0.71
@@ -59,18 +56,30 @@
   position: absolute
 
 .title-container
+  background: no-repeat center
+
   position: relative
   display: flex
+  flex-direction: column
   align-items: center
-  justify-content: center
+  justify-content: space-around
+  height: 222px
 
-.button-addition-style
+.title-container:before
+  background: url('../../../assets/images/mesh.png') no-repeat center
+  z-index: -1
+  position: absolute
+  left: 0
+  top: 0
+  opacity: 0.6
+
+.book-button
   background-color: white
+  width: 210px
+  height: 78px
 
 .noevents
   font-weight: bold
   color: white
   font-family: OpenSans, sans-serif
   font-size: 60px
-
-
