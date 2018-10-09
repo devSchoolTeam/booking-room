@@ -9,10 +9,12 @@ import { GapiService } from './services/gapi/gapi.service';
 import {
   GoogleApiModule,
   NgGapiClientConfig,
-  NG_GAPI_CONFIG} from 'ng-gapi';
+  NG_GAPI_CONFIG
+} from 'ng-gapi';
 import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './shared/resolvers/auth.guard';
 import { EventComponent } from './components/booking-page/event/event.component';
+
 const gapiClientConfig: NgGapiClientConfig = {
   client_id:
     '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
@@ -61,4 +63,5 @@ export function loadConfig(gapi: GapiService) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

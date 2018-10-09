@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GapiService } from './services/gapi/gapi.service';
-import { TimeService } from './services/time/time.service';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +6,6 @@ import { TimeService } from './services/time/time.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  // loader = false;
-
-  constructor(
-    private gapiService: GapiService,
-    private timeService: TimeService
-  ) {}
+  constructor() {}
   ngOnInit() {}
-
-  signOut() {
-    this.gapiService.signOut();
-  }
-  signIn() {
-    this.gapiService.signIn();
-  }
 }

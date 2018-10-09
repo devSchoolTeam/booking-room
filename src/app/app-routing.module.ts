@@ -4,6 +4,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { BookingPageComponent } from './components/booking-page/booking-page.component';
 import { DataResolver } from './shared/resolvers/data.resolver';
 import { AuthGuard } from './shared/resolvers/auth.guard';
+
 const routes: Routes = [
   {
     path: 'main-page',
@@ -21,11 +22,13 @@ const routes: Routes = [
       data: DataResolver
     }
   },
-  { path: '', redirectTo: '/main-page', pathMatch: 'full' }
+  {path: '', redirectTo: '/main-page', pathMatch: 'full'}
 ];
+
 @NgModule({
   exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
   providers: [DataResolver]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
