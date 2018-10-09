@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
-import { from, interval, Subject } from 'rxjs';
+import { from, interval, Subject, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
 
@@ -14,7 +14,7 @@ export class TimeService {
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
 
-  private eventsSource = new Subject<any>();
+  private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
 
   constructor(private gapiService: GapiService) {

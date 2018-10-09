@@ -6,7 +6,7 @@
     <div class="container">
       <div class="row">
         <div class="events col-lg-6">
-          <app-event #child [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
+          <app-event *ngIf="events" #child [event]="tempEvent" [events]="events" [ngStyle]="{'width': '600px'}"></app-event>
         </div>
         <div class="button-container col-lg-6">
           <div class="button-row-1">

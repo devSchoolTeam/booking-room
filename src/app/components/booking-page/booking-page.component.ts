@@ -12,6 +12,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class BookingPageComponent implements OnInit {
   currentStatus;
   interval;
+  events;
   availableMeetingDurations = availableMeetingDurations;
   selectedDuration = 0;
   tempEvent;
@@ -26,6 +27,11 @@ export class BookingPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.timeService.events$.subscribe({
+      next: events => {
+        this.events = events;
+      }
+    });
     this.route.data.subscribe({
       next: data => {
         this.currentStatus = data['data'].status;
@@ -75,6 +81,9 @@ export class BookingPageComponent implements OnInit {
   createEvent() {
     if (this.selectedDuration > 0 && !this.eventIsCreating) {
       this.eventIsCreating = true;
+      setTimeout(() => {
+        this.child.scrollToNewEvent();
+      }, 0);
       this.timeService
         .createEvent(this.interval.startTime, this.selectedDuration)
         .then(

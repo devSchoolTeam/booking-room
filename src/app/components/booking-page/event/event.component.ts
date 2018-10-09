@@ -17,6 +17,8 @@ import { TimeService } from '../../../services/time/time.service';
 })
 export class EventComponent implements OnInit, OnDestroy {
   blocks;
+  @Input()
+  events;
   interval;
   @Input()
   event;
@@ -29,8 +31,6 @@ export class EventComponent implements OnInit, OnDestroy {
   constructor(private timeService: TimeService) {}
 
   ngOnInit() {
-    this.timeService.loadEvents().subscribe();
-
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         const date = new Date();
@@ -69,6 +69,20 @@ export class EventComponent implements OnInit, OnDestroy {
 
   pxStringBuider(miliseconds) {
     const x = (miliseconds * 100) / this.interval.interval;
+
+    const string = x.toString() + '%';
+    return string;
+  }
+
+  calculateEventHeight(miliseconds) {
+    const x = (miliseconds * 100) / this.interval.interval - 0.3;
+
+    const string = x.toString() + '%';
+    return string;
+  }
+
+  calculateEventOffset(miliseconds) {
+    const x = (miliseconds * 100) / this.interval.interval + 0.3;
 
     const string = x.toString() + '%';
     return string;
