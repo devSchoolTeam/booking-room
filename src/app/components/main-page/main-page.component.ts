@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.sass'],
-  encapsulation: ViewEncapsulation.None
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public currentStatus;
@@ -16,7 +15,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public timerString: string;
   public timerStringSubscription: Subscription;
 
-  public loaderIsShown = true;
 
   constructor(
     private timeService: TimeService,
@@ -34,7 +32,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.subscription = this.timeService.data.subscribe(data => {
       this.currentStatus = data.status;
       this.timerString = data.timer;
-      this.loaderIsShown = false;
     });
   }
 

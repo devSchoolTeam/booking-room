@@ -53,6 +53,28 @@
   border: 1px solid white
   border-radius: 2px
   padding: 10px 18px 
+  &:after
+    content: " "
+    display: block
+    background-color: #e0e3e5
+    color: #e0e3e5
+    height: 1px;
+    width: 100%
+    right: 0px
+    position: absolute
+    top: calc(100% + 2px)
+  &:before
+    content: " "
+    display: block
+    background-color: #e0e3e5
+    color: #e0e3e5
+    height: 1px;
+    width: 100%
+    right: 0px
+    position: absolute
+    bottom:  calc(100% + 2px)
+
+
   .event-status
     color: #526072
     font-size: 21px
@@ -60,6 +82,7 @@
     color: #526072
     font-size: 21px
     font-weight: 600
+  
 
 
 .newEvent

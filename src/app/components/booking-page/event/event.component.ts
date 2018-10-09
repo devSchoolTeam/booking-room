@@ -75,14 +75,14 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateEventHeight(miliseconds) {
-    const x = (miliseconds * 100) / this.interval.interval - 0.3;
+    const x = (miliseconds * 100) / this.interval.interval - 0.1;
 
     const string = x.toString() + '%';
     return string;
   }
 
   calculateEventOffset(miliseconds) {
-    const x = (miliseconds * 100) / this.interval.interval + 0.3;
+    const x = (miliseconds * 100) / this.interval.interval + 0.1;
 
     const string = x.toString() + '%';
     return string;

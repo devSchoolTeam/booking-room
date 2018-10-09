@@ -128,7 +128,6 @@ export class TimeService {
           currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
-
           return {
             startTime: new Date(events[i].end.dateTime),
             endTime: new Date(events[i + 1].start.dateTime),
@@ -246,4 +245,16 @@ export class TimeService {
       });
     }
   }
+
+  // public getStatus(currentTime) {
+  //   return this.changeStatusByTime(this.events, currentTime);
+  // }
+
+  // public getIntervalForBooking(currentTime) {
+  //   return this.calculateIntervalForBooking(this.events, currentTime);
+  // }
+
+  // public getTimerString(currentTime) {
+  //   return this.calculateTimerString(this.events, currentTime);
+  // }
 }

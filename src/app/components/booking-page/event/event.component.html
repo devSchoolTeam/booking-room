@@ -21,7 +21,7 @@
       #pidar
       *ngIf="event"
       class="newEvent"
-      [ngStyle]="{'height': pxStringBuider(event.duration), 'top':pxStringBuider(event.timeFromStart)}">
+      [ngStyle]="{'height':  calculateEventHeight(event.duration), 'top':calculateEventOffset(event.timeFromStart)}">
       <span class="newEvent-status">New meeting, &nbsp;</span>
       <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
 </span>
