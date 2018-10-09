@@ -23,16 +23,6 @@
   font-size: 90px
   letter-spacing: normal
 
-.image
-  max-width: 100%
-  object-fit: contain
-  opacity: 0.71
-  mix-blend-mode: overlay
-  position: relative
-  width: 700px
-  min-height: 430px
-  min-width: 300px
-
 .status-name
   font-family: OpenSans, sans-serif
   font-size: 38px
@@ -61,17 +51,19 @@
   &::after
     content: ""
     background: url('../../../assets/images/mesh.png') no-repeat center
-    opacity: 0.5
+    opacity: 0.35
     top: 0
     left: 0
     right: 0
     bottom: 0
     position: absolute
+    z-index: 0
 
 .book-button
   background-color: white
   width: 210px
   height: 78px
+  z-index: 100
 
 .noevents
   font-weight: bold
