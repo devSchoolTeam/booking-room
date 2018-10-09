@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimeService } from '../../services/time/time.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -9,17 +9,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./main-page.component.sass'],
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  public currentStatus;
-  public subscription;
-  public isEventsFoundSubscription;
+  public currentStatus: any;
+  public subscription: Subscription;
+  public isEventsFoundSubscription: Subscription;
   public timerString: string;
-  public timerStringSubscription: Subscription;
 
-
-  constructor(
-    private timeService: TimeService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private timeService: TimeService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.route.data.subscribe({

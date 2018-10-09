@@ -1,8 +1,5 @@
 <div class="background" [ngStyle]="{'background-color': currentStatus.backgroundColor}">
-
-
   <div class="container">
-
     <div class="content">
       <div class="time-block">
         <div *ngIf="timerString; else noEvents">
@@ -10,9 +7,7 @@
           <span class="status-name">{{currentStatus.statusLabel}}</span>
         </div>
       </div>
-
       <div class="title-container">
-
         <h1 class="name">Hall Room</h1>
         <button
           routerLink="/booking-page"
@@ -22,7 +17,6 @@
             {{currentStatus.bookButton}}
           </span>
         </button>
-
       </div>
     </div>
   </div>

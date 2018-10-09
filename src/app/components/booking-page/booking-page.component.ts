@@ -10,21 +10,23 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./booking-page.component.sass']
 })
 export class BookingPageComponent implements OnInit {
-  currentStatus;
+  currentStatus: object;
   interval;
-  events;
+  events: object;
   availableMeetingDurations = availableMeetingDurations;
   selectedDuration = 0;
-  tempEvent;
+  tempEvent: object;
   eventIsCreating = false;
   @ViewChild('child')
   child;
   public subscription: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private timeService: TimeService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.timeService.events$.subscribe({
@@ -44,7 +46,7 @@ export class BookingPageComponent implements OnInit {
     });
   }
 
-  selectMeetingDuration(availableMeetingDuration: any) {
+  selectMeetingDuration(availableMeetingDuration: number) {
     if (availableMeetingDuration > 0) {
       this.selectedDuration = availableMeetingDuration;
       this.tempEvent = {
@@ -75,11 +77,14 @@ export class BookingPageComponent implements OnInit {
       this.tempEvent = undefined;
     }
   }
+
   swipe() {
     return this.router.navigate(['/main-page']);
   }
+
   createEvent() {
     if (this.selectedDuration > 0 && !this.eventIsCreating) {
+      console.log(this.selectedDuration);
       this.eventIsCreating = true;
       setTimeout(() => {
         this.child.scrollToNewEvent();

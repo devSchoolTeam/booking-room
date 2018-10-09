@@ -7,7 +7,6 @@ import 'rxjs/add/observable/fromPromise';
   providedIn: 'root'
 })
 export class GapiService {
-  private events;
 
   constructor(private gapiService: GoogleApiService) {
   }
@@ -56,7 +55,7 @@ export class GapiService {
   }
 
   signOut() {
-    
+
     return gapi.auth2.getAuthInstance().signOut();
   }
 

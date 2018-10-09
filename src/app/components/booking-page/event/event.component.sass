@@ -1,5 +1,6 @@
 ::-webkit-scrollbar
   display: none
+
 .main
   display: flex
   height: 2700px
@@ -10,6 +11,7 @@
   width: 400px
   position: absolute
   top: 13px
+  left: 75px
 
 .measure
   height: 100%
@@ -36,6 +38,7 @@
   font-size: 18px
   font-family: OpenSans, sans-serif
   color: #7b7b7b
+  padding-right: 22px
 
 .event-blocks
   position: relative
@@ -44,7 +47,7 @@
   flex-grow: 3
 
 .event
-  word-wrap:  normal
+  word-wrap: normal
   margin: 0 10px
   position: absolute
   width: 100%
@@ -52,15 +55,15 @@
   background-color: #e0e3e5
   border: 1px solid white
   border-radius: 2px
-  padding: 10px 18px 
+  padding: 10px 18px
   &:after
     content: " "
     display: block
     background-color: #e0e3e5
     color: #e0e3e5
-    height: 1px;
+    height: 1px
     width: 100%
-    right: 0px
+    right: 0
     position: absolute
     top: calc(100% + 2px)
   &:before
@@ -68,12 +71,11 @@
     display: block
     background-color: #e0e3e5
     color: #e0e3e5
-    height: 1px;
+    height: 1px
     width: 100%
-    right: 0px
+    right: 0
     position: absolute
-    bottom:  calc(100% + 2px)
-
+    bottom: calc(100% + 2px)
 
   .event-status
     color: #526072
@@ -82,8 +84,6 @@
     color: #526072
     font-size: 21px
     font-weight: 600
-  
-
 
 .newEvent
   margin: 0 10px
@@ -91,6 +91,7 @@
   width: 100%
   background-color: #526072
   border-radius: 2px
+  min-width: 320px
   .newEvent-status
     color: white
     font-size: 21px

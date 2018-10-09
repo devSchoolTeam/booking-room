@@ -1,13 +1,4 @@
-import { Event } from './../../../models/event';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  Input,
-  OnDestroy,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 
 @Component({
@@ -17,18 +8,15 @@ import { TimeService } from '../../../services/time/time.service';
 })
 export class EventComponent implements OnInit, OnDestroy {
   blocks;
-  @Input()
-  events;
   interval;
-  @Input()
-  event;
-  @ViewChild('pidar')
+  @Input() event;
+  @ViewChild('newEvent')
   newEvent;
-
   subscription;
   public measure;
 
-  constructor(private timeService: TimeService) {}
+  constructor(private timeService: TimeService) {
+  }
 
   ngOnInit() {
     this.subscription = this.timeService.events$.subscribe({
@@ -67,35 +55,29 @@ export class EventComponent implements OnInit, OnDestroy {
     this.measure = objects;
   }
 
-  pxStringBuider(miliseconds) {
-    const x = (miliseconds * 100) / this.interval.interval;
-
-    const string = x.toString() + '%';
-    return string;
+  pxStringBuider(milliseconds: number) {
+    const x = (milliseconds * 100) / this.interval.interval;
+    return x.toString() + '%';
   }
 
-  calculateEventHeight(miliseconds) {
-    const x = (miliseconds * 100) / this.interval.interval - 0.1;
-
-    const string = x.toString() + '%';
-    return string;
+  calculateEventHeight(milliseconds: number) {
+    const x = (milliseconds * 100) / this.interval.interval - 0.1;
+    return x.toString() + '%';
   }
 
-  calculateEventOffset(miliseconds) {
-    const x = (miliseconds * 100) / this.interval.interval + 0.1;
-
-    const string = x.toString() + '%';
-    return string;
+  calculateEventOffset(milliseconds: number) {
+    const x = (milliseconds * 100) / this.interval.interval + 0.1;
+    return x.toString() + '%';
   }
+
   scrollToNewEvent() {
-    console.log(this.newEvent);
     this.newEvent.nativeElement.scrollIntoView({
       block: 'start',
       behavior: 'smooth'
     });
   }
 
-  calculateBlocks(events, currentTime: Date) {
+  calculateBlocks(events: Array<any>, currentTime: Date) {
     const eventBlock = [];
     const startTime = new Date(
       currentTime.getFullYear(),
@@ -108,7 +90,7 @@ export class EventComponent implements OnInit, OnDestroy {
     for (let i = 0; i < events.length; i++) {
       if (
         new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() >
+        new Date(currentTime).getTime() >
         900000
       ) {
         eventBlock.push({
@@ -124,11 +106,11 @@ export class EventComponent implements OnInit, OnDestroy {
         });
       } else if (
         new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() <
-          900000 &&
+        new Date(currentTime).getTime() <
+        900000 &&
         new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() >
-          0
+        new Date(currentTime).getTime() >
+        0
       ) {
         eventBlock.push({
           type: 'event',
@@ -158,9 +140,9 @@ export class EventComponent implements OnInit, OnDestroy {
         });
       } else if (
         new Date(events[i].start.dateTime).getTime() <
-          new Date(currentTime).getTime() &&
+        new Date(currentTime).getTime() &&
         new Date(events[i].end.dateTime).getTime() >
-          new Date(currentTime).getTime()
+        new Date(currentTime).getTime()
       ) {
         eventBlock.push({
           type: 'event',

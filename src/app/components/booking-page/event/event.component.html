@@ -6,7 +6,7 @@
       [ngClass]="time.type == 'small'? 'small' : 'big'"
     ><span class="event-status">{{time.time | date: 'HH:mm'}}</span>
       <span class="line"
-        *ngIf="time.type == 'big'"></span>
+            *ngIf="time.type == 'big'"></span>
     </div>
   </div>
   <div class="event-blocks">
@@ -16,9 +16,10 @@
       [ngStyle]="{'height': calculateEventHeight(block.duration), 'top':calculateEventOffset(block.fromStart)}">
       <span class="event-status">{{block.string}}&nbsp;</span>
       <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+      <span class="underblock-line"></span>
     </div>
     <div
-      #pidar
+      #newEvent
       *ngIf="event"
       class="newEvent"
       [ngStyle]="{'height':  calculateEventHeight(event.duration), 'top':calculateEventOffset(event.timeFromStart)}">
