@@ -9,7 +9,8 @@ import { meetingStatuses } from '../../shared/constants';
 })
 export class TimeService {
   private events;
-  private timer = interval(1000);
+  private intervalForDataUpdate = interval(1000);
+  private intervalForEventsUpload = interval(60000);
 
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
@@ -18,9 +19,14 @@ export class TimeService {
   public events$ = this.eventsSource.asObservable();
 
   constructor(private gapiService: GapiService) {
-    this.timer.subscribe({
+    this.intervalForDataUpdate.subscribe({
       next: () => {
         this.updateData();
+      }
+    });
+    this.intervalForEventsUpload.subscribe({
+      next: () => {
+        this.loadEvents().subscribe();
       }
     });
   }
@@ -91,7 +97,7 @@ export class TimeService {
           }
         }
       }
-      return meetingStatuses.inProcess;
+      return meetingStatuses.available;
     } else {
       return meetingStatuses.available;
     }
@@ -141,7 +147,9 @@ export class TimeService {
           return {
             startTime: currentTime,
             endTime: new Date(events[i + 1].start.dateTime),
-            interval: timeBetweenEvents
+            interval:
+              new Date(events[i + 1].start.dateTime).getTime() -
+              currentTime.getTime()
           };
         }
       }
