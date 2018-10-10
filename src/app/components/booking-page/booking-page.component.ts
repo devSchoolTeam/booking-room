@@ -79,7 +79,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   swipe() {
-    return this.router.navigate(['/main-page']);
+    this.router.navigate(['/']);
   }
 
   createEvent() {

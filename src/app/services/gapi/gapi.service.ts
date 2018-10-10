@@ -7,9 +7,7 @@ import 'rxjs/add/observable/fromPromise';
   providedIn: 'root'
 })
 export class GapiService {
-
-  constructor(private gapiService: GoogleApiService) {
-  }
+  constructor(private gapiService: GoogleApiService) {}
 
   config: Config = {
     CLIENT_ID:
@@ -34,6 +32,7 @@ export class GapiService {
             })
             .then(
               response => {
+                console.log(gapi);
                 resolve();
               },
               error => {
@@ -46,6 +45,23 @@ export class GapiService {
     });
   }
 
+  checkOutGapi() {
+    return new Promise((resolve, reject) => {
+      if (gapi.auth2) {
+        resolve();
+      } else {
+        return this.handleClientLoad().then(
+          res => {
+            resolve();
+          },
+          rej => {
+            reject();
+          }
+        );
+      }
+    });
+  }
+
   getSigninStatus() {
     return gapi.auth2.getAuthInstance().isSignedIn.get();
   }
@@ -55,7 +71,6 @@ export class GapiService {
   }
 
   signOut() {
-
     return gapi.auth2.getAuthInstance().signOut();
   }
 

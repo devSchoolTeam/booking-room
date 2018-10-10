@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { GapiService } from "./../../services/gapi/gapi.service";
-import { CanActivate } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { GapiService } from './../../services/gapi/gapi.service';
+import { CanActivate, Router } from '@angular/router';
 
-import { Route } from "@angular/compiler/src/core";
+import { Route } from '@angular/compiler/src/core';
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private gapiService: GapiService) {}
+  constructor(private gapiService: GapiService, private router: Router) {}
   canActivate(route: Route): boolean | Promise<boolean> {
     const status = this.gapiService.getSigninStatus();
 
@@ -19,6 +19,8 @@ export class AuthGuard implements CanActivate {
           return true;
         },
         rej => {
+          console.log(rej);
+          this.router.navigate(['/login']);
           return false;
         }
       );

@@ -72,7 +72,7 @@ export class EventComponent implements OnInit, OnDestroy {
 
   scrollToNewEvent() {
     this.newEvent.nativeElement.scrollIntoView({
-      block: 'start',
+      block: 'center',
       behavior: 'smooth'
     });
   }
