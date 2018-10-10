@@ -14,7 +14,6 @@ export class TimeService {
 
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
-
   private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
 
@@ -86,7 +85,6 @@ export class TimeService {
           eventEndTime = new Date(event.end.dateTime),
           timeToStart = eventStartTime.getTime() - currentTime.getTime(),
           timeToEnd = eventEndTime.getTime() - currentTime.getTime();
-
         if (timeToEnd > 0) {
           if (timeToStart >= 900000) {
             return meetingStatuses.available;
