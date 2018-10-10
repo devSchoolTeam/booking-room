@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-event',
@@ -12,8 +13,11 @@ export class EventComponent implements OnInit, OnDestroy {
   @Input() event;
   @ViewChild('newEvent')
   newEvent;
-  subscription;
+  @ViewChild('currentTime')
+  currentTime;
+  subscription: Subscription;
   public measure;
+  public lineOffset;
 
   constructor(private timeService: TimeService) {
   }
@@ -24,7 +28,11 @@ export class EventComponent implements OnInit, OnDestroy {
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
+        this.lineOffset = this.calculateCurrentTimeLine(date);
         this.calculateMeasure(this.interval.start, this.interval.end);
+        setTimeout(() => {
+          this.scrollToCurrentTime();
+        }, 0);
       }
     });
   }
@@ -73,6 +81,15 @@ export class EventComponent implements OnInit, OnDestroy {
   scrollToNewEvent() {
     this.newEvent.nativeElement.scrollIntoView({
       block: 'center',
+<<<<<<< HEAD
+=======
+      behavior: 'smooth'
+    });
+  }
+  scrollToCurrentTime() {
+    this.currentTime.nativeElement.scrollIntoView({
+      block: 'center',
+>>>>>>> fb4c552682d938bc860e71b98890361fd7da4c26
       behavior: 'smooth'
     });
   }
@@ -159,6 +176,18 @@ export class EventComponent implements OnInit, OnDestroy {
     }
     return eventBlock;
   }
+
+  calculateCurrentTimeLine(currentTime: Date) {
+    const currentTimeMilliseconds = currentTime.getTime() - new Date(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
+      currentTime.getDate(),
+        9,
+        0,
+        0
+      ).getTime();
+    return this.calculateEventOffset(currentTimeMilliseconds);
+    }
 
   calculateInterval(currentTime: Date) {
     const startTime = new Date(

@@ -10,7 +10,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./booking-page.component.sass']
 })
 export class BookingPageComponent implements OnInit {
-  currentStatus: object;
+  currentStatus;
   interval;
   events: object;
   availableMeetingDurations = availableMeetingDurations;
@@ -84,7 +84,6 @@ export class BookingPageComponent implements OnInit {
 
   createEvent() {
     if (this.selectedDuration > 0 && !this.eventIsCreating) {
-      console.log(this.selectedDuration);
       this.eventIsCreating = true;
       setTimeout(() => {
         this.child.scrollToNewEvent();
