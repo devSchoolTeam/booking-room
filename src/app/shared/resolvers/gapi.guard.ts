@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { GapiService } from './../../services/gapi/gapi.service';
-import { CanActivate, Router, CanActivateChild } from '@angular/router';
+import { GapiService } from '../../services/gapi/gapi.service';
+import { CanActivate, Router } from '@angular/router';
 
 import { Route } from '@angular/compiler/src/core';
+
 @Injectable({
   providedIn: 'root'
 })

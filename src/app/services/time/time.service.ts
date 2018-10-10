@@ -10,10 +10,9 @@ import { meetingStatuses } from '../../shared/constants';
 export class TimeService {
   private events;
   private timer = interval(1000);
-
+  private loadEventsTimer = interval(30000);
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
-
   private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
 
@@ -23,6 +22,11 @@ export class TimeService {
         this.updateData();
       }
     });
+    this.loadEventsTimer.subscribe({
+      next: () => {
+        this.loadEvents().subscribe();
+      }
+  });
   }
 
   // METHODS FOR WORKING WITH API
@@ -80,7 +84,6 @@ export class TimeService {
           eventEndTime = new Date(event.end.dateTime),
           timeToStart = eventStartTime.getTime() - currentTime.getTime(),
           timeToEnd = eventEndTime.getTime() - currentTime.getTime();
-
         if (timeToEnd > 0) {
           if (timeToStart >= 900000) {
             return meetingStatuses.available;
@@ -91,7 +94,7 @@ export class TimeService {
           }
         }
       }
-      return meetingStatuses.inProcess;
+      return meetingStatuses.available;
     } else {
       return meetingStatuses.available;
     }
