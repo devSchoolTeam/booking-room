@@ -32,6 +32,10 @@ const routes: Routes = [
     path: 'login',
     canActivate: [GapiGuard],
     component: LoginComponentComponent
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent
   }
 ];
 

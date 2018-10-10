@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-<<<<<<< HEAD
 import { GapiService } from './../../services/gapi/gapi.service';
 import { CanActivate, Router } from '@angular/router';
-=======
-import { GapiService } from '../../services/gapi/gapi.service';
-import { CanActivate } from '@angular/router';
->>>>>>> fb4c552682d938bc860e71b98890361fd7da4c26
 
 import { Route } from '@angular/compiler/src/core';
 @Injectable({
