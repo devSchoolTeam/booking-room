@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { GapiService } from "./../../services/gapi/gapi.service";
-import { CanActivate } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { GapiService } from '../../services/gapi/gapi.service';
+import { CanActivate } from '@angular/router';
 
-import { Route } from "@angular/compiler/src/core";
+import { Route } from '@angular/compiler/src/core';
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   constructor(private gapiService: GapiService) {}
