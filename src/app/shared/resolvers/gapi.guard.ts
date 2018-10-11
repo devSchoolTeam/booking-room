@@ -12,7 +12,6 @@ export class GapiGuard implements CanActivate {
   canActivate(route: Route): Promise<boolean> {
     return this.gapiService.checkOutGapi().then(
       res => {
-        console.log(res);
         return true;
       },
       rej => {

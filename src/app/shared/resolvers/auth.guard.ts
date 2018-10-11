@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GapiService } from './../../services/gapi/gapi.service';
+import { GapiService } from '../../services/gapi/gapi.service';
 import { CanActivate, Router } from '@angular/router';
 
 import { Route } from '@angular/compiler/src/core';
