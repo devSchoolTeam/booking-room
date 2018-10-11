@@ -9,24 +9,25 @@ import { meetingStatuses } from '../../shared/constants';
 })
 export class TimeService {
   private events;
-  private timer = interval(1000);
-  private loadEventsTimer = interval(30000);
+  private intervalForDataUpdate = interval(1000);
+  private intervalForEventsUpload = interval(60000);
+
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
   private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
 
   constructor(private gapiService: GapiService) {
-    this.timer.subscribe({
+    this.intervalForDataUpdate.subscribe({
       next: () => {
         this.updateData();
       }
     });
-    this.loadEventsTimer.subscribe({
+    this.intervalForEventsUpload.subscribe({
       next: () => {
         this.loadEvents().subscribe();
       }
-  });
+    });
   }
 
   // METHODS FOR WORKING WITH API
@@ -144,7 +145,9 @@ export class TimeService {
           return {
             startTime: currentTime,
             endTime: new Date(events[i + 1].start.dateTime),
-            interval: timeBetweenEvents
+            interval:
+              new Date(events[i + 1].start.dateTime).getTime() -
+              currentTime.getTime()
           };
         }
       }
