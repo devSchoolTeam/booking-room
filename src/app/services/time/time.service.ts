@@ -3,6 +3,7 @@ import { GapiService } from '../gapi/gapi.service';
 import { from, interval, Subject, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
+import { EventBlock } from '../../shared/eventBlock';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,12 @@ export class TimeService {
     );
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
-        return res['result']['items'];
+        const date = new Date();
+        let events = res['result']['items'];
+       events.map(event => {
+          return new EventBlock(event, date);
+        });
+       return events;
       }),
       tap(res => {
         this.events = res;

@@ -14,7 +14,7 @@
       *ngFor="let block of blocks"
       [class]="'event'"
       [ngStyle]="{'height': calculateEventHeight(block.duration), 'top':calculateEventOffset(block.fromStart)}">
-      <span class="event-status">{{block.title}}&nbsp;</span>
+      <span class="event-status">{{block.status}}&nbsp;</span>
       <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
       <span class="underblock-line"></span>
     </div>

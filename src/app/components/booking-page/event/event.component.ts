@@ -98,22 +98,23 @@ export class EventComponent implements OnInit, OnDestroy {
     for (let i = 0; i < events.length; i++) {
       const eventBlock = new EventBlock(events[i], currentTime);
       if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 900000) {
-        eventBlock.title = 'Next event, ';
+        eventBlock.status = 'Next event, ';
       } else if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() < 900000
         && new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 0
       ) {
-        eventBlock.title = 'Soon, ';
+        eventBlock.status = 'Soon, ';
 
       } else if (
         new Date(events[i].end.dateTime).getTime() < new Date(currentTime).getTime()) {
-        eventBlock.title = 'Finished event, ';
+        eventBlock.status = 'Finished event, ';
       } else if (new Date(events[i].start.dateTime).getTime() < new Date(currentTime).getTime()
         && new Date(events[i].end.dateTime).getTime() > new Date(currentTime).getTime()
       ) {
-        eventBlock.title = 'In process, ';
+        eventBlock.status = 'In process, ';
       }
       eventBlocks.push(eventBlock);
     }
+    console.log(eventBlocks);
     return eventBlocks;
   }
 

@@ -1,6 +1,8 @@
 export class EventBlock {
-  public type: string;
   public title: string;
+  public status: string;
+  public attendees: Array <string>;
+  public description;
   start: Date;
   end: Date;
   duration: number;
@@ -14,8 +16,10 @@ export class EventBlock {
       0,
       0
     );
-    this.type = 'event';
-    this.title = 'Next event';
+    this.attendees = event.attendees;
+    this.description = event.description;
+    this.status = '';
+    this.title = event.summary;
     this.start = new Date(event.start.dateTime);
     this.end = new Date(event.end.dateTime);
     this.duration = new Date(event.end.dateTime).getTime() - new Date(event.start.dateTime).getTime();
