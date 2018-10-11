@@ -32,7 +32,6 @@ export class GapiService {
             })
             .then(
               response => {
-                console.log(gapi);
                 resolve();
               },
               error => {

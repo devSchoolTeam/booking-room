@@ -15,12 +15,12 @@
       [class]="'event'"
       (click)=" onEventClick({'title':block.string})"
       [ngStyle]="{'height': calculateEventHeight(block.duration), 'top':calculateEventOffset(block.fromStart)}">
-      <span class="event-status">{{block.string}}&nbsp;</span>
+      <span class="event-status">{{block.status}}&nbsp;</span>
       <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
       <span class="underblock-line"></span>
     </div>
     <span #currentTime
-      class="current-time"
+          class="current-time"
           *ngIf=" lineOffset"
           [ngStyle]="{'top':  lineOffset}"
     ></span>

@@ -3,24 +3,30 @@ import { GapiService } from '../gapi/gapi.service';
 import { from, interval, Subject, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
+import { EventBlock } from '../../shared/eventBlock';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeService {
   private events;
-  private timer = interval(1000);
+  private intervalForDataUpdate = interval(1000);
+  private intervalForEventsUpload = interval(60000);
 
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
-
   private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
 
   constructor(private gapiService: GapiService) {
-    this.timer.subscribe({
+    this.intervalForDataUpdate.subscribe({
       next: () => {
         this.updateData();
+      }
+    });
+    this.intervalForEventsUpload.subscribe({
+      next: () => {
+        this.loadEvents().subscribe();
       }
     });
   }
@@ -47,7 +53,12 @@ export class TimeService {
     );
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
-        return res['result']['items'];
+        const date = new Date();
+        const events = res['result']['items'];
+       events.map(event => {
+          return new EventBlock(event, date);
+        });
+       return events;
       }),
       tap(res => {
         this.events = res;
@@ -80,7 +91,6 @@ export class TimeService {
           eventEndTime = new Date(event.end.dateTime),
           timeToStart = eventStartTime.getTime() - currentTime.getTime(),
           timeToEnd = eventEndTime.getTime() - currentTime.getTime();
-
         if (timeToEnd > 0) {
           if (timeToStart >= 900000) {
             return meetingStatuses.available;
@@ -91,7 +101,7 @@ export class TimeService {
           }
         }
       }
-      return meetingStatuses.inProcess;
+      return meetingStatuses.available;
     } else {
       return meetingStatuses.available;
     }
@@ -141,7 +151,9 @@ export class TimeService {
           return {
             startTime: currentTime,
             endTime: new Date(events[i + 1].start.dateTime),
-            interval: timeBetweenEvents
+            interval:
+              new Date(events[i + 1].start.dateTime).getTime() -
+              currentTime.getTime()
           };
         }
       }

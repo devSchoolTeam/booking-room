@@ -2,6 +2,7 @@ import { PopupService } from './../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
+import { EventBlock } from '../../../shared/eventBlock';
 
 @Component({
   selector: 'app-event',
@@ -88,6 +89,7 @@ export class EventComponent implements OnInit, OnDestroy {
       behavior: 'smooth'
     });
   }
+
   scrollToCurrentTime() {
     this.currentTime.nativeElement.scrollIntoView({
       block: 'center',
@@ -96,100 +98,43 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateBlocks(events: Array<any>, currentTime: Date) {
-    const eventBlock = [];
-    const startTime = new Date(
+
+    const eventBlocks = [];
+    for (let i = 0; i < events.length; i++) {
+      const eventBlock = new EventBlock(events[i], currentTime);
+      if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 900000) {
+        eventBlock.status = 'Next event, ';
+      } else if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() < 900000
+        && new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 0
+      ) {
+        eventBlock.status = 'Soon, ';
+
+      } else if (
+
+        new Date(events[i].end.dateTime).getTime() < new Date(currentTime).getTime()) {
+        eventBlock.status = 'Finished event, ';
+      } else if (new Date(events[i].start.dateTime).getTime() < new Date(currentTime).getTime()
+        && new Date(events[i].end.dateTime).getTime() > new Date(currentTime).getTime()
+
+      ) {
+        eventBlock.status = 'In process, ';
+      }
+      eventBlocks.push(eventBlock);
+    }
+    console.log(eventBlocks);
+    return eventBlocks;
+  }
+
+  calculateCurrentTimeLine(currentTime: Date) {
+
+    const currentTimeMilliseconds = currentTime.getTime() - new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
       currentTime.getDate(),
       9,
       0,
       0
-    );
-
-    for (let i = 0; i < events.length; i++) {
-      if (
-        new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() >
-        900000
-      ) {
-        eventBlock.push({
-          type: 'event',
-          string: 'Next event, ',
-          start: new Date(events[i].start.dateTime),
-          end: new Date(events[i].end.dateTime),
-          duration:
-            new Date(events[i].end.dateTime).getTime() -
-            new Date(events[i].start.dateTime).getTime(),
-          fromStart:
-            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
-        });
-      } else if (
-        new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() <
-          900000 &&
-        new Date(events[i].start.dateTime).getTime() -
-          new Date(currentTime).getTime() >
-          0
-      ) {
-        eventBlock.push({
-          type: 'event',
-          string: 'Soon, ',
-          start: new Date(events[i].start.dateTime),
-          end: new Date(events[i].end.dateTime),
-          duration:
-            new Date(events[i].end.dateTime).getTime() -
-            new Date(events[i].start.dateTime).getTime(),
-          fromStart:
-            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
-        });
-      } else if (
-        new Date(events[i].end.dateTime).getTime() <
-        new Date(currentTime).getTime()
-      ) {
-        eventBlock.push({
-          type: 'event',
-          string: 'Finished event, ',
-          start: new Date(events[i].start.dateTime),
-          end: new Date(events[i].end.dateTime),
-          duration:
-            new Date(events[i].end.dateTime).getTime() -
-            new Date(events[i].start.dateTime).getTime(),
-          fromStart:
-            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
-        });
-      } else if (
-        new Date(events[i].start.dateTime).getTime() <
-          new Date(currentTime).getTime() &&
-        new Date(events[i].end.dateTime).getTime() >
-          new Date(currentTime).getTime()
-      ) {
-        eventBlock.push({
-          type: 'event',
-          string: 'In process, ',
-          start: new Date(events[i].start.dateTime),
-          end: new Date(events[i].end.dateTime),
-          duration:
-            new Date(events[i].end.dateTime).getTime() -
-            new Date(events[i].start.dateTime).getTime(),
-          fromStart:
-            new Date(events[i].start.dateTime).getTime() - startTime.getTime()
-        });
-      }
-    }
-    return eventBlock;
-  }
-
-  calculateCurrentTimeLine(currentTime: Date) {
-    const currentTimeMilliseconds =
-      currentTime.getTime() -
-      new Date(
-        currentTime.getFullYear(),
-        currentTime.getMonth(),
-        currentTime.getDate(),
-        9,
-        0,
-        0
-      ).getTime();
+    ).getTime();
     return this.calculateEventOffset(currentTimeMilliseconds);
   }
 

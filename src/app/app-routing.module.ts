@@ -5,7 +5,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { BookingPageComponent } from './components/booking-page/booking-page.component';
 import { DataResolver } from './shared/resolvers/data.resolver';
 import { AuthGuard } from './shared/resolvers/auth.guard';
-import { LoginComponentComponent } from './components/login-component/login-component.component';
+import { LoginComponent } from './components/login-component/login.component';
 import { GapiGuard } from './shared/resolvers/gapi.guard';
 
 const routes: Routes = [
@@ -31,7 +31,7 @@ const routes: Routes = [
   {
     path: 'login',
     canActivate: [GapiGuard],
-    component: LoginComponentComponent
+    component: LoginComponent
   },
   {
     path: 'error',
