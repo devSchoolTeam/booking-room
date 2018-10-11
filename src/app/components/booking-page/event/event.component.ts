@@ -1,3 +1,4 @@
+import { PopupService } from './../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
@@ -10,7 +11,8 @@ import { Subscription } from 'rxjs';
 export class EventComponent implements OnInit, OnDestroy {
   blocks;
   interval;
-  @Input() event;
+  @Input()
+  event;
   @ViewChild('newEvent')
   newEvent;
   @ViewChild('currentTime')
@@ -19,8 +21,10 @@ export class EventComponent implements OnInit, OnDestroy {
   public measure;
   public lineOffset;
 
-  constructor(private timeService: TimeService) {
-  }
+  constructor(
+    private timeService: TimeService,
+    private popupService: PopupService
+  ) {}
 
   ngOnInit() {
     this.subscription = this.timeService.events$.subscribe({
@@ -101,10 +105,11 @@ export class EventComponent implements OnInit, OnDestroy {
       0,
       0
     );
+
     for (let i = 0; i < events.length; i++) {
       if (
         new Date(events[i].start.dateTime).getTime() -
-        new Date(currentTime).getTime() >
+          new Date(currentTime).getTime() >
         900000
       ) {
         eventBlock.push({
@@ -120,11 +125,11 @@ export class EventComponent implements OnInit, OnDestroy {
         });
       } else if (
         new Date(events[i].start.dateTime).getTime() -
-        new Date(currentTime).getTime() <
-        900000 &&
+          new Date(currentTime).getTime() <
+          900000 &&
         new Date(events[i].start.dateTime).getTime() -
-        new Date(currentTime).getTime() >
-        0
+          new Date(currentTime).getTime() >
+          0
       ) {
         eventBlock.push({
           type: 'event',
@@ -154,9 +159,9 @@ export class EventComponent implements OnInit, OnDestroy {
         });
       } else if (
         new Date(events[i].start.dateTime).getTime() <
-        new Date(currentTime).getTime() &&
+          new Date(currentTime).getTime() &&
         new Date(events[i].end.dateTime).getTime() >
-        new Date(currentTime).getTime()
+          new Date(currentTime).getTime()
       ) {
         eventBlock.push({
           type: 'event',
@@ -175,16 +180,18 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateCurrentTimeLine(currentTime: Date) {
-    const currentTimeMilliseconds = currentTime.getTime() - new Date(
-      currentTime.getFullYear(),
-      currentTime.getMonth(),
-      currentTime.getDate(),
+    const currentTimeMilliseconds =
+      currentTime.getTime() -
+      new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
         9,
         0,
         0
       ).getTime();
     return this.calculateEventOffset(currentTimeMilliseconds);
-    }
+  }
 
   calculateInterval(currentTime: Date) {
     const startTime = new Date(
@@ -209,5 +216,9 @@ export class EventComponent implements OnInit, OnDestroy {
       end: endTime,
       interval: endTime.getTime() - startTime.getTime()
     };
+  }
+
+  onEventClick(content) {
+    this.popupService.showPopup(content);
   }
 }

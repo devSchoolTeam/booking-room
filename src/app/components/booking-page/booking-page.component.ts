@@ -25,8 +25,7 @@ export class BookingPageComponent implements OnInit {
     private route: ActivatedRoute,
     private timeService: TimeService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.timeService.events$.subscribe({
@@ -71,7 +70,7 @@ export class BookingPageComponent implements OnInit {
       };
       setTimeout(() => {
         this.child.scrollToNewEvent();
-      }, 0);
+      });
     } else {
       this.selectedDuration = availableMeetingDuration;
       this.tempEvent = undefined;

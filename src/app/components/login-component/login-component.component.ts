@@ -15,7 +15,6 @@ export class LoginComponentComponent implements OnInit {
   onSignIn() {
     this.gapiService.signIn().then(
       res => {
-        console.log(res);
         this.router.navigate(['/']);
       },
       rej => {
