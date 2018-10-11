@@ -11,6 +11,7 @@ export class PopupComponent implements OnInit {
   popUpState: Boolean;
   title: String;
   list: Array<any>;
+  event;
   ngOnInit() {
     this.popupService.popupState.subscribe({
       next: state => {
@@ -20,9 +21,9 @@ export class PopupComponent implements OnInit {
     });
 
     this.popupService.popupContent.subscribe({
-      next: content => {
-        this.title = content.title;
-        this.list = content.list;
+      next: event => {
+        console.log(event);
+        this.event = event;
       }
     });
   }

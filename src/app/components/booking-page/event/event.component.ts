@@ -10,6 +10,7 @@ import { EventBlock } from '../../../shared/eventBlock';
   styleUrls: ['./event.component.sass']
 })
 export class EventComponent implements OnInit, OnDestroy {
+  events;
   blocks;
   interval;
   @Input()
@@ -30,6 +31,7 @@ export class EventComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
+        this.events = events;
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -97,32 +99,27 @@ export class EventComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculateBlocks(events: Array<any>, currentTime: Date) {
-
-    const eventBlocks = [];
+  calculateBlocks(events: Array<EventBlock>, currentTime: Date) {
     for (let i = 0; i < events.length; i++) {
-      const eventBlock = new EventBlock(events[i], currentTime);
-      if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 900000) {
-        eventBlock.status = 'Next event, ';
-      } else if (new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() < 900000
-        && new Date(events[i].start.dateTime).getTime() - new Date(currentTime).getTime() > 0
+      if (new Date(events[i].start).getTime() - new Date(currentTime).getTime() > 900000) {
+        events[i].status = 'Next event, ';
+      } else if (new Date(events[i].start).getTime() - new Date(currentTime).getTime() < 900000
+        && new Date(events[i].start).getTime() - new Date(currentTime).getTime() > 0
       ) {
-        eventBlock.status = 'Soon, ';
+        events[i].status = 'Soon, ';
 
       } else if (
 
-        new Date(events[i].end.dateTime).getTime() < new Date(currentTime).getTime()) {
-        eventBlock.status = 'Finished event, ';
-      } else if (new Date(events[i].start.dateTime).getTime() < new Date(currentTime).getTime()
-        && new Date(events[i].end.dateTime).getTime() > new Date(currentTime).getTime()
+        new Date(events[i].end).getTime() < new Date(currentTime).getTime()) {
+        events[i].status = 'Finished event, ';
+      } else if (new Date(events[i].start).getTime() < new Date(currentTime).getTime()
+        && new Date(events[i].end).getTime() > new Date(currentTime).getTime()
 
       ) {
-        eventBlock.status = 'In process, ';
+        events[i].status = 'In process, ';
       }
-      eventBlocks.push(eventBlock);
     }
-    console.log(eventBlocks);
-    return eventBlocks;
+    return events;
   }
 
   calculateCurrentTimeLine(currentTime: Date) {

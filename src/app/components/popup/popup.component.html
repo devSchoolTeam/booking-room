@@ -4,10 +4,13 @@
     <h2 *ngIf="title">{{title}}</h2>
     <div>
       <ul>
-        <li *ngFor="let item of list">
-          <h3>Example title</h3>
-          <p>Example text</p>     
+        <li>Title: {{event.title}}</li>
+        <li>Description: {{event.description}}</li>
+        <li>Time: {{event.start.getHours()}}:{{event.start.getMinutes()}} -
+          {{event.end.getHours()}}: {{event.end.getMinutes()}}
         </li>
+        <li>Attendees: <span *ngFor="let attendee of event.attendees">{{attendee.email}} </span></li>
+        <li>Creator: {{event.creator}}</li>
       </ul>
     </div>
   </div>

@@ -2,7 +2,8 @@ export class EventBlock {
   public title: string;
   public status: string;
   public attendees: Array <string>;
-  public description;
+  public description: string;
+  public creator: string;
   start: Date;
   end: Date;
   duration: number;
@@ -16,6 +17,7 @@ export class EventBlock {
       0,
       0
     );
+    this.creator = event.creator.email;
     this.attendees = event.attendees;
     this.description = event.description;
     this.status = '';

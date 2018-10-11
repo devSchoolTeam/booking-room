@@ -12,7 +12,6 @@ export class TimeService {
   private events;
   private intervalForDataUpdate = interval(1000);
   private intervalForEventsUpload = interval(60000);
-
   public dataSubject = new Subject<any>();
   public data = this.dataSubject.asObservable();
   private eventsSource = new BehaviorSubject<any>(undefined);
@@ -54,13 +53,15 @@ export class TimeService {
     return from(this.gapiService.listUpcomingEvents(startTime, endTime)).pipe(
       map(res => {
         const date = new Date();
-        const events = res['result']['items'];
-       events.map(event => {
-          return new EventBlock(event, date);
+        const events = [];
+        const gapiEvents = res['result']['items'];
+       gapiEvents.map(event => {
+          events.push(new EventBlock(event, date));
         });
        return events;
       }),
       tap(res => {
+        console.log(res);
         this.events = res;
         this.updateData();
         this.eventsSource.next(res);
@@ -87,8 +88,8 @@ export class TimeService {
     if (events.length > 0) {
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
-        const eventStartTime = new Date(event.start.dateTime),
-          eventEndTime = new Date(event.end.dateTime),
+        const eventStartTime = new Date(event.start),
+          eventEndTime = new Date(event.end),
           timeToStart = eventStartTime.getTime() - currentTime.getTime(),
           timeToEnd = eventEndTime.getTime() - currentTime.getTime();
         if (timeToEnd > 0) {
@@ -107,7 +108,7 @@ export class TimeService {
     }
   }
 
-  calculateIntervalForBooking(events: Array<any>, currentTime: Date) {
+  calculateIntervalForBooking(events: Array<EventBlock>, currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -118,29 +119,26 @@ export class TimeService {
     );
     if (events.length > 0) {
       const timeToFirstEvent =
-        new Date(events[0].start.dateTime).getTime() - currentTime.getTime();
+        new Date(events[0].start).getTime() - currentTime.getTime();
       if (timeToFirstEvent > 900000) {
         return {
           startTime: currentTime,
-          endTime: new Date(events[0].start.dateTime),
+          endTime: new Date(events[0].start),
           interval: timeToFirstEvent
         };
       }
 
       for (let i = 0; i < events.length - 1; i++) {
-        const timeBetweenEvents =
-          new Date(events[i + 1].start.dateTime).getTime() -
-          new Date(events[i].end.dateTime).getTime();
-        const timeFromStart =
-          new Date(events[i].end.dateTime).getTime() - currentTime.getTime();
-        const timeFromEnd =
-          new Date(events[i + 1].start.dateTime).getTime() -
+        const timeBetweenEvents = new Date(events[i + 1].start).getTime() -
+          new Date(events[i].end).getTime();
+        const timeFromStart = new Date(events[i].end).getTime() - currentTime.getTime();
+        const timeFromEnd = new Date(events[i + 1].start).getTime() -
           currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
           return {
-            startTime: new Date(events[i].end.dateTime),
-            endTime: new Date(events[i + 1].start.dateTime),
+            startTime: new Date(events[i].end),
+            endTime: new Date(events[i + 1].start),
             interval: timeBetweenEvents
           };
         } else if (
@@ -150,9 +148,9 @@ export class TimeService {
         ) {
           return {
             startTime: currentTime,
-            endTime: new Date(events[i + 1].start.dateTime),
+            endTime: new Date(events[i + 1].start),
             interval:
-              new Date(events[i + 1].start.dateTime).getTime() -
+              new Date(events[i + 1].start).getTime() -
               currentTime.getTime()
           };
         }
@@ -160,9 +158,9 @@ export class TimeService {
 
       const timeAfterLast =
         todaysMidnight.getTime() -
-        new Date(events[events.length - 1].end.dateTime).getTime();
+        new Date(events[events.length - 1].end).getTime();
       const lastEventStartTime = new Date(
-        events[events.length - 1].end.dateTime
+        events[events.length - 1].end
       );
 
       if (
@@ -204,8 +202,8 @@ export class TimeService {
       if (events.length > 0) {
         for (let i = 0; i < events.length; i++) {
           const event = events[i];
-          const startTime = new Date(event.start.dateTime),
-            endTime = new Date(event.end.dateTime),
+          const startTime = new Date(event.start),
+            endTime = new Date(event.end),
             timeToStart = startTime.getTime() - currentTime.getTime(),
             timeToEnd = endTime.getTime() - currentTime.getTime();
           if (timeToStart > 0) {
