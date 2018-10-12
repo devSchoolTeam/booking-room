@@ -12,7 +12,7 @@ export class TimeService {
   private events;
   private intervalForDataUpdate = interval(1000);
   private intervalForEventsUpload = interval(60000);
-  public dataSubject = new Subject<any>();
+  public dataSubject = new BehaviorSubject<any>(undefined);
   public data = this.dataSubject.asObservable();
   private eventsSource = new BehaviorSubject<any>(undefined);
   public events$ = this.eventsSource.asObservable();
@@ -55,10 +55,10 @@ export class TimeService {
         const date = new Date();
         const events = [];
         const gapiEvents = res['result']['items'];
-       gapiEvents.map(event => {
+        gapiEvents.map(event => {
           events.push(new EventBlock(event, date));
         });
-       return events;
+        return events;
       }),
       tap(res => {
         console.log(res);
@@ -129,11 +129,13 @@ export class TimeService {
       }
 
       for (let i = 0; i < events.length - 1; i++) {
-        const timeBetweenEvents = new Date(events[i + 1].start).getTime() -
+        const timeBetweenEvents =
+          new Date(events[i + 1].start).getTime() -
           new Date(events[i].end).getTime();
-        const timeFromStart = new Date(events[i].end).getTime() - currentTime.getTime();
-        const timeFromEnd = new Date(events[i + 1].start).getTime() -
-          currentTime.getTime();
+        const timeFromStart =
+          new Date(events[i].end).getTime() - currentTime.getTime();
+        const timeFromEnd =
+          new Date(events[i + 1].start).getTime() - currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
           return {
@@ -150,8 +152,7 @@ export class TimeService {
             startTime: currentTime,
             endTime: new Date(events[i + 1].start),
             interval:
-              new Date(events[i + 1].start).getTime() -
-              currentTime.getTime()
+              new Date(events[i + 1].start).getTime() - currentTime.getTime()
           };
         }
       }
@@ -159,9 +160,7 @@ export class TimeService {
       const timeAfterLast =
         todaysMidnight.getTime() -
         new Date(events[events.length - 1].end).getTime();
-      const lastEventStartTime = new Date(
-        events[events.length - 1].end
-      );
+      const lastEventStartTime = new Date(events[events.length - 1].end);
 
       if (
         timeAfterLast > 900000 &&

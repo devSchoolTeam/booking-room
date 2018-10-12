@@ -1,7 +1,7 @@
 export class EventBlock {
   public title: string;
   public status: string;
-  public attendees: Array <string>;
+  public attendees: Array<string>;
   public description: string;
   public creator: string;
   start: Date;
@@ -11,7 +11,9 @@ export class EventBlock {
   private startTime: Date;
 
   constructor(event, currentTime: Date) {
-    this.startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(),
+    this.startTime = new Date(
+      currentTime.getFullYear(),
+      currentTime.getMonth(),
       currentTime.getDate(),
       9,
       0,
@@ -19,12 +21,26 @@ export class EventBlock {
     );
     this.creator = event.creator.email;
     this.attendees = event.attendees;
-    this.description = event.description;
+    console.log(this.attendees);
+    if (event.description) {
+      this.description = event.description;
+    } else {
+      this.description = 'Just event';
+    }
+
     this.status = '';
-    this.title = event.summary;
+    if (event.summary) {
+      this.title = event.summary;
+    } else {
+      this.title = 'Untitled event';
+    }
+
     this.start = new Date(event.start.dateTime);
     this.end = new Date(event.end.dateTime);
-    this.duration = new Date(event.end.dateTime).getTime() - new Date(event.start.dateTime).getTime();
-    this.fromStart = new Date(event.start.dateTime).getTime() - this.startTime.getTime();
+    this.duration =
+      new Date(event.end.dateTime).getTime() -
+      new Date(event.start.dateTime).getTime();
+    this.fromStart =
+      new Date(event.start.dateTime).getTime() - this.startTime.getTime();
   }
 }

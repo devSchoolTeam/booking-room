@@ -4,13 +4,26 @@
     <h2 *ngIf="title">{{title}}</h2>
     <div>
       <ul>
-        <li>Title: {{event.title}}</li>
-        <li>Description: {{event.description}}</li>
-        <li>Time: {{event.start.getHours()}}:{{event.start.getMinutes()}} -
-          {{event.end.getHours()}}: {{event.end.getMinutes()}}
-        </li>
-        <li>Attendees: <span *ngFor="let attendee of event.attendees">{{attendee.email}} </span></li>
+
+      </ul>
+    </div>
+    <div *ngIf="event">
+      <h2>{{event.title}}</h2>
+      <ul>
         <li>Creator: {{event.creator}}</li>
+        <li>Description: {{event.description}}</li>
+        <li>Time: {{event.start | date: 'HH:mm'}} -
+          {{event.end | date: 'HH:mm'}}
+        </li>
+        
+        <li>Attendees:  
+          <ul>
+            <li *ngFor="let attende of event.attendees">
+              {{attende.email}}
+            </li>
+          </ul>
+        </li>
+        
       </ul>
     </div>
   </div>
