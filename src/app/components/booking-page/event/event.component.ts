@@ -26,9 +26,13 @@ export class EventComponent implements OnInit, OnDestroy {
   constructor(
     private timeService: TimeService,
     private popupService: PopupService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.scrollToCurrentTime();
+    }, 0);
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         this.events = events;
@@ -37,9 +41,6 @@ export class EventComponent implements OnInit, OnDestroy {
         this.interval = this.calculateInterval(date);
         this.lineOffset = this.calculateCurrentTimeLine(date);
         this.calculateMeasure(this.interval.start, this.interval.end);
-        setTimeout(() => {
-          this.scrollToCurrentTime();
-        }, 0);
       }
     });
   }

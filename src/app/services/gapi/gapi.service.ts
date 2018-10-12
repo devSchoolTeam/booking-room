@@ -69,10 +69,6 @@ export class GapiService {
     return gapi.auth2.getAuthInstance().signIn();
   }
 
-  signOut() {
-    return gapi.auth2.getAuthInstance().signOut();
-  }
-
   listUpcomingEvents(requiredDate: Date, endTime: Date) {
     return gapi.client['calendar'].events.list({
       calendarId: 'primary',

@@ -16,7 +16,7 @@ import { AuthGuard } from './shared/resolvers/auth.guard';
 import { EventComponent } from './components/booking-page/event/event.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { PopupComponent } from './components/popup/popup.component';
-import { LoginComponent } from './components/login-component/login.component';
+import { LoginComponent } from './components/login/login.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id:

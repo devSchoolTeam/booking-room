@@ -49,16 +49,16 @@ export class BookingPageComponent implements OnInit {
     if (availableMeetingDuration > 0) {
       this.selectedDuration = availableMeetingDuration;
       this.tempEvent = {
-        start: this.interval.startTime,
+        start: this.interval.start,
         end: new Date(
-          this.interval.startTime.getTime() + this.selectedDuration
+          this.interval.start.getTime() + this.selectedDuration
         ),
         duration:
           new Date(
-            this.interval.startTime.getTime() + this.selectedDuration
-          ).getTime() - this.interval.startTime.getTime(),
+            this.interval.start.getTime() + this.selectedDuration
+          ).getTime() - this.interval.start.getTime(),
         timeFromStart:
-          this.interval.startTime.getTime() -
+          this.interval.start.getTime() -
           new Date(
             new Date().getFullYear(),
             new Date().getMonth(),
@@ -88,10 +88,9 @@ export class BookingPageComponent implements OnInit {
         this.child.scrollToNewEvent();
       }, 0);
       this.timeService
-        .createEvent(this.interval.startTime, this.selectedDuration)
+        .createEvent(this.interval.start, this.selectedDuration)
         .then(
           res => {
-            console.log('Success:' + res);
             this.timeService.loadEvents().subscribe();
             this.selectedDuration = 0;
             this.tempEvent = undefined;

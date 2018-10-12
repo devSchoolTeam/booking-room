@@ -15,6 +15,7 @@ export class GapiGuard implements CanActivate {
         return true;
       },
       rej => {
+        this.router.navigate(['/error']);
         return false;
       }
     );

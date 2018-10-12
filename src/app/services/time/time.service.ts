@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { GapiService } from '../gapi/gapi.service';
-import { from, interval, Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from, interval } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
 import { EventBlock } from '../../shared/eventBlock';
+import { BookingTime } from '../../shared/bookingTime';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class TimeService {
   private events;
   private intervalForDataUpdate = interval(1000);
   private intervalForEventsUpload = interval(60000);
-  public dataSubject = new BehaviorSubject<any>(undefined);
+  public dataSubject = new BehaviorSubject<any>(null);
   public data = this.dataSubject.asObservable();
-  private eventsSource = new BehaviorSubject<any>(undefined);
+  private eventsSource = new BehaviorSubject<any>(null);
   public events$ = this.eventsSource.asObservable();
 
   constructor(private gapiService: GapiService) {
@@ -61,7 +62,6 @@ export class TimeService {
         return events;
       }),
       tap(res => {
-        console.log(res);
         this.events = res;
         this.updateData();
         this.eventsSource.next(res);
@@ -121,11 +121,7 @@ export class TimeService {
       const timeToFirstEvent =
         new Date(events[0].start).getTime() - currentTime.getTime();
       if (timeToFirstEvent > 900000) {
-        return {
-          startTime: currentTime,
-          endTime: new Date(events[0].start),
-          interval: timeToFirstEvent
-        };
+        return new BookingTime(currentTime, new Date(events[0].start));
       }
 
       for (let i = 0; i < events.length - 1; i++) {
@@ -138,22 +134,13 @@ export class TimeService {
           new Date(events[i + 1].start).getTime() - currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
-          return {
-            startTime: new Date(events[i].end),
-            endTime: new Date(events[i + 1].start),
-            interval: timeBetweenEvents
-          };
+          return new BookingTime(new Date(events[i].end), new Date(events[i + 1].start));
         } else if (
           timeBetweenEvents > 900000 &&
           timeFromStart < 0 &&
           timeFromEnd >= 900000
         ) {
-          return {
-            startTime: currentTime,
-            endTime: new Date(events[i + 1].start),
-            interval:
-              new Date(events[i + 1].start).getTime() - currentTime.getTime()
-          };
+          return new BookingTime(currentTime, new Date(events[i + 1].start));
         }
       }
 
@@ -166,32 +153,19 @@ export class TimeService {
         timeAfterLast > 900000 &&
         lastEventStartTime.getTime() - currentTime.getTime() >= 0
       ) {
-        return {
-          startTime: lastEventStartTime,
-          endTime: todaysMidnight,
-          interval: timeAfterLast
-        };
+        return new BookingTime(lastEventStartTime, todaysMidnight);
       } else if (
         timeAfterLast > 900000 &&
         lastEventStartTime.getTime() - currentTime.getTime() < 0
       ) {
-        return {
-          startTime: currentTime,
-          endTime: todaysMidnight,
-          interval: todaysMidnight.getTime() - currentTime.getTime()
-        };
+        return new BookingTime(currentTime, todaysMidnight);
       } else {
         return false;
       }
     } else {
       const timeToDayEnd = todaysMidnight.getTime() - currentTime.getTime();
-
       if (timeToDayEnd > 900000) {
-        return {
-          startTime: currentTime,
-          endTime: todaysMidnight,
-          interval: timeToDayEnd
-        };
+        return new BookingTime(currentTime, todaysMidnight);
       }
     }
   }
@@ -221,7 +195,7 @@ export class TimeService {
 
   public timeConverter(miliseconds: number) {
     const hours = Math.floor(
-        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000);

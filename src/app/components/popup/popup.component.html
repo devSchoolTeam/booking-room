@@ -1,30 +1,35 @@
 <div class="popup" *ngIf="popUpState">
-  <div class="modal-content">
+  <div class="modal-window">
     <span class="close" (click)="onCloseClick()">&times;</span>
-    <h2 *ngIf="title">{{title}}</h2>
-    <div>
-      <ul>
+    <div class="modal-content">
+      <div *ngIf="event">
+        <h1 class="title">{{event.title}}</h1>
+        <ul>
+          <li>
+            <span class="headline">Creator:</span>
+            {{event.creator}}
+          </li>
+          <li>
+            <span class="headline">Time: </span>
+            <span>{{event.start | date: 'HH:mm'}} -
+            {{event.end | date: 'HH:mm'}}
+            </span>
+          </li>
+          <li>
+            <span class="headline">Description: </span>
+            <span>{{event.description}}</span>
+          </li>
+          <li>
+            <span class="headline">Attendees:</span>
+            <ul>
+              <li *ngFor="let attendee of event.attendees">
+                {{attendee.email}}
+              </li>
+            </ul>
+          </li>
 
-      </ul>
-    </div>
-    <div *ngIf="event">
-      <h2>{{event.title}}</h2>
-      <ul>
-        <li>Creator: {{event.creator}}</li>
-        <li>Description: {{event.description}}</li>
-        <li>Time: {{event.start | date: 'HH:mm'}} -
-          {{event.end | date: 'HH:mm'}}
-        </li>
-        
-        <li>Attendees:  
-          <ul>
-            <li *ngFor="let attende of event.attendees">
-              {{attende.email}}
-            </li>
-          </ul>
-        </li>
-        
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

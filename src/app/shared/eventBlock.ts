@@ -21,7 +21,6 @@ export class EventBlock {
     );
     this.creator = event.creator.email;
     this.attendees = event.attendees;
-    console.log(this.attendees);
     if (event.description) {
       this.description = event.description;
     } else {
