@@ -11,9 +11,9 @@
   </div>
   <div class="event-blocks">
     <div
-      *ngFor="let block of blocks"
+      *ngFor="let block of blocks; let i = index"
       [class]="'event'"
-      (click)=" onEventClick(block)"
+      (click)=" onEventClick(i)"
       [ngStyle]="{'height': calculateEventHeight(block.duration), 'top':calculateEventOffset(block.fromStart)}">
       <span class="event-status">{{block.status}}&nbsp;</span>
       <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>

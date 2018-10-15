@@ -1,10 +1,4 @@
-li
-  list-style-type: none
-  font-size: 24px
-.headline
-  font-weight: bold
-.title
-  text-align: center
+
 .modal-window
   overflow: auto
   background-color: #ffffff
@@ -12,9 +6,10 @@ li
   padding: 20px
   width: 50%
   height: 50%
+  z-index: 801
 .popup
   position: fixed
-  z-index: 800
+  z-index: 300
   display: flex
   justify-content: center
   align-items: center
@@ -25,6 +20,7 @@ li
   background-color: rgba(0, 0, 0, 0.4)
 
 .modal-content
+  z-index: 801
   word-wrap: break-word
   border: none
 .close
@@ -41,3 +37,7 @@ li
 
 li, h1
   color: black
+
+.event-info
+  cursor: pointer
+

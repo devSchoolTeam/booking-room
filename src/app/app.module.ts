@@ -15,8 +15,9 @@ import { SharedModule } from './shared/shared.module';
 import { AuthGuard } from './shared/resolvers/auth.guard';
 import { EventComponent } from './components/booking-page/event/event.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
-import { PopupComponent } from './components/popup/popup.component';
+import { PopupComponent } from './shared/components/popup/popup.component';
 import { LoginComponent } from './components/login/login.component';
+import { EventInfoComponent } from './shared/components/event-info/event-info.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id:
@@ -45,7 +46,8 @@ export function loadConfig(gapi: GapiService) {
     EventComponent,
     ErrorPageComponent,
     PopupComponent,
-    LoginComponent
+    LoginComponent,
+    EventInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,28 @@
+<div *ngIf="event">
+  <h1 class="title">{{event.title}}</h1>
+  <ul>
+    <li>
+      <span class="headline">Creator:</span>
+      {{event.creator}}
+    </li>
+    <li>
+      <span class="headline">Time: </span>
+      <span>{{event.start | date: 'HH:mm'}} -
+      {{event.end | date: 'HH:mm'}}
+      </span>
+    </li>
+    <li>
+      <span class="headline">Description: </span>
+      <span>{{event.description}}</span>
+    </li>
+    <li>
+      <span class="headline">Attendees:</span>
+      <ul>
+        <li *ngFor="let attendee of event.attendees">
+          {{attendee.email}}
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</div>

@@ -36,6 +36,7 @@ export class EventComponent implements OnInit, OnDestroy {
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         this.events = events;
+        console.log(this.events);
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -161,7 +162,7 @@ export class EventComponent implements OnInit, OnDestroy {
     };
   }
 
-  onEventClick(content) {
-    this.popupService.showPopup(content);
+  onEventClick(index) {
+    this.popupService.showPopup({index: index});
   }
 }
