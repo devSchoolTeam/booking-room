@@ -1,26 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { meetingStatuses } from '../../../shared/constants';
+import { Component, Input, OnInit } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  public currentStatus;
-  public statusSubscription: Subscription;
+export class HeaderComponent implements OnInit {
+  @Input() currentStatus;
 
-  constructor(private timeService: TimeService) {}
-  ngOnInit() {
-    this.currentStatus = meetingStatuses.available;
-    this.statusSubscription = this.timeService.getStatus(currentStatus => {
-      this.currentStatus = currentStatus;
-    });
+  constructor(private timeService: TimeService) {
   }
 
-  ngOnDestroy(): void {
-    this.statusSubscription.unsubscribe();
+  ngOnInit() {
+    this.timeService.data.subscribe(
+      data => {
+        this.currentStatus = data.status;
+      }
+    );
   }
 }

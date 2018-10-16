@@ -1,25 +1,43 @@
-import { GapiService } from './../../services/gapi/gapi.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TimeService } from '../../services/time/time.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.sass']
+  styleUrls: ['./main-page.component.sass'],
 })
-export class MainPageComponent implements OnInit {
-  constructor(
-    private active: ActivatedRoute,
-    private gapiService: GapiService,
-    private timeService: TimeService
-  ) {
-    // this.active.data.subscribe({
-    //   next: x => {
-    //     // this.gapiService.hideLoader();
-    //   }
-    // });
+export class MainPageComponent implements OnInit, OnDestroy {
+  public currentStatus: any;
+  public subscription: Subscription;
+  public isEventsFoundSubscription: Subscription;
+  public timerString: string;
+
+  constructor(private timeService: TimeService, private route: ActivatedRoute) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.data.subscribe({
+      next: data => {
+        this.currentStatus = data['data'].status;
+        this.timerString = data['data'].timer;
+      }
+    });
+
+    this.subscription = this.timeService.data.subscribe(data => {
+      this.currentStatus = data.status;
+      this.timerString = data.timer;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.isEventsFoundSubscription) {
+      this.isEventsFoundSubscription.unsubscribe();
+    }
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

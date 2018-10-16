@@ -5,12 +5,16 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './event-block.component.html',
   styleUrls: ['./event-block.component.sass']
 })
-export class EventBlockComponent implements OnInit {
+export class EventComponent implements OnInit {
   @Input() public text: string;
   @Input() public backgroundColor: string;
   @Input() public fontColor: string;
   @Input() public classList: string;
-  constructor() { }
+  @Input() public eventHeight;
+
+  constructor() {
+  }
+
   ngOnInit() {
   }
 

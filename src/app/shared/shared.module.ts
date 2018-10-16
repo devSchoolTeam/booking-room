@@ -1,14 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from './components/button/button.component';
-import { LoaderComponent } from './components/loader/loader.component';
-import { EventBlockComponent } from './components/event-block/event-block.component';
+import { EventComponent } from './components/event-block/event-block.component';
+import { TimeMeasureComponent } from './components/time-measure/time-measure.component';
+import { PopupComponent } from './components/popup/popup.component';
+import { EventInfoComponent } from './components/event-info/event-info.component';
 
 @NgModule({
-  imports: [
-    CommonModule
+  imports: [CommonModule],
+  declarations: [
+    EventComponent,
+    TimeMeasureComponent,
+    PopupComponent,
+    EventInfoComponent
   ],
-  declarations: [ButtonComponent, LoaderComponent, EventBlockComponent],
-  exports: [ButtonComponent, LoaderComponent, EventBlockComponent]
+  exports: [
+    EventComponent,
+    TimeMeasureComponent,
+    PopupComponent,
+    EventInfoComponent
+  ]
 })
-export class SharedModule { }
+export class SharedModule {}

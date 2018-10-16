@@ -1,7 +1,95 @@
-.events-block
+::-webkit-scrollbar
+  display: none
+
+.main
   display: flex
-  flex-direction: column
-  align-items: center
-  margin:
-    right: 45px
-    top: 75px
+  height: 2700px
+
+.line
+  background-color: #eaebec
+  height: 1px
+  width: 400px
+  position: absolute
+  top: 13px
+  left: 75px
+
+.big
+  width: 100%
+  color: #52647a
+  flex-grow: 1
+  font-size: 21px
+  font-family: OpenSans, sans-serif
+  font-weight: 600
+  position: relative
+  &:after
+    content: ''
+    width: 40px
+    border-bottom: solid 10px black
+    z-index: 1
+
+.small
+  flex-grow: 1
+  width: 100%
+  text-align: right
+  font-size: 18px
+  font-family: OpenSans, sans-serif
+  color: #7b7b7b
+  padding-right: 22px
+
+.event-blocks
+  margin-top: 5%
+  position: relative
+  height: 98.5%
+  flex-basis: 300px
+  flex-grow: 3
+
+.event
+  word-wrap: normal
+  margin: 0 10px
+  position: absolute
+  width: 100%
+  min-width: 320px
+  background-color: #e0e3e5
+  border-radius: 2px
+  padding: 10px 18px
+  &:hover
+    background-color: #526072
+    span
+      color: white
+  cursor: pointer
+  .event-status
+    color: #526072
+    font-size: 21px
+  .event-time
+    color: #526072
+    font-size: 21px
+    font-weight: 600
+
+.current-time
+  width: 100%
+  position: absolute
+  height: 2px
+  z-index: 10
+  margin: 0 10px
+  background-color: #c0392b
+
+.newEvent
+  margin: 0 10px
+  position: absolute
+  width: 100%
+  background-color: #526072
+  border-radius: 2px
+  min-width: 320px
+  .newEvent-status
+    color: white
+    font-size: 21px
+    padding-left: 18px
+  .newEvent-time
+    color: white
+    font-size: 21px
+    font-weight: 600
+
+.scrolling-block
+  overflow-y: scroll
+  height: 700px
+  width: 500px

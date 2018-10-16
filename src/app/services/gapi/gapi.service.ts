@@ -1,48 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Config } from '../../models/config';
 import { GoogleApiService } from 'ng-gapi';
-import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/observable/fromPromise';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GapiService {
-  private events;
+  constructor(private gapiService: GoogleApiService) {
+  }
 
-  constructor(private gapiService: GoogleApiService) {}
-
-  config: Config = {
-    CLIENT_ID:
+  config = {
+    clientId:
       '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
-    API_KEY: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
-    DISCOVERY_DOCS: [
+    apiKey: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
+    discoveryDocs: [
       `https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest`
     ],
-    SCOPES: `https://www.googleapis.com/auth/calendar`
+    scope: `https://www.googleapis.com/auth/calendar`
   };
 
   handleClientLoad() {
+    return this.gapiService.onLoad();
+  }
+
+  clientLoad() {
     return new Promise((resolve, reject) => {
-      this.gapiService.onLoad().subscribe(() => {
-        gapi.load('client', () => {
-          gapi.client
-            .init({
-              apiKey: this.config.API_KEY,
-              clientId: this.config.CLIENT_ID,
-              discoveryDocs: this.config.DISCOVERY_DOCS,
-              scope: this.config.SCOPES
-            })
-            .then(
-              response => {
-                resolve();
-              },
-              error => {
-                reject();
-                console.log(error);
-              }
-            );
-        });
+      gapi.load('client', () => {
+        gapi.client.init(this.config).then(
+          res => {
+            resolve();
+          },
+          rej => {
+            reject();
+          }
+        );
       });
     });
   }
@@ -53,10 +44,6 @@ export class GapiService {
 
   signIn() {
     return gapi.auth2.getAuthInstance().signIn();
-  }
-
-  signOut() {
-    return gapi.auth2.getAuthInstance().signOut();
   }
 
   listUpcomingEvents(requiredDate: Date, endTime: Date) {
@@ -70,10 +57,9 @@ export class GapiService {
     });
   }
 
-  createEvent(startTime:Date, endTime:Date) {
+  createEvent(startTime: Date, endTime: Date) {
     const start = startTime.toISOString();
-    const end = endTime.toISOString()
-
+    const end = endTime.toISOString();
 
     const event = {
       calendarId: 'primary',
@@ -86,11 +72,9 @@ export class GapiService {
       }
     };
 
-    return gapi.client['calendar'].events
-      .insert({
-        calendarId: 'primary',
-        resource: event
-      })
-      
+    return gapi.client['calendar'].events.insert({
+      calendarId: 'primary',
+      resource: event
+    });
   }
 }

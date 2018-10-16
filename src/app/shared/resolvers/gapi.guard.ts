@@ -3,27 +3,25 @@ import { GapiService } from '../../services/gapi/gapi.service';
 import { CanActivate, Router } from '@angular/router';
 
 import { Route } from '@angular/compiler/src/core';
+import { Observable, Subject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class GapiGuard implements CanActivate {
   constructor(private gapiService: GapiService, private router: Router) {}
-  canActivate(route: Route): boolean | Promise<boolean> {
-    const status = this.gapiService.getSigninStatus();
-
-    if (status) {
-      return true;
-    } else {
-      return this.gapiService.signIn().then(
+  canActivate(route: Route): Observable<boolean> {
+    const obs = new Subject<boolean>();
+    this.gapiService.handleClientLoad().subscribe(() => {
+      this.gapiService.clientLoad().then(
         res => {
-          return true;
+          obs.next(true);
         },
         rej => {
-          console.log(rej);
-          this.router.navigate(['/login']);
-          return false;
+          obs.next(false);
         }
       );
-    }
+    });
+    return obs.asObservable();
   }
 }

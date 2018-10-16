@@ -1,0 +1,14 @@
+<div class="popup" *ngIf="popUpState">
+  <div class="modal-window">
+    <div class="event-info"
+         [ngStyle]="{'cursor': events.length > 1 ? 'pointer' : default}"
+         *ngIf="eventId!=undefined"
+         (swiperight)="onSwipeRight()"
+         (swipeleft)="onSwipeLeft()">
+      <span class="close" (click)="onCloseClick()">&times;</span>
+      <div class="modal-content">
+        <app-event-info [event]="events[eventId]"></app-event-info>
+      </div>
+    </div>
+  </div>
+</div>
