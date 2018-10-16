@@ -8,9 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./error-page.component.sass']
 })
 export class ErrorPageComponent implements OnInit {
-  constructor(private gapiService: GapiService, private router: Router) {}
+  constructor(private gapiService: GapiService, private router: Router) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   returnToMainPage() {
     return this.router.navigate(['/']);

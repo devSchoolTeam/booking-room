@@ -7,7 +7,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class PopupService {
   public popupState = new BehaviorSubject<boolean>(false);
   public popupContent = new Subject<any>();
-  constructor() {}
+
+  constructor() {
+  }
 
   hidePopup() {
     this.popupState.next(false);

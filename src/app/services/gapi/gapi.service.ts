@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Config } from '../../models/config';
 import { GoogleApiService } from 'ng-gapi';
 import 'rxjs/add/observable/fromPromise';
-import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GapiService {
-  constructor(private gapiService: GoogleApiService) {}
+  constructor(private gapiService: GoogleApiService) {
+  }
 
   config = {
     clientId:
@@ -38,23 +37,6 @@ export class GapiService {
       });
     });
   }
-
-  // checkOutGapi() {
-  //   return new Promise((resolve, reject) => {
-  //     if (gapi.auth2) {
-  //       resolve();
-  //     } else {
-  //       return this.handleClientLoad().then(
-  //         res => {
-  //           resolve();
-  //         },
-  //         rej => {
-  //           reject();
-  //         }
-  //       );
-  //     }
-  //   });
-  // }
 
   getSigninStatus() {
     return gapi.auth2.getAuthInstance().isSignedIn.get();

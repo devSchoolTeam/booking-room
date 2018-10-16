@@ -33,7 +33,6 @@ export class TimeMeasureComponent implements OnInit, OnChanges {
       this.interval.start,
       this.interval.end
     );
-    console.log(this.measure);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -62,7 +61,6 @@ export class TimeMeasureComponent implements OnInit, OnChanges {
     objects.forEach(elem => {
       elem.height = height.toString() + '%';
     });
-    console.log(objects);
 
     return objects;
   }

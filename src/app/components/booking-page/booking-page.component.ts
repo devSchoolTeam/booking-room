@@ -25,7 +25,8 @@ export class BookingPageComponent implements OnInit {
     private route: ActivatedRoute,
     private timeService: TimeService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.timeService.events$.subscribe({

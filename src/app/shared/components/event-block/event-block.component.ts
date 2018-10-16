@@ -11,7 +11,10 @@ export class EventComponent implements OnInit {
   @Input() public fontColor: string;
   @Input() public classList: string;
   @Input() public eventHeight;
-  constructor() { }
+
+  constructor() {
+  }
+
   ngOnInit() {
   }
 

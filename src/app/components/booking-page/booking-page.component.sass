@@ -5,7 +5,6 @@
   min-width: 450px
 
 .events-container
-  
   height: 70vh
   overflow-y: scroll
   &:after
@@ -13,10 +12,12 @@
     height: 100px
     background-color: red
     position: absolute
+
 .events
   display: flex
   height: 2700px
-  
+  flex-basis: 135px
+  flex-grow: 0
 
 .content
   margin-top: 75px
@@ -54,6 +55,7 @@
   span
     color: #526072
     font-size: 21px
+
 .time-buttons:hover
   background-color: #526072
   span

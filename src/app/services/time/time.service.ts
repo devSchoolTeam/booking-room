@@ -208,7 +208,7 @@ export class TimeService {
 
   public timeConverter(miliseconds: number) {
     const hours = Math.floor(
-        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000);

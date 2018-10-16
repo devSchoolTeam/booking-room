@@ -12,10 +12,13 @@ export class PopupComponent implements OnInit {
   constructor(
     private popupService: PopupService,
     private timeService: TimeService
-  ) {}
+  ) {
+  }
+
   popUpState: Boolean;
   eventId;
   events: Array<Event>;
+
   ngOnInit() {
     this.timeService.events$.subscribe({
       next: events => {
@@ -41,22 +44,18 @@ export class PopupComponent implements OnInit {
   }
 
   onSwipeRight() {
-    console.log('Swiped right');
     if (this.eventId > 0) {
       this.eventId--;
     } else {
       this.eventId = this.events.length - 1;
     }
-    console.log(this.eventId);
   }
 
   onSwipeLeft() {
-    console.log('Swiped left');
     if (this.eventId < this.events.length - 1) {
       this.eventId++;
     } else {
       this.eventId = 0;
     }
-    console.log(this.eventId);
   }
 }

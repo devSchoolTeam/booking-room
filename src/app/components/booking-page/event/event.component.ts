@@ -1,4 +1,4 @@
-import { PopupService } from './../../../services/popup/popup.service';
+import { PopupService } from '../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
@@ -26,7 +26,8 @@ export class EventComponent implements OnInit, OnDestroy {
   constructor(
     private timeService: TimeService,
     private popupService: PopupService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     setTimeout(() => {
@@ -35,7 +36,6 @@ export class EventComponent implements OnInit, OnDestroy {
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         this.events = events;
-        console.log(this.events);
         const date = new Date();
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
@@ -105,9 +105,9 @@ export class EventComponent implements OnInit, OnDestroy {
         events[i].status = 'Next event, ';
       } else if (
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() <
-          900000 &&
+        900000 &&
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() >
-          0
+        0
       ) {
         events[i].status = 'Soon, ';
       } else if (
@@ -164,6 +164,6 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   onEventClick(index) {
-    this.popupService.showPopup({ index: index });
+    this.popupService.showPopup({index: index});
   }
 }
