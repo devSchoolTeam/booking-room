@@ -8,11 +8,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./event-info.component.sass']
 })
 export class EventInfoComponent implements OnInit {
-  @Input() event: Event;
+  @Input()
+  event: Event;
   eventSubscription: Subscription;
   constructor() {}
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 }

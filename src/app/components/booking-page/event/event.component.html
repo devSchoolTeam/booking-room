@@ -1,30 +1,13 @@
-<div class="main">
-  <div *ngIf="blocks" class="measure">
-    <app-time-measure></app-time-measure>
+<div class="event-blocks">
+  <div *ngFor="let block of blocks; let i = index" [class]="'event'" (click)=" onEventClick(i)" [ngStyle]="{'height': calculateHeight(block.duration,'height'), 'top':calculateHeight(block.fromStart,'offset')}">
+    <span class="event-status">{{block.status}}&nbsp;</span>
+    <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
+    <span class="underblock-line"></span>
   </div>
-  <div class="event-blocks">
-    <div
-      *ngFor="let block of blocks; let i = index"
-      [class]="'event'"
-      (click)=" onEventClick(i)"
-      [ngStyle]="{'height': calculateHeight(block.duration,'height'), 'top':calculateHeight(block.fromStart,'offset')}">
-      <span class="event-status">{{block.status}}&nbsp;</span>
-      <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
-      <span class="underblock-line"></span>
-    </div>
-    <span #currentTime
-          class="current-time"
-          *ngIf=" lineOffset"
-          [ngStyle]="{'top':  lineOffset}"
-    ></span>
-    <div
-      #newEvent
-      *ngIf="event"
-      class="newEvent"
-      [ngStyle]="{'height':  calculateHeight(event.duration, 'height'), 'top':calculateHeight(event.timeFromStart,'offset')}">
-      <span class="newEvent-status">New meeting, &nbsp;</span>
-      <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
-</span>
-    </div>
+  <span #currentTime class="current-time" *ngIf=" lineOffset" [ngStyle]="{'top':  lineOffset}"></span>
+  <div #newEvent *ngIf="event" class="newEvent" [ngStyle]="{'height':  calculateHeight(event.duration, 'height'), 'top':calculateHeight(event.timeFromStart,'offset')}">
+    <span class="newEvent-status">New meeting, &nbsp;</span>
+    <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
+    </span>
   </div>
 </div>

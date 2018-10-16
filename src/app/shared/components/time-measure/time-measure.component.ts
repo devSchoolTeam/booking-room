@@ -58,7 +58,24 @@ export class TimeMeasureComponent implements OnInit, OnChanges {
       startTime = new Date(startTime.getTime() + 900000);
     }
 
+    const height = 100 / objects.length;
+    objects.forEach(elem => {
+      elem.height = height.toString() + '%';
+    });
+    console.log(objects);
+
     return objects;
+  }
+
+  calculateHeight(milliseconds: number, type?: 'height' | 'offset') {
+    let x = (milliseconds * 100) / this.interval.interval;
+    if (type === 'height') {
+      x -= 0.1;
+    }
+    if (type === 'offset') {
+      x += 0.1;
+    }
+    return x.toString() + '%';
   }
 
   calculateInterval() {
