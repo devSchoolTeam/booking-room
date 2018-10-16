@@ -16,12 +16,15 @@
 .measure
   height: 100%
   flex-basis: 135px
+  display: flex
+  flex-direction: column
   flex-grow: 0
   overflow: hidden
 
 .big
   width: 100%
   color: #52647a
+  flex-grow: 1
   font-size: 21px
   font-family: OpenSans, sans-serif
   font-weight: 600
@@ -33,6 +36,7 @@
     z-index: 1
 
 .small
+  flex-grow: 1
   width: 100%
   text-align: right
   font-size: 18px
@@ -55,26 +59,6 @@
   background-color: #e0e3e5
   border-radius: 2px
   padding: 10px 18px
-  &:after
-    content: " "
-    display: block
-    background-color: #e0e3e5
-    color: #e0e3e5
-    height: 1px
-    width: 100%
-    right: 0
-    position: absolute
-    top: calc(100% + 2px)
-  &:before
-    content: " "
-    display: block
-    background-color: #e0e3e5
-    color: #e0e3e5
-    height: 1px
-    width: 100%
-    right: 0
-    position: absolute
-    bottom: calc(100% + 2px)
   &:hover
     background-color: #526072
     span

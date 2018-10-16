@@ -1,20 +1,13 @@
 <div class="main">
   <div *ngIf="blocks" class="measure">
-    <div
-      *ngFor="let time of measure"
-      [ngStyle]="{'height': time.height}"
-      [ngClass]="time.type == 'small'? 'small' : 'big'"
-    ><span class="event-status">{{time.time | date: 'HH:mm'}}</span>
-      <span class="line"
-            *ngIf="time.type == 'big'"></span>
-    </div>
+    <app-time-measure></app-time-measure>
   </div>
   <div class="event-blocks">
     <div
       *ngFor="let block of blocks; let i = index"
       [class]="'event'"
       (click)=" onEventClick(i)"
-      [ngStyle]="{'height': calculateEventHeight(block.duration), 'top':calculateEventOffset(block.fromStart)}">
+      [ngStyle]="{'height': calculateHeight(block.duration,'height'), 'top':calculateHeight(block.fromStart,'offset')}">
       <span class="event-status">{{block.status}}&nbsp;</span>
       <span class="event-time">{{block.start | date: 'HH:mm'}} - {{block.end | date: 'HH:mm'}}</span>
       <span class="underblock-line"></span>
@@ -28,7 +21,7 @@
       #newEvent
       *ngIf="event"
       class="newEvent"
-      [ngStyle]="{'height':  calculateEventHeight(event.duration), 'top':calculateEventOffset(event.timeFromStart)}">
+      [ngStyle]="{'height':  calculateHeight(event.duration, 'height'), 'top':calculateHeight(event.timeFromStart,'offset')}">
       <span class="newEvent-status">New meeting, &nbsp;</span>
       <span class="newEvent-time">{{event.start | date: 'HH:mm'}} - {{event.end | date: 'HH:mm'}}
 </span>

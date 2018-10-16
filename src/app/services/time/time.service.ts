@@ -3,7 +3,7 @@ import { GapiService } from '../gapi/gapi.service';
 import { BehaviorSubject, from, interval } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { meetingStatuses } from '../../shared/constants';
-import { EventBlock } from '../../shared/eventBlock';
+import { Event } from '../../shared/Event';
 import { BookingTime } from '../../shared/bookingTime';
 
 @Injectable({
@@ -57,7 +57,7 @@ export class TimeService {
         const events = [];
         const gapiEvents = res['result']['items'];
         gapiEvents.map(event => {
-          events.push(new EventBlock(event, date));
+          events.push(new Event(event, date));
         });
         return events;
       }),
@@ -108,7 +108,7 @@ export class TimeService {
     }
   }
 
-  calculateIntervalForBooking(events: Array<EventBlock>, currentTime: Date) {
+  calculateIntervalForBooking(events: Array<Event>, currentTime: Date) {
     const todaysMidnight = new Date(
       currentTime.getFullYear(),
       currentTime.getMonth(),
@@ -117,6 +117,16 @@ export class TimeService {
       0,
       0
     );
+    if (currentTime.getHours() < 9) {
+      currentTime = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        9,
+        0,
+        0
+      );
+    }
     if (events.length > 0) {
       const timeToFirstEvent =
         new Date(events[0].start).getTime() - currentTime.getTime();
@@ -134,7 +144,10 @@ export class TimeService {
           new Date(events[i + 1].start).getTime() - currentTime.getTime();
 
         if (timeBetweenEvents > 900000 && timeFromStart >= 0) {
-          return new BookingTime(new Date(events[i].end), new Date(events[i + 1].start));
+          return new BookingTime(
+            new Date(events[i].end),
+            new Date(events[i + 1].start)
+          );
         } else if (
           timeBetweenEvents > 900000 &&
           timeFromStart < 0 &&
@@ -195,7 +208,7 @@ export class TimeService {
 
   public timeConverter(miliseconds: number) {
     const hours = Math.floor(
-      (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (miliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       ),
       minutes = Math.floor((miliseconds % (1000 * 60 * 60)) / (1000 * 60)),
       seconds = Math.floor((miliseconds % (1000 * 60)) / 1000);

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventComponent } from './event-block.component';
+import { TimeMeasureComponent } from './time-measure.component';
 
-describe('EventComponent', () => {
-  let component: EventComponent;
-  let fixture: ComponentFixture<EventComponent>;
+describe('TimeMeasureComponent', () => {
+  let component: TimeMeasureComponent;
+  let fixture: ComponentFixture<TimeMeasureComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventComponent ]
+      declarations: [ TimeMeasureComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventComponent);
+    fixture = TestBed.createComponent(TimeMeasureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { EventBlock } from '../../eventBlock';
+import { Event } from '../../Event';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,11 +8,11 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./event-info.component.sass']
 })
 export class EventInfoComponent implements OnInit {
-  @Input() event: EventBlock;
+  @Input() event: Event;
   eventSubscription: Subscription;
   constructor() {}
 
   ngOnInit() {
-    console.log(this.event);
+    
   }
 }

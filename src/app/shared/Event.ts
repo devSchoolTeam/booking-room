@@ -1,4 +1,4 @@
-export class EventBlock {
+export class Event {
   public title: string;
   public status: string;
   public attendees: Array<string>;

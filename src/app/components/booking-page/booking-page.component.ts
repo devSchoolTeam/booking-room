@@ -45,9 +45,9 @@ export class BookingPageComponent implements OnInit {
     });
   }
 
-  selectMeetingDuration(availableMeetingDuration: number) {
-    if (availableMeetingDuration > 0) {
-      this.selectedDuration = availableMeetingDuration;
+  selectMeetingDuration(meetingDuration: number) {
+    if (meetingDuration > 0) {
+      this.selectedDuration = meetingDuration;
       this.tempEvent = {
         start: this.interval.start,
         end: new Date(
@@ -72,7 +72,7 @@ export class BookingPageComponent implements OnInit {
         this.child.scrollToNewEvent();
       });
     } else {
-      this.selectedDuration = availableMeetingDuration;
+      this.selectedDuration = meetingDuration;
       this.tempEvent = undefined;
     }
   }

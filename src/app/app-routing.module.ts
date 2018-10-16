@@ -25,6 +25,11 @@ const routes: Routes = [
         path: '',
         component: MainPageComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: '**',
+        component: BookingPageComponent,
+        canActivate: [AuthGuard]
       }
     ]
   },
@@ -36,7 +41,8 @@ const routes: Routes = [
   {
     path: 'error',
     component: ErrorPageComponent
-  }
+  },
+
 ];
 
 @NgModule({

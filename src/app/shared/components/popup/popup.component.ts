@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PopupService } from 'src/app/services/popup/popup.service';
-import { EventBlock } from '../../eventBlock';
+import { Event } from '../../Event';
 import { TimeService } from 'src/app/services/time/time.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class PopupComponent implements OnInit {
   ) {}
   popUpState: Boolean;
   eventId;
-  events: Array<EventBlock>;
+  events: Array<Event>;
   ngOnInit() {
     this.timeService.events$.subscribe({
       next: events => {

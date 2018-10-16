@@ -2,7 +2,7 @@ import { PopupService } from './../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
 import { Subscription } from 'rxjs';
-import { EventBlock } from '../../../shared/eventBlock';
+import { Event } from '../../../shared/Event';
 
 @Component({
   selector: 'app-event',
@@ -26,8 +26,7 @@ export class EventComponent implements OnInit, OnDestroy {
   constructor(
     private timeService: TimeService,
     private popupService: PopupService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -57,13 +56,13 @@ export class EventComponent implements OnInit, OnDestroy {
         objects.push({
           time: startTime,
           type: 'small',
-          height: this.pxStringBuider(900000)
+          height: this.calculateHeight(900000)
         });
       } else {
         objects.push({
           time: startTime,
           type: 'big',
-          height: this.pxStringBuider(900000)
+          height: this.calculateHeight(900000)
         });
       }
 
@@ -72,18 +71,14 @@ export class EventComponent implements OnInit, OnDestroy {
     this.measure = objects;
   }
 
-  pxStringBuider(milliseconds: number) {
-    const x = (milliseconds * 100) / this.interval.interval;
-    return x.toString() + '%';
-  }
-
-  calculateEventHeight(milliseconds: number) {
-    const x = (milliseconds * 100) / this.interval.interval - 0.1;
-    return x.toString() + '%';
-  }
-
-  calculateEventOffset(milliseconds: number) {
-    const x = (milliseconds * 100) / this.interval.interval + 0.1;
+  calculateHeight(milliseconds: number, type?: 'height' | 'offset') {
+    let x = (milliseconds * 100) / this.interval.interval;
+    if (type === 'height') {
+      x -= 0.1;
+    }
+    if (type === 'offset') {
+      x += 0.1;
+    }
     return x.toString() + '%';
   }
 
@@ -101,22 +96,27 @@ export class EventComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculateBlocks(events: Array<EventBlock>, currentTime: Date) {
+  calculateBlocks(events: Array<Event>, currentTime: Date) {
     for (let i = 0; i < events.length; i++) {
-      if (new Date(events[i].start).getTime() - new Date(currentTime).getTime() > 900000) {
+      if (
+        new Date(events[i].start).getTime() - new Date(currentTime).getTime() >
+        900000
+      ) {
         events[i].status = 'Next event, ';
-      } else if (new Date(events[i].start).getTime() - new Date(currentTime).getTime() < 900000
-        && new Date(events[i].start).getTime() - new Date(currentTime).getTime() > 0
+      } else if (
+        new Date(events[i].start).getTime() - new Date(currentTime).getTime() <
+          900000 &&
+        new Date(events[i].start).getTime() - new Date(currentTime).getTime() >
+          0
       ) {
         events[i].status = 'Soon, ';
-
       } else if (
-
-        new Date(events[i].end).getTime() < new Date(currentTime).getTime()) {
+        new Date(events[i].end).getTime() < new Date(currentTime).getTime()
+      ) {
         events[i].status = 'Finished event, ';
-      } else if (new Date(events[i].start).getTime() < new Date(currentTime).getTime()
-        && new Date(events[i].end).getTime() > new Date(currentTime).getTime()
-
+      } else if (
+        new Date(events[i].start).getTime() < new Date(currentTime).getTime() &&
+        new Date(events[i].end).getTime() > new Date(currentTime).getTime()
       ) {
         events[i].status = 'In process, ';
       }
@@ -125,16 +125,17 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateCurrentTimeLine(currentTime: Date) {
-
-    const currentTimeMilliseconds = currentTime.getTime() - new Date(
-      currentTime.getFullYear(),
-      currentTime.getMonth(),
-      currentTime.getDate(),
-      9,
-      0,
-      0
-    ).getTime();
-    return this.calculateEventOffset(currentTimeMilliseconds);
+    const currentTimeMilliseconds =
+      currentTime.getTime() -
+      new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        9,
+        0,
+        0
+      ).getTime();
+    return this.calculateHeight(currentTimeMilliseconds, 'height');
   }
 
   calculateInterval(currentTime: Date) {
@@ -163,6 +164,6 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   onEventClick(index) {
-    this.popupService.showPopup({index: index});
+    this.popupService.showPopup({ index: index });
   }
 }

@@ -31,11 +31,7 @@ const gapiClientConfig: NgGapiClientConfig = {
   ].join(' ')
 };
 
-export function loadConfig(gapi: GapiService) {
-  return () => {
-    return gapi.handleClientLoad();
-  };
-}
+
 
 @NgModule({
   declarations: [
@@ -60,13 +56,6 @@ export function loadConfig(gapi: GapiService) {
   ],
   providers: [
     GapiService,
-    GapiService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: loadConfig,
-      deps: [GapiService],
-      multi: true
-    },
     AuthGuard
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,9 @@
+<div  class="measure" [class]="type">
+  <div
+    *ngFor="let time of measure"
+    [class]="time.type"
+  ><span class="event-status">{{time.time | date: 'HH:mm'}}</span>
+    <span class="line"
+          *ngIf="time.type == 'big'"></span>
+  </div>
+</div>
