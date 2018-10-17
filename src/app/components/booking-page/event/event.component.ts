@@ -1,7 +1,7 @@
 import { PopupService } from '../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { Event } from '../../../shared/Event';
 
 @Component({
@@ -20,14 +20,13 @@ export class EventComponent implements OnInit, OnDestroy {
   @ViewChild('currentTime')
   currentTime;
   subscription: Subscription;
-  public measure;
-  public lineOffset;
+  lineOffset;
+  updateLineTimer = interval(60000);
 
   constructor(
     private timeService: TimeService,
     private popupService: PopupService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -40,35 +39,19 @@ export class EventComponent implements OnInit, OnDestroy {
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
         this.lineOffset = this.calculateCurrentTimeLine(date);
-        this.calculateMeasure(this.interval.start, this.interval.end);
+      }
+    });
+
+    this.updateLineTimer.subscribe({
+      next: () => {
+        const date = new Date();
+        this.calculateCurrentTimeLine(date);
       }
     });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
-
-  calculateMeasure(startTime: Date, endTime: Date) {
-    const objects = [];
-    while (startTime <= endTime) {
-      if (startTime.getMinutes() !== 0) {
-        objects.push({
-          time: startTime,
-          type: 'small',
-          height: this.calculateHeight(900000)
-        });
-      } else {
-        objects.push({
-          time: startTime,
-          type: 'big',
-          height: this.calculateHeight(900000)
-        });
-      }
-
-      startTime = new Date(startTime.getTime() + 900000);
-    }
-    this.measure = objects;
   }
 
   calculateHeight(milliseconds: number, type?: 'height' | 'offset') {
@@ -105,9 +88,9 @@ export class EventComponent implements OnInit, OnDestroy {
         events[i].status = 'Next event, ';
       } else if (
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() <
-        900000 &&
+          900000 &&
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() >
-        0
+          0
       ) {
         events[i].status = 'Soon, ';
       } else if (
@@ -135,7 +118,7 @@ export class EventComponent implements OnInit, OnDestroy {
         0,
         0
       ).getTime();
-    return this.calculateHeight(currentTimeMilliseconds, 'height');
+    return this.calculateHeight(currentTimeMilliseconds, 'offset');
   }
 
   calculateInterval(currentTime: Date) {
@@ -164,6 +147,6 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   onEventClick(index) {
-    this.popupService.showPopup({index: index});
+    this.popupService.showPopup({ index: index });
   }
 }

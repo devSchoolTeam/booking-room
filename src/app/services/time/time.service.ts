@@ -13,7 +13,7 @@ export class TimeService {
   private events;
   private intervalForDataUpdate = interval(1000);
   private intervalForEventsUpload = interval(60000);
-  public dataSubject = new BehaviorSubject<any>(null);
+  private dataSubject = new BehaviorSubject<any>(null);
   public data = this.dataSubject.asObservable();
   private eventsSource = new BehaviorSubject<any>(null);
   public events$ = this.eventsSource.asObservable();
@@ -241,16 +241,4 @@ export class TimeService {
       });
     }
   }
-
-  // public getStatus(currentTime) {
-  //   return this.changeStatusByTime(this.events, currentTime);
-  // }
-
-  // public getIntervalForBooking(currentTime) {
-  //   return this.calculateIntervalForBooking(this.events, currentTime);
-  // }
-
-  // public getTimerString(currentTime) {
-  //   return this.calculateTimerString(this.events, currentTime);
-  // }
 }

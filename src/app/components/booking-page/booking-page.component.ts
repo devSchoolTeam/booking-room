@@ -25,8 +25,7 @@ export class BookingPageComponent implements OnInit {
     private route: ActivatedRoute,
     private timeService: TimeService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.timeService.events$.subscribe({
@@ -40,7 +39,7 @@ export class BookingPageComponent implements OnInit {
         this.interval = data['data'].intervalForBooking;
       }
     });
-    this.subscription = this.timeService.dataSubject.subscribe(data => {
+    this.subscription = this.timeService.data.subscribe(data => {
       this.currentStatus = data.status;
       this.interval = data.intervalForBooking;
     });
@@ -51,9 +50,7 @@ export class BookingPageComponent implements OnInit {
       this.selectedDuration = meetingDuration;
       this.tempEvent = {
         start: this.interval.start,
-        end: new Date(
-          this.interval.start.getTime() + this.selectedDuration
-        ),
+        end: new Date(this.interval.start.getTime() + this.selectedDuration),
         duration:
           new Date(
             this.interval.start.getTime() + this.selectedDuration
