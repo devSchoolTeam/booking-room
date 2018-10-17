@@ -16,7 +16,7 @@ export class PopupComponent implements OnInit {
   }
 
   popUpState: Boolean;
-  eventId;
+  eventId: number;
   events: Array<Event>;
 
   ngOnInit() {

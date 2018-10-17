@@ -11,7 +11,8 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class DataResolver implements Resolve<Observable<any>> {
-  constructor(private timeService: TimeService) {}
+  constructor(private timeService: TimeService) {
+  }
 
   resolve() {
     return this.timeService.loadEvents().pipe(

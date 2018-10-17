@@ -50,25 +50,23 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateMeasure(startTime: Date, endTime: Date) {
-    const objects = [];
+    const timeValues = [];
     while (startTime <= endTime) {
       if (startTime.getMinutes() !== 0) {
-        objects.push({
+        timeValues.push({
           time: startTime,
           type: 'small',
-          height: this.calculateHeight(900000)
         });
       } else {
-        objects.push({
+        timeValues.push({
           time: startTime,
           type: 'big',
-          height: this.calculateHeight(900000)
         });
       }
 
       startTime = new Date(startTime.getTime() + 900000);
     }
-    this.measure = objects;
+    this.measure = timeValues;
   }
 
   calculateHeight(milliseconds: number, type?: 'height' | 'offset') {

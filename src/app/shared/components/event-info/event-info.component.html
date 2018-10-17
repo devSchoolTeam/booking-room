@@ -16,7 +16,7 @@
       <span>{{event.description}}</span>
     </li>
     <li>
-      <span class="headline">Attendees:</span>
+      <span class="headline">Attendees:</span> <span *ngIf="!event.attendees"> none</span>
       <ul>
         <li *ngFor="let attendee of event.attendees">
           {{attendee.email}}

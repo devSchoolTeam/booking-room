@@ -76,15 +76,6 @@ export class TimeService {
 
   // METHODS FOR CALCULATING DATA
   changeStatusByTime(events, currentTime: Date) {
-    const startTime = new Date(
-      currentTime.getFullYear(),
-      currentTime.getMonth(),
-      currentTime.getDate(),
-      8,
-      0,
-      0
-    );
-
     if (events.length > 0) {
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
@@ -241,16 +232,4 @@ export class TimeService {
       });
     }
   }
-
-  // public getStatus(currentTime) {
-  //   return this.changeStatusByTime(this.events, currentTime);
-  // }
-
-  // public getIntervalForBooking(currentTime) {
-  //   return this.calculateIntervalForBooking(this.events, currentTime);
-  // }
-
-  // public getTimerString(currentTime) {
-  //   return this.calculateTimerString(this.events, currentTime);
-  // }
 }

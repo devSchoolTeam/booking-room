@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GapiService } from './services/gapi/gapi.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +6,9 @@ import { GapiService } from './services/gapi/gapi.service';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  constructor(private gapiService: GapiService) {}
-  gapiIsLoaded: Boolean = false;
-  ngOnInit() {}
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
 }
