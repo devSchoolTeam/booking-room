@@ -1,23 +1,13 @@
 import { Injectable } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
 import 'rxjs/add/observable/fromPromise';
+import { clientConfig } from 'src/app/shared/config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GapiService {
-  constructor(private gapiService: GoogleApiService) {
-  }
-
-  config = {
-    clientId:
-      '1021277222775-3k2hkvmlbbh2sd8cok5ps4uin4nbsoj3.apps.googleusercontent.com',
-    apiKey: 'AIzaSyCX9rlRKtTdVnl7hmOxfeIZkNreGa1xJ3g',
-    discoveryDocs: [
-      `https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest`
-    ],
-    scope: `https://www.googleapis.com/auth/calendar`
-  };
+  constructor(private gapiService: GoogleApiService) {}
 
   handleClientLoad() {
     return this.gapiService.onLoad();
@@ -26,7 +16,7 @@ export class GapiService {
   clientLoad() {
     return new Promise((resolve, reject) => {
       gapi.load('client', () => {
-        gapi.client.init(this.config).then(
+        gapi.client.init(clientConfig).then(
           res => {
             resolve();
           },
