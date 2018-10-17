@@ -1,6 +1,6 @@
 import { TimeService } from '../../services/time/time.service';
 import { availableMeetingDurations } from '../../shared/constants';
-import { Subscription } from 'rxjs';
+import { fromEvent, interval, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -25,7 +25,8 @@ export class BookingPageComponent implements OnInit {
     private route: ActivatedRoute,
     private timeService: TimeService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.timeService.events$.subscribe({

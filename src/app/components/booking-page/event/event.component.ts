@@ -1,7 +1,7 @@
 import { PopupService } from '../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription, interval } from 'rxjs';
+import { Subscription, interval, fromEvent } from 'rxjs';
 import { Event } from '../../../shared/Event';
 
 @Component({
@@ -26,7 +26,20 @@ export class EventComponent implements OnInit, OnDestroy {
   constructor(
     private timeService: TimeService,
     private popupService: PopupService
-  ) {}
+  ) {
+    const interval$ = interval(10000);
+    const click$ = fromEvent(document, 'click');
+    click$.subscribe( () => {
+        console.log('click');
+     const sub = interval$.subscribe(val => {
+        if (val === 11) {
+          this.scrollToCurrentTime();
+          sub.unsubscribe();
+        }
+      });
+      }
+    );
+  }
 
   ngOnInit() {
     setTimeout(() => {
