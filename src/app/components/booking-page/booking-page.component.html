@@ -3,10 +3,10 @@
   <div class="content">
     <div class="container">
       <div class="row">
-        <div class="events-container col-lg-6">
+        <div #eventScroll class="events-container col-lg-6">
           <div class="events">
             <app-time-measure></app-time-measure>
-            <app-event *ngIf="events" #child [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
+            <app-event *ngIf="events" #eventBlocks [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
           </div>
         </div>
         <div class="button-container col-lg-6">

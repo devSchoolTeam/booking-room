@@ -1,24 +1,25 @@
 import { TimeService } from '../../services/time/time.service';
 import { availableMeetingDurations } from '../../shared/constants';
-import { fromEvent, interval, Subscription } from 'rxjs';
+import { fromEvent, interval, merge, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { startWith, switchMap, throttle } from 'rxjs/operators';
 
 @Component({
   selector: 'app-booking-page',
   templateUrl: './booking-page.component.html',
   styleUrls: ['./booking-page.component.sass']
 })
-export class BookingPageComponent implements OnInit {
+export class BookingPageComponent implements OnInit, AfterViewInit {
   currentStatus;
   interval;
   events: object;
   availableMeetingDurations = availableMeetingDurations;
   selectedDuration = 0;
   tempEvent: object;
+  @ViewChild('eventScroll') eventScroll;
   eventIsCreating = false;
-  @ViewChild('child')
-  child;
+  @ViewChild('eventBlocks') eventBlocks;
   public subscription: Subscription;
 
   constructor(
@@ -26,6 +27,22 @@ export class BookingPageComponent implements OnInit {
     private timeService: TimeService,
     private router: Router
   ) {
+  }
+
+  ngAfterViewInit() {
+    const click$ = fromEvent(document, 'click');
+    const scroll$ = fromEvent(this.eventScroll.nativeElement, 'scroll');
+    const userEvent = merge(
+      click$,
+      scroll$.pipe(throttle(value => interval(1000)),
+      )).pipe(
+      startWith(0)
+    );
+    userEvent.pipe(
+      switchMap(() => interval(60000))
+    ).subscribe(
+      () => this.eventBlocks.scrollToCurrentTime()
+    );
   }
 
   ngOnInit() {
@@ -68,7 +85,7 @@ export class BookingPageComponent implements OnInit {
           ).getTime()
       };
       setTimeout(() => {
-        this.child.scrollToNewEvent();
+        this.eventBlocks.scrollToNewEvent();
       });
     } else {
       this.selectedDuration = meetingDuration;
@@ -84,7 +101,7 @@ export class BookingPageComponent implements OnInit {
     if (this.selectedDuration > 0 && !this.eventIsCreating) {
       this.eventIsCreating = true;
       setTimeout(() => {
-        this.child.scrollToNewEvent();
+        this.eventBlocks.scrollToNewEvent();
       }, 0);
       this.timeService
         .createEvent(this.interval.start, this.selectedDuration)

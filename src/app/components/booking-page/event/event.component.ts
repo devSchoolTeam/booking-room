@@ -1,7 +1,7 @@
 import { PopupService } from '../../../services/popup/popup.service';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription, interval, fromEvent } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Event } from '../../../shared/Event';
 
 @Component({
@@ -9,16 +9,13 @@ import { Event } from '../../../shared/Event';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.sass']
 })
-export class EventComponent implements OnInit, OnDestroy {
+export class EventComponent implements OnInit, OnDestroy, AfterViewInit {
   events;
   blocks;
   interval;
-  @Input()
-  event;
-  @ViewChild('newEvent')
-  newEvent;
-  @ViewChild('currentTime')
-  currentTime;
+  @Input() event;
+  @ViewChild('newEvent') newEvent;
+  @ViewChild('currentTime') currentTime;
   subscription: Subscription;
   lineOffset;
   updateLineTimer = interval(60000);
@@ -27,24 +24,15 @@ export class EventComponent implements OnInit, OnDestroy {
     private timeService: TimeService,
     private popupService: PopupService
   ) {
-    const interval$ = interval(10000);
-    const click$ = fromEvent(document, 'click');
-    click$.subscribe( () => {
-        console.log('click');
-     const sub = interval$.subscribe(val => {
-        if (val === 11) {
-          this.scrollToCurrentTime();
-          sub.unsubscribe();
-        }
-      });
-      }
-    );
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.scrollToCurrentTime();
     }, 0);
+  }
+
+  ngOnInit() {
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         this.events = events;
@@ -101,9 +89,9 @@ export class EventComponent implements OnInit, OnDestroy {
         events[i].status = 'Next event, ';
       } else if (
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() <
-          900000 &&
+        900000 &&
         new Date(events[i].start).getTime() - new Date(currentTime).getTime() >
-          0
+        0
       ) {
         events[i].status = 'Soon, ';
       } else if (
@@ -160,6 +148,6 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   onEventClick(index) {
-    this.popupService.showPopup({ index: index });
+    this.popupService.showPopup({index: index});
   }
 }
