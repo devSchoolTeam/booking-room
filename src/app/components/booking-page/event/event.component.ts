@@ -1,7 +1,14 @@
-import { PopupService } from './../../../services/popup/popup.service';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { PopupService } from '../../../services/popup/popup.service';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { Event } from '../../../shared/Event';
 import { OnPageVisible } from 'angular-page-visibility';
 
@@ -10,7 +17,7 @@ import { OnPageVisible } from 'angular-page-visibility';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit, OnDestroy {
+export class EventComponent implements OnInit, OnDestroy, AfterViewInit {
   events;
   blocks;
   interval;
@@ -29,10 +36,13 @@ export class EventComponent implements OnInit, OnDestroy {
     private popupService: PopupService
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.scrollToCurrentTime();
     }, 0);
+  }
+
+  ngOnInit() {
     this.subscription = this.timeService.events$.subscribe({
       next: events => {
         this.events = events;
@@ -55,14 +65,12 @@ export class EventComponent implements OnInit, OnDestroy {
       if (startTime.getMinutes() !== 0) {
         objects.push({
           time: startTime,
-          type: 'small',
-          height: this.calculateHeight(900000)
+          type: 'small'
         });
       } else {
         objects.push({
           time: startTime,
-          type: 'big',
-          height: this.calculateHeight(900000)
+          type: 'big'
         });
       }
 
@@ -83,10 +91,12 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   scrollToNewEvent() {
-    this.newEvent.nativeElement.scrollIntoView({
-      block: 'start',
-      behavior: 'smooth'
-    });
+    if (this.newEvent) {
+      this.newEvent.nativeElement.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth'
+      });
+    }
   }
   @OnPageVisible()
   scrollToCurrentTime() {

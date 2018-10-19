@@ -3,9 +3,9 @@
   <div class="container content">
     <div class="row">
 
-    <div class="events-container  col-lg-6">
+    <div #eventScroll class="events-container   col-lg-6">
 
-      <app-event *ngIf="events" #child [event]="tempEvent"></app-event>
+      <app-event *ngIf="events" #eventBlocks [event]="tempEvent"></app-event>
 
     </div>
     <div class="button-container col-lg-6">
