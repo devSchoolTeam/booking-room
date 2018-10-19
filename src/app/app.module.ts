@@ -13,6 +13,7 @@ import { AuthGuard } from './shared/resolvers/auth.guard';
 import { EventComponent } from './components/booking-page/event/event.component';
 import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { LoginComponent } from './components/login/login.component';
+import { AngularPageVisibilityModule } from 'angular-page-visibility';
 
 const gapiClientConfig: NgGapiClientConfig = clientConfig;
 
@@ -33,7 +34,8 @@ const gapiClientConfig: NgGapiClientConfig = clientConfig;
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
-    })
+    }),
+    AngularPageVisibilityModule
   ],
   providers: [GapiService, AuthGuard],
   bootstrap: [AppComponent]

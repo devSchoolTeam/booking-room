@@ -1,13 +1,14 @@
-import { PopupService } from '../../../services/popup/popup.service';
+import { PopupService } from './../../../services/popup/popup.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TimeService } from '../../../services/time/time.service';
-import { Subscription, interval } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Event } from '../../../shared/Event';
+import { OnPageVisible } from 'angular-page-visibility';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
-  styleUrls: ['./event.component.sass']
+  styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, OnDestroy {
   events;
@@ -20,8 +21,8 @@ export class EventComponent implements OnInit, OnDestroy {
   @ViewChild('currentTime')
   currentTime;
   subscription: Subscription;
-  lineOffset;
-  updateLineTimer = interval(60000);
+  public measure;
+  public lineOffset;
 
   constructor(
     private timeService: TimeService,
@@ -39,19 +40,35 @@ export class EventComponent implements OnInit, OnDestroy {
         this.blocks = this.calculateBlocks(events, date);
         this.interval = this.calculateInterval(date);
         this.lineOffset = this.calculateCurrentTimeLine(date);
-      }
-    });
-
-    this.updateLineTimer.subscribe({
-      next: () => {
-        const date = new Date();
-        this.calculateCurrentTimeLine(date);
+        this.calculateMeasure(this.interval.start, this.interval.end);
       }
     });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  calculateMeasure(startTime: Date, endTime: Date) {
+    const objects = [];
+    while (startTime <= endTime) {
+      if (startTime.getMinutes() !== 0) {
+        objects.push({
+          time: startTime,
+          type: 'small',
+          height: this.calculateHeight(900000)
+        });
+      } else {
+        objects.push({
+          time: startTime,
+          type: 'big',
+          height: this.calculateHeight(900000)
+        });
+      }
+
+      startTime = new Date(startTime.getTime() + 900000);
+    }
+    this.measure = objects;
   }
 
   calculateHeight(milliseconds: number, type?: 'height' | 'offset') {
@@ -67,14 +84,14 @@ export class EventComponent implements OnInit, OnDestroy {
 
   scrollToNewEvent() {
     this.newEvent.nativeElement.scrollIntoView({
-      block: 'center',
+      block: 'start',
       behavior: 'smooth'
     });
   }
-
+  @OnPageVisible()
   scrollToCurrentTime() {
     this.currentTime.nativeElement.scrollIntoView({
-      block: 'center',
+      block: 'start',
       behavior: 'smooth'
     });
   }
@@ -108,6 +125,27 @@ export class EventComponent implements OnInit, OnDestroy {
   }
 
   calculateCurrentTimeLine(currentTime: Date) {
+    if (currentTime.getHours() < 9) {
+      currentTime = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        9,
+        0,
+        0
+      );
+    }
+
+    if (currentTime.getHours() >= 22) {
+      currentTime = new Date(
+        currentTime.getFullYear(),
+        currentTime.getMonth(),
+        currentTime.getDate(),
+        22,
+        0,
+        0
+      );
+    }
     const currentTimeMilliseconds =
       currentTime.getTime() -
       new Date(
@@ -118,7 +156,7 @@ export class EventComponent implements OnInit, OnDestroy {
         0,
         0
       ).getTime();
-    return this.calculateHeight(currentTimeMilliseconds, 'offset');
+    return this.calculateHeight(currentTimeMilliseconds, 'height');
   }
 
   calculateInterval(currentTime: Date) {

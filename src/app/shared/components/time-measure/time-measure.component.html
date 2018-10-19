@@ -1,7 +1,6 @@
 <div class="measure vertical">
   <div
     *ngFor="let time of measure"
-    [ngStyle]="{'height': time.height}"
     [class]="time.type"
   ><span class="event-status">{{time.time | date: 'HH:mm'}}</span>
     <span class="line"

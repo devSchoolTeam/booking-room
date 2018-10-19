@@ -1,0 +1,54 @@
+.name {
+  color: #ffffff;
+  font-weight: bold;
+  letter-spacing: -0.00em;
+}
+
+@media (min-width: 320px) {
+  .name {
+    font-size: calc(2.5rem + ((1vw - 3.2px) * 0));
+  }
+}
+@media (min-width: 1920px) {
+  .name {
+    font-size: 40px;
+  }
+}
+
+@import 'src/app/variables.scss';
+
+.center-block {
+  position: absolute;
+}
+
+.header.soon {
+  background-color: $soon-background;
+}
+.header.available {
+  background-color: $available-background;
+}
+.header.inprocess {
+  background-color: $inproces-background;
+}
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  max-height: 165px;
+
+  &::after {
+    height: 6em;
+    content: '';
+    background: url('../../../../assets/images/mesh.png') no-repeat center;
+    opacity: 0.7;
+    top: 30%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 0;
+    mix-blend-mode: overlay;
+  }
+}

@@ -4,19 +4,13 @@ import { TimeService } from '../../../services/time/time.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  @Input() currentStatus;
+  @Input()
+  currentClass: string;
 
-  constructor(private timeService: TimeService) {
-  }
+  constructor(private timeService: TimeService) {}
 
-  ngOnInit() {
-    this.timeService.data.subscribe(
-      data => {
-        this.currentStatus = data.status;
-      }
-    );
-  }
+  ngOnInit() {}
 }

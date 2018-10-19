@@ -1,0 +1,91 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+@import 'src/app/variables.scss';
+
+.main {
+  display: flex;
+}
+
+.measure {
+  max-width: 100px;
+}
+
+.line {
+  background-color: #eaebec;
+  height: 1px;
+  width: 100%;
+  position: absolute;
+  top: 13px;
+  left: 75px;
+}
+
+.event-blocks {
+  position: relative;
+  flex-grow: 1;
+  margin: 5% 0;
+}
+
+.event {
+  padding: 2% 3%;
+  width: 100%;
+  margin: 0 4%;
+  position: absolute;
+  background-color: $main-grey;
+  border-radius: 2px;
+  padding: 10px 18px;
+  &:hover {
+    background-color: #526072;
+    span {
+      color: white;
+    }
+
+    cursor: pointer;
+  }
+
+  .event-status {
+    color: $text-color;
+    font-size: 21px;
+  }
+
+  .event-time {
+    color: $text-color;
+    font-size: 21px;
+    font-weight: 600;
+  }
+}
+
+.current-time {
+  width: 100%;
+  position: absolute;
+  height: 2px;
+  z-index: 10;
+  background-color: $inproces-background;
+  margin: 0 4%;
+}
+
+.newEvent {
+  margin: 0 4%;
+  position: absolute;
+  width: 100%;
+  background-color: #526072;
+  border-radius: 2px;
+  padding: 2% 3%;
+  .newEvent-status {
+    color: white;
+    font-size: 21px;
+  }
+
+  .newEvent-time {
+    color: white;
+    font-size: 21px;
+    font-weight: 600;
+  }
+}
+
+.scrolling-block {
+  overflow-y: scroll;
+  height: 700px;
+  width: 500px;
+}

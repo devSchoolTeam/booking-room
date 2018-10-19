@@ -10,7 +10,7 @@ import { TouchSequence } from 'selenium-webdriver';
 @Component({
   selector: 'app-time-measure',
   templateUrl: './time-measure.component.html',
-  styleUrls: ['./time-measure.component.sass']
+  styleUrls: ['./time-measure.component.scss']
 })
 export class TimeMeasureComponent implements OnInit, OnChanges {
   @Input()

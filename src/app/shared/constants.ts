@@ -1,21 +1,18 @@
 export const meetingStatuses = {
   available: {
-    fontColor: '#31856e',
-    backgroundColor: '#43b799',
+    class: 'available',
     statusLabel: 'Available',
     bookButton: 'Book now',
     bookButtonSecond: 'Book now'
   },
   soon: {
-    fontColor: '#b38d36',
-    backgroundColor: '#f3bf49',
+    class: 'soon',
     statusLabel: 'Meeting starts soon',
     bookButton: 'Book later',
     bookButtonSecond: 'Book'
   },
   inProcess: {
-    fontColor: '#8c2a1f',
-    backgroundColor: '#c0392b',
+    class: 'inprocess',
     statusLabel: 'Meeting in process',
     bookButton: 'Book later',
     bookButtonSecond: 'Book'

@@ -1,40 +1,35 @@
-<div class="wrapper" (swiperight)="swipe()" (swipeleft)="swipe()">
-  <app-header [currentStatus]="currentStatus"></app-header>
-  <div class="content">
-    <div class="container">
-      <div class="row">
-        <div class="events-container col-lg-6">
-          <div class="events">
-            <app-time-measure></app-time-measure>
-            <app-event *ngIf="events" #child [event]="tempEvent" [ngStyle]="{'width': '600px'}"></app-event>
-          </div>
-        </div>
-        <div class="button-container col-lg-6">
-          <div class="button-row-1">
-            <button class="time-buttons" *ngFor="let availableMeetingDuration of availableMeetingDurations"
-                    (click)="selectMeetingDuration(availableMeetingDuration.value)"
-                    [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null"
-                    [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
-              <span>
-                {{availableMeetingDuration.label}}
-              </span>
-            </button>
-          </div>
-          <div class="button-row-2">
-            <button class="cancel-btn" (click)="selectMeetingDuration(0)"
-                    [ngClass]="{'disabled-button':selectedDuration === 0}">
-              <span>Cancel</span>
-            </button>
-            <div [class]="eventIsCreating ? 'disabled-loader-btn' : null">
-              <button class="book-button book-button-addition" [ngClass]="{'disabled-button':selectedDuration===0}"
-                      (click)="createEvent()">
-                <span *ngIf="!eventIsCreating; else loader">{{currentStatus.bookButtonSecond}}</span>
-              </button>
-            </div>
-          </div>
+<div class="wrapper" (swipeleft)="swipe()" (swiperight)="swipe()">
+  <app-header [currentClass]="currentStatus.class"></app-header>
+  <div class="container content">
+    <div class="row">
+
+    <div class="events-container  col-lg-6">
+
+      <app-event *ngIf="events" #child [event]="tempEvent"></app-event>
+
+    </div>
+    <div class="button-container col-lg-6">
+      <div class="button-row-1">
+        <button class="time-buttons" *ngFor="let availableMeetingDuration of availableMeetingDurations" (click)="selectMeetingDuration(availableMeetingDuration.value)"
+          [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null" [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
+          <span>
+            {{availableMeetingDuration.label}}
+          </span>
+        </button>
+      </div>
+      <div class="button-row-2">
+        <button class="cancel-btn" (click)="selectMeetingDuration(0)" [ngClass]="{'disabled-button':selectedDuration === 0}">
+          <span>Cancel</span>
+        </button>
+        <div [class]="eventIsCreating ? 'disabled-loader-btn' : null">
+          <button class="book-button" [ngClass]="{'disabled-button':selectedDuration===0}" (click)="createEvent()">
+            <span *ngIf="!eventIsCreating; else loader">{{currentStatus.bookButtonSecond}}</span>
+          </button>
         </div>
       </div>
     </div>
+
+  </div>
   </div>
 </div>
 <!--LOADER-->
