@@ -1,6 +1,6 @@
 <div class="main">
   <div class="measure">
-    <app-time-measure></app-time-measure>
+    <app-time-measure [typeInput]="vertical"></app-time-measure>
   </div>
   <div class="event-blocks">
     <div *ngFor="let block of blocks; let i = index" [class]="'event'" (click)=" onEventClick(i)" [ngStyle]="{'height': calculateHeight(block.duration,'height'), 'top':calculateHeight(block.fromStart,'offset')}">

@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class GapiGuard implements CanActivate {
+export class ClientLoadingGuard implements CanActivate {
   constructor(private gapiService: GapiService) {
   }
 

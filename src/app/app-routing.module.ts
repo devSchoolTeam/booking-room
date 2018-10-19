@@ -6,12 +6,12 @@ import { BookingPageComponent } from './components/booking-page/booking-page.com
 import { DataResolver } from './shared/resolvers/data.resolver';
 import { AuthGuard } from './shared/resolvers/auth.guard';
 import { LoginComponent } from './components/login/login.component';
-import { GapiGuard } from './shared/resolvers/gapi.guard';
+import { ClientLoadingGuard } from './shared/resolvers/client-loading.guard';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [GapiGuard],
+    canActivate: [ClientLoadingGuard],
     resolve: {
       data: DataResolver
     },
@@ -30,7 +30,7 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    canActivate: [GapiGuard],
+    canActivate: [ClientLoadingGuard],
     component: LoginComponent
   },
   {

@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 
 @Component({
   selector: 'app-time-measure',
@@ -20,6 +26,8 @@ export class TimeMeasureComponent implements OnInit, OnChanges {
   ngOnInit() {
     if (this.typeInput) {
       this.type = this.typeInput;
+    } else {
+      this.type = 'vertical';
     }
     this.interval = this.calculateInterval();
     this.measure = this.calculateMeasure(

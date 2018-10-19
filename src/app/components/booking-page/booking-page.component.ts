@@ -32,11 +32,14 @@ export class BookingPageComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const click$ = fromEvent(document, 'click');
-    const scroll$ = fromEvent(this.eventScroll.nativeElement, 'scroll');
-    const userEvent = merge(
-      click$,
-      scroll$.pipe(throttle(value => interval(1000)))
-    ).pipe(startWith(0));
+    const scroll$ = fromEvent(document, 'scroll').pipe(
+      throttle(value => interval(1000))
+    );
+    const move$ = fromEvent(document, 'mousemove').pipe(
+      throttle(value => interval(1000))
+    );
+    const userEvent = merge(click$, scroll$, move$).pipe(startWith(0));
+
     userEvent.pipe(switchMap(() => interval(60000))).subscribe(() => {
       this.eventBlocks.scrollToCurrentTime();
       this.selectMeetingDuration(0);
@@ -46,7 +49,9 @@ export class BookingPageComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.timeService.events$.subscribe({
       next: events => {
-        this.events = events;
+        if (events) {
+          this.events = events;
+        }
       }
     });
     this.route.data.subscribe({
@@ -55,9 +60,11 @@ export class BookingPageComponent implements OnInit, AfterViewInit {
         this.interval = data['data'].intervalForBooking;
       }
     });
-    this.subscription = this.timeService.data.subscribe(data => {
-      this.currentStatus = data.status;
-      this.interval = data.intervalForBooking;
+    this.subscription = this.timeService.data$.subscribe(data => {
+      if (data) {
+        this.currentStatus = data.status;
+        this.interval = data.intervalForBooking;
+      }
     });
   }
 
@@ -111,7 +118,7 @@ export class BookingPageComponent implements OnInit, AfterViewInit {
             this.eventIsCreating = false;
           },
           err => {
-            console.error(err);
+            this.router.navigate(['/error']);
           }
         );
     }

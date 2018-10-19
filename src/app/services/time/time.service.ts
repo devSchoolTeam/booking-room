@@ -14,7 +14,7 @@ export class TimeService {
   private intervalForDataUpdate = interval(1000);
   private intervalForEventsUpload = interval(60000);
   private dataSubject = new BehaviorSubject<any>(null);
-  public data = this.dataSubject.asObservable();
+  public data$ = this.dataSubject.asObservable();
   private eventsSource = new BehaviorSubject<any>(null);
   public events$ = this.eventsSource.asObservable();
 

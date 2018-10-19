@@ -11,7 +11,7 @@
     <div class="button-container col-lg-6">
       <div class="button-row-1">
         <button class="time-buttons" *ngFor="let availableMeetingDuration of availableMeetingDurations" (click)="selectMeetingDuration(availableMeetingDuration.value)"
-          [ngClass]="selectedDuration == availableMeetingDuration.value? ' selected-button': null" [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
+          [ngClass]="selectedDuration == availableMeetingDuration.value? 'selected-button': 'null'" [class]="availableMeetingDuration.value>interval.interval || !interval? 'disabled-button' : null">
           <span>
             {{availableMeetingDuration.label}}
           </span>
